@@ -1,0 +1,43 @@
+{% extends "login/header.html" %}
+
+
+{% block content %}
+
+
+<div class ='col-sm-6 col-sm-offset-3'>
+<h3>यहां अपना विवरण दर्ज करें</h3><br>
+<p>{{warn}}</p>
+<form method="POST"  action="">
+{% csrf_token %}
+<div class="form-group" >
+    <label for="s_contact">मोबाइल नंबर(Mobile Number)"</label>
+    <input type="text"  name = 's_contact' class="form-control" id="s_contact" value="{{user.profile.s_contact}}" placeholder="मोबाइल नंबर(Mobile Number)" required="True">
+</div>
+
+<div class="form-group">
+    <label for="street">मकान संख्या/मुहल्ला(Street name)</label>
+    <input type="text" name = 'street' class="form-control" id="last_name" value="{{user.profile.street}}" placeholder="मुहल्ला(street)">
+</div>
+
+<div class="form-group">
+  <label for="address">पूरा पता(Address)</label>
+      <input name ="address" id="autocomplete" placeholder="Enter your address" class="form-control"  type="text" value=  "{{user.profile.address}}" placeholder="पता(Adress)" required="True"></input>
+</div> 
+
+     <input name ="lat" id="latdata" type="number" step="any" value=0 hidden></input>
+     <input name ="lng" id="lngdata" type="number" step="any" value=0 hidden></input>
+
+<div class="form-group">
+    <label for="start_date">कार्य के लिए उपलब्धता की अवधि की शुरुआत तिथि :-</label>
+    <input type="date" name = 'start_date' class="form-control" id="start_date" required="True"  value={{user.profile.start_date|date:"20y-m-d" }}>
+</div>
+ 
+
+<div class="form-group">
+    <label for="end_date">कार्य के लिए उपलब्धता की अवधि की समाप्ति तिथि :-</label>
+    <input type="date" name = 'end_date' class="form-control" id="end_date" required="True" value={{user.profile.end_date|date:"20y-m-d"}}>
+</div>
+<button type="submit" name = 'save_changes1' onclick="latlngcal()" >अगला चरण(Next)</button>
+</form>
+</div>
+{% endblock %}

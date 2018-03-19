@@ -1,0 +1,21 @@
+{% extends "login/header.html" %}
+
+{% block content %}
+<div class ='col-sm-6 col-sm-offset-3'>
+<h3>उपयोगकर्ता पंजीकरण<br>
+(User Registration)</h3>
+<br>
+      <h5> {{warn}} </h5>
+ <form method="POST" action="">
+ {% csrf_token %}
+ <div class="form-group">
+    <label for="username">अपना मोबाइल नंबर(Mobile Number)/ईमेल(Email) दर्ज करें</label>
+    <input type="text" name = 'username' class="form-control" id="username" placeholder="मोबाइल नंबर(Mobile Number)/Email">
+ </div>
+
+<button type="submit" name = 'btn'>ओटीपी(OTP) प्राप्त करें</button>
+</form>
+</div>
+{% endblock %}
+
+

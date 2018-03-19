@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <title>अपना रोजगार</title>
+ 
+   <meta charset="utf-8" />
+   {% load staticfiles %}
+   <link rel="stylesheet" href="{% static 'login/css/bootstrap.min.css' %}" type = "text/css"/>
+   <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	
+   <style type="text/css">
+    html,
+    body {
+	 height:100%
+    }
+    .bg {
+    	position: absolute;
+    	width: 100%;
+    	z-index: 0;
+    }
+   </style>
+  </head>
+  
+
+<body class="body" style="background-color:#F8F2C3">
+	<img class = 'bg' src = 'static/login/img/img.jpg'>
+	<div class="container-fluid" style="min-height:95%; ">
+		<div class="row">
+			  <div class="col-sm-2">
+				<br>
+				  <center>
+					<img src="{% static 'login/img/profile.jpg' %}" class="img-responsive" style='max-height:100px;' alt="logo">
+					{% if request.user.username %}
+				  	<p><b> {{request.user.first_name}}</b> ने लॉगिन किया है</p>
+					{% endif %}
+				  </center>
+
+			  </div>
+			  <div class="col-sm-8">
+				 
+				  <center>
+				  <h2><b><a href="/about_us">अपना रोजगार</a></b></h2>
+				  </center>
+			  </div>
+		      </div>
+                     <hr>
+
+		<div class="row">
+		  <div class="col-sm-2">
+		  
+		   <!-- Great, til you resize. -->
+			<!--<div class="well bs-sidebar affix" id="sidebar" style="background-color:#fff">-->
+			<div class="well bs-sidebar" id="sidebar" style="background-color:#fff">
+			  <ul class="nav nav-pills nav-stacked">
+			  	{% if request.user.username %}
+			  	<h4><b><li><a href='/logout'   >लॉगआउट</a></li></b></h4>
+			  	<h4><b><li><a href = '/view'>अपना विवरण देखें</a></li></b></h4>
+                               <h4><b> <li><a href = '/change_password'>पासवर्ड बदलें</a></li></b></h4>
+    			
+			  	{%else%}
+				<h4><b><li><a href='/login'>लॉग इन करें</a></li></b></h4>
+				<h4><b><li><a href='/register'>रजिस्टर करे</a></li></b></h4>
+                                <h4><b><li><a href='/forgot_password'>पासवर्ड भूल गए?</a></li></b></h4>
+				{%endif%}
+				
+			  </ul>
+			</div> <!--well bs-sidebar affix-->
+		  </div> <!--col-sm-2-->
+		  <div class="col-sm-10">
+		  
+			<div class='container-fluid'>
+			
+			   {% block content %}
+			   {% endblock %}	
+			</div>
+		  </div>
+		</div> 
+	</div>
+	<footer>
+         <br>
+         <br>
+		<div class="container-fluid" style='margin-left:15px'>
+			<p><a href="/about_us" target="blank">अपना रोजगार</a> | <a href="https://www.iiita.ac.in/" target="blank">IIIT-इलाहाबाद</a></p>
+		</div>
+	</footer>
+
+
+
+<script>
+      
+   var placeSearch, autocomplete;
+    function initAutocomplete() {
+         autocomplete = new google.maps.places.Autocomplete(
+            (document.getElementById('autocomplete')),{types: ['geocode']});
+      }
+
+      
+     function latlngcal()
+     {
+      	    var place=autocomplete.getPlace();
+      	    document.getElementById("latdata").value=place.geometry.location.lat();
+      	    document.getElementById("lngdata").value=place.geometry.location.lng();
+      }   
+      	
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKR0DcCevS0bMUmCfjLCSi6DzKsTZfcbc&libraries=places&callback=initAutocomplete"
+        async defer></script>
+</img>
+</body>
+</html>

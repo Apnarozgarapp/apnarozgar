@@ -1,0 +1,99 @@
+{% extends "login/header.html" %}
+
+{% block content %}
+<div class ='col-sm-6 col-sm-offset-2'>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.title {
+  color: blue;
+  font-size: 18px;
+}
+
+.but {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+
+button:hover, a:hover {
+  opacity: 0.7;
+}
+</style>
+<div class="row" >
+	<div>
+		  <!--<div class="col-sm-6">-->
+		  
+		   <!-- Great, til you resize. -->
+			<!--<div class="well bs-sidebar affix" id="sidebar" style="background-color:#fff">-->
+		<div >
+			<ul class="nav nav-pills nav-stacked">
+            {% if request.user.profile.skill1 %}
+            <div class="card" style="background-color:#F7EAEB">
+	
+  <h1>{{user.first_name}}</h1>
+  <p class="title">{{user.profile.address}}</p>
+  <br>
+  <font color = 'black' size = 5>
+उपलब्धता की अवधि:<br>
+</font>
+<font color = 'blue' size = 4>
+{{user.profile.start_date}}  -  {{user.profile.end_date}}
+</font>
+<br><br>
+ <font color = 'black' size = 5 >
+ 	कौशल और क्षमताएं:<br>
+ </font>
+ <font color = 'blue' size = 4>
+ 	{{user.profile.skill1}}<br>
+ 	{{user.profile.skill2}}<br>
+ 	{{user.profile.skill3}}<br>
+
+ </font>
+ <br><br>
+{% if user.profile.description != "None" %}
+ <font color = 'black' size = 5 >
+ 	अन्य विवरण:<br>
+ </font>
+ <font color = 'blue' size = 4>
+ 	{{user.profile..description}}<br>
+ </font>
+{%endif%}
+ <p><button class = "but">मोबाइल नंबर: {{user.profile.s_contact}}</button></p>
+ 
+</div>
+	<br>
+		
+</div>
+
+        		 
+				<h3 align='center'>
+       			<li ><a href = '/worker/edit' >अपना विवरण बदलें</a></li>
+       			</h3>
+    		{% else %}
+    			<h3 align='center'>
+    			<li ><a href = '/worker/edit'>अपना विवरण दर्ज करें</a></li>
+    			</h3>
+    		{% endif %}
+		    </ul>
+		</div> <!--well bs-sidebar affix-->
+	</div> <!--col-sm-2-->
+	
+</div>
+
+{% endblock %}

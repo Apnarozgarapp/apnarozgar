@@ -1,0 +1,32 @@
+{% extends "login/header.html" %}
+
+{% block content %}
+
+<div class="row">
+	<div class ='col-sm-6 col-sm-offset-3'>
+		  <div class="col-sm-6">
+		  
+		   <!-- Great, til you resize. -->
+			<!--<div class="well bs-sidebar affix" id="sidebar" style="background-color:#fff">-->
+			<div style="background-color:#fff">
+			  <ul class="nav nav-pills nav-stacked">
+    {% if user.profile.skill1 %}
+    	<h3>
+    	<li><a href = '/view'>अपना विवरण देखें</a></li>
+    	</h3>
+    {% else %}
+    	<h3>
+    	<li><a href = '/worker/edit'>अपना विवरण दर्ज करें</a></li>
+    	</h3>
+    	{% endif %}
+			  </ul>
+			</div> <!--well bs-sidebar affix-->
+		  </div> <!--col-sm-2-->
+	</div>
+</div>
+<br>
+<br>
+<div class ='col-sm-6 col-sm-offset-3'>
+	<h4>आपका विवरण सफलतापूर्वक सहेजा गया है</h4>
+</div>
+{% endblock %}

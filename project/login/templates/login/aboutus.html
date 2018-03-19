@@ -1,0 +1,33 @@
+{% extends "login/header.html" %}
+
+{% block content %}
+
+<div class ='col-sm-6 col-sm-offset-3'>
+	<h4>आपने सफलतापूर्वक लॉग आउट किया है</h4>
+</div>
+
+
+<div class ='col-sm-6 col-sm-offset-3'>
+<h3>लॉग इन करें</h3><br>
+
+<form method="POST" action="login">
+{% csrf_token %}
+<div class="form-group">
+    <label for="username">अपना उपयोगकर्ता नाम दर्ज करें</label>
+    <input type="text" name = 'username' class="form-control" id="username" placeholder="username">
+</div>
+<div class="form-group">
+    <label for="password">अपना पासवर्ड डालें</label>
+    <input type="password" name = 'password' class="form-control" id="password" placeholder="password">
+</div>
+<div class="form-group">
+<label for="loginas">Login As </label>
+<select name="loginas" class="form-control" id="loginas" >
+<option value="worker">worker</option>
+<option value="hirer">hirer</option>
+</select>
+</div>
+<button type="submit" name = 'btn1'>लॉग इन करें</button>
+</form>
+</div>
+{% endblock %}

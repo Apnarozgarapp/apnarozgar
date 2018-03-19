@@ -1,0 +1,110 @@
+{% extends "login/header.html" %}
+{% block content %}
+
+<div class ='col-sm-6 col-sm-offset-3'>
+<h3>यहां अपना योग्यता(Skills) दर्ज करें</h3><br>
+<p>{{warn}}</p>
+<form method="POST"  action="">
+{% csrf_token %}
+
+<div class="form-group">
+<label for="skill1">कौशल और क्षमताएं :1 </label>
+<select name="skill1"   class="form-control" id="skill1">
+<option value="{{user.profile.skill1}}" selected>{{user.profile.skill1}}</option>
+<option value="निर्माण मजदूर(Construction worker)">निर्माण मजदूर(Construction worker)</option>
+<option value="बिजली कारीगर(Electrician)">बिजली कारीगर(Electrician)</option>
+<option value="बढ़ई(Carpenter)">बढ़ई(Carpenter)</option>
+<option value="पेंटर(Painter)">सफेदी कर्मी(White Washer)</option>
+<option value="वेल्डर(Plumber)">वेल्डर(Welder)</option>
+<option value="पलंबर(Painter)">पलंबर(Plumber)</option>
+<option value="सफाई कर्मचारी(Cleanliness worker)">सफाई कर्मचारी(Cleanliness worker)</option>
+<option value="दूधवाला(Milkman)">दूधवाला(Milkman)</option>
+<option value="राजमिस्री(Mason)">राजमिस्री(Mason)</option>
+<option value="हलवाई(Confectioner)">हलवाई(Confectioner)</option>
+<option value="रसोइया(Cook)">रसोइया(Cook)</option>
+<option value="काँचकर्मी(Glazier)">काँचकर्मी(Glazier)</option>
+<option value="बेकर(baker)">बेकर(baker)</option>
+<option value="सुरक्षा कर्मी(Security guard)">सुरक्षा कर्मी(Security guard)</option>
+<option value="वाहन मिस्त्री(Vehicle Mechanic)">वाहन मिस्त्री(Vehicle Mechanic)</option>
+<option value="फोटोग्राफर(Photographer)">फोटोग्राफर(Photographer)</option>
+<option value="नाई(Barber)">नाई(Barber)</option>
+<option value="कुम्हार(Potter)">कुम्हार(Potter)</option>
+<option value="कलाकार(Artist)">कलाकार(Artist)</option>
+<option value="डीजेवाला(DJwala)">डीजेवाला(DJwala)</option>
+<option value="माली(Gardener)">माली(Gardener)</option>
+<option value="नौकरानी(Maid)">नौकरानी(Maid)</option>
+</select>
+</div>
+
+<div class="form-group">
+<label for="skill2">कौशल और क्षमताएं :2 </label>
+<select name="skill2" class="form-control" id="skill2" optional>
+<option value="{{user.profile.skill2}}" selected>{{user.profile.skill2}}</option>
+<option value="निर्माण मजदूर(Construction worker)">निर्माण मजदूर(Construction worker)</option>
+<option value="बिजली कारीगर(Electrician)">बिजली कारीगर(Electrician)</option>
+<option value="बढ़ई(Carpenter)">बढ़ई(Carpenter)</option>
+<option value="पेंटर(Painter)">सफेदी कर्मी(White Washer)</option>
+<option value="वेल्डर(Plumber)">वेल्डर(Welder)</option>
+<option value="पलंबर(Painter)">पलंबर(Plumber)</option>
+<option value="सफाई कर्मचारी(Cleanliness worker)">सफाई कर्मचारी(Cleanliness worker)</option>
+<option value="दूधवाला(Milkman)">दूधवाला(Milkman)</option>
+<option value="राजमिस्री(Mason)">राजमिस्री(Mason)</option>
+<option value="हलवाई(Confectioner)">हलवाई(Confectioner)</option>
+<option value="रसोइया(Cook)">रसोइया(Cook)</option>
+<option value="काँचकर्मी(Glazier)">काँचकर्मी(Glazier)</option>
+<option value="बेकर(baker)">बेकर(baker)</option>
+<option value="सुरक्षा कर्मी(Security guard)">सुरक्षा कर्मी(Security guard)</option>
+<option value="वाहन मिस्त्री(Vehicle Mechanic)">वाहन मिस्त्री(Vehicle Mechanic)</option>
+<option value="फोटोग्राफर(Photographer)">फोटोग्राफर(Photographer)</option>
+<option value="नाई(Barber)">नाई(Barber)</option>
+<option value="कुम्हार(Potter)">कुम्हार(Potter)</option>
+<option value="कलाकार(Artist)">कलाकार(Artist)</option>
+<option value="डीजेवाला(DJwala)">डीजेवाला(DJwala)</option>
+<option value="माली(Gardener)">माली(Gardener)</option>
+<option value="नौकरानी(Maid)">नौकरानी(Maid)</option>
+</select>
+</div>
+
+<div class="form-group">
+<label for="skill3">कौशल और क्षमताएं :3 </label>
+<select name="skill3"   class="form-control" id="skill3" optional>
+<option value="{{user.profile.skill3}}" selected>{{user.profile.skill3}}</option>
+<option value="निर्माण मजदूर(Construction worker)">निर्माण मजदूर(Construction worker)</option>
+<option value="बिजली कारीगर(Electrician)">बिजली कारीगर(Electrician)</option>
+<option value="बढ़ई(Carpenter)">बढ़ई(Carpenter)</option>
+<option value="पेंटर(Painter)">सफेदी कर्मी(White Washer)</option>
+<option value="वेल्डर(Plumber)">वेल्डर(Welder)</option>
+<option value="पलंबर(Painter)">पलंबर(Plumber)</option>
+<option value="सफाई कर्मचारी(Cleanliness worker)">सफाई कर्मचारी(Cleanliness worker)</option>
+<option value="दूधवाला(Milkman)">दूधवाला(Milkman)</option>
+<option value="राजमिस्री(Mason)">राजमिस्री(Mason)</option>
+<option value="हलवाई(Confectioner)">हलवाई(Confectioner)</option>
+<option value="रसोइया(Cook)">रसोइया(Cook)</option>
+<option value="काँचकर्मी(Glazier)">काँचकर्मी(Glazier)</option>
+<option value="बेकर(baker)">बेकर(baker)</option>
+<option value="सुरक्षा कर्मी(Security guard)">सुरक्षा कर्मी(Security guard)</option>
+<option value="वाहन मिस्त्री(Vehicle Mechanic)">वाहन मिस्त्री(Vehicle Mechanic)</option>
+<option value="फोटोग्राफर(Photographer)">फोटोग्राफर(Photographer)</option>
+<option value="नाई(Barber)">नाई(Barber)</option>
+<option value="कुम्हार(Potter)">कुम्हार(Potter)</option>
+<option value="कलाकार(Artist)">कलाकार(Artist)</option>
+<option value="डीजेवाला(DJwala)">डीजेवाला(DJwala)</option>
+<option value="माली(Gardener)">माली(Gardener)</option>
+<option value="नौकरानी(Maid)">नौकरानी(Maid)</option>
+</select>
+</div>
+
+
+<div class="form-group">
+  <label for="description">कोई अन्य विवरण(Description about skills)</label>
+      <input type="text" name ="description" id="descrition" placeholder="ऐच्छिक(optional)" class="form-control" value="{{user.profile.description}}" Optional></input>
+    </div> 
+
+<div class="form-group">
+    <label for="min_salary">न्यूनतम आवश्यक वेतन(Minimum required salary) </label>
+    <input type="number" name = 'min_salary'  id="min_salary"  placeholder="ऐच्छिक(optional)" class="form-control" value= "{{user.profile.min_salary}}" optional ></input>
+</div>
+<button type="submit" name = 'save_changes2'>परिवर्तनों को सुरक्षित करें</button>
+</form>
+</div>
+{% endblock %}

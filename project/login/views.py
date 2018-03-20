@@ -31,7 +31,7 @@ def login_view(request):
 		loginas1 = form.cleaned_data.get("loginas")
 		user = authenticate(username = username, password = password)
 		if not user or not user.check_password(password) or not user.is_active:
-			warn="उपयोगकर्ता नाम/ पासवर्ड गलत है । कृपया पुन: प्रयास करें|"
+			warn="उपयोगकर्ता नाम/ पासवर्ड गलत है । कृपया पुन: प्रयास करें|(Wrong username or password. Try again.)"
 			return render(request,'login/form.html',{"form":form,"warn":warn})
 		login(request,user)
 		request.user.is_authenticated()
@@ -39,18 +39,15 @@ def login_view(request):
 		data.save()
 		if loginas1=="worker":
 			return render(request,'worker/viewedit.html')
-				#return HttpResponseRedirect('/worker/')
 		else:
 			return render(request,'search/hirer.html')
 	elif request.user.username:
 		value=LoginAs.objects.get(username=request.user.username)
 		if value.loginas=="worker":        
 			return render(request,'worker/viewedit.html')
-			#return HttpResponseRedirect('worker/viewprofile')
 		else:
 			return render(request,'search/hirer.html')
 	else:
-		
 		return render(request,'login/form.html',{"form":form})
 
 def register_view(request):

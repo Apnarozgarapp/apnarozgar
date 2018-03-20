@@ -1,6 +1,8 @@
 {% extends "login/header.html" %}
 
 {% block content %}
+
+
 <div class ='col-sm-6 col-sm-offset-3'>
 <h3><u>लॉग इन करें :</u></h3><br>
 <h4 > <font color="red"> {{warn}} </font></h4>
@@ -8,7 +10,9 @@
 {% csrf_token %}
 <div class="form-group">
     <label for="username">अपना मोबाइल नंबर(Mobile Number)/ईमेल (Email-id) दर्ज करें</label>
-    <input type="text" name = 'username' class="form-control" id="username"  placeholder="मोबाइल नंबर (Mobile Number)/ ईमेल (Email-id)" >
+    <div style = "background: url(static/login/img/phone1.png) no-repeat scroll 7px 7px; padding-left:30px;">
+    <input type="text" name = 'username' class="form-control" id="username"  placeholder="मोबाइल नंबर (Mobile Number)/ ईमेल (Email-id)">
+	</div>
 </div>
 <div class="form-group">
     <label for="password">अपना पासवर्ड (Password) डालें</label>

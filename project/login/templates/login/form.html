@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class ='col-sm-6 col-sm-offset-3'>
-<h3>लॉग इन करें</h3><br>
-<h4 > <font color="red" >{{warn}}</font></h4>
+<h3><u>लॉग इन करें :</u></h3><br>
+<h4 > <font color="red"> {{warn}} </font></h4>
 <form method="POST" action="">
 {% csrf_token %}
 <div class="form-group">
@@ -11,14 +11,14 @@
     <input type="text" name = 'username' class="form-control" id="username"  placeholder="मोबाइल नंबर (Mobile Number)/ ईमेल (Email-id)" >
 </div>
 <div class="form-group">
-    <label for="password">अपना पासवर्ड डालें</label>
-    <input type="password" name = 'password' class="form-control" id="password" placeholder="password">
+    <label for="password">अपना पासवर्ड (Password) डालें</label>
+    <input type="password" name = 'password' class="form-control" id="password" placeholder="पासवर्ड (password)">
 </div>
 <div class="form-group">
 <input type="radio" name="loginas" value="worker" checked>कर्मचारी (Worker)<br>
-  <input type="radio" name="loginas" value="hirer"> नियोक्ता (Employer)<br>
+  <input type="radio" name="loginas" value="hirer"> नियोक्ता (Hirer)<br>
 </div>
-<button type="submit" name = 'btn1'>लॉग इन करें</button>
+<button type="submit" name = 'btn1'>लॉग इन (Login) करें</button>
 </form>
 </div>
 {% endblock %}

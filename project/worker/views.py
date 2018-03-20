@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.contrib.auth.models import User
 from .models import Profile,location
+import login
 import re
 import urllib.request
 @login_required

@@ -1,13 +1,14 @@
 {% extends "login/header.html" %}
+{% load staticfiles %}
 
 {% block content %}
 <div class ='col-sm-6 col-sm-offset-3'>
 <h3><u>पंजीकरण (Registration) :</u></h3>
-   <h4> {{warn}} </h4>
+   <h4> <font color = 'red'>{{warn}}</font> </h4>
  <form method="POST" action="">
  {% csrf_token %}
  <div class="form-group">
-    <label for="username"> मोबाइल नंबर (Mobile Number) :</label>
+    <label for="username"> उपयोगकर्ता नाम (User Name):</label>
     <input type="text" name = 'username' class="form-control" id="username" value="{{mobile}}" readonly>
  </div>
  <input type="text" name ='last_name' id="last_name" value="{{aadhar}}" hidden readonly></input>

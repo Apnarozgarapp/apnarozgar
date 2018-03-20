@@ -65,7 +65,7 @@ def register_view(request):
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				try:
-					q=sms('8840284384','K9532D')
+					q=sms('8601867011','Ram2003')
 					q.send(username,'Welcome to Apna Rozgar. Your Registration  OTP is: '+str(otp))
 					n=q.msgSentToday()
 					q.logout()

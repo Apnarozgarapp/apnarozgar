@@ -53,11 +53,11 @@ def login_view(request):
 def register_view(request):
 	if request.method == 'POST' and 'btn' in request.POST:
 		username=request.POST.get('username',None)
-		aadhar=request.POST.get('last_name',None)
-		if len(aadhar)!=12
+		aadhar=request.POST.get('aadhar',None)
+		if len(aadhar)!=12:
 			warn="आधार संख्या में 12 अंक होने चाहिए| (Aadhar number have 12 digits.)"
 			return render(request,'login/register.html',{"warn":warn})
-		if User.objects.get(username=username).exists() or User.objects.get(last_name=aadhar).exists() :
+		if User.objects.filter(username=username).exists() or User.objects.filter(last_name=aadhar).exists() :
 			warn="उपयोगकर्ता नाम या आधार संख्या पहले से मौजूद है| (Username or aadhar number is already exists.)"
 			return render(request,'login/register.html',{"warn":warn})
 		m=re.search('@',username)
@@ -66,7 +66,7 @@ def register_view(request):
 			if len(username) ==10 and username.isdigit():
 				try:
 					q=sms('8840284384','K9532D')
-					q.send(username,'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP): '+str(otp))
+					q.send(username,'Welcome to Apna Rozgar. Your Registration  OTP is: '+str(otp))
 					n=q.msgSentToday()
 					q.logout()
 					otpdata=""
@@ -81,7 +81,7 @@ def register_view(request):
 
 		else:
 			try:
-				email=EmailMessage('अपना रोज़ागर से ओटीपी (OTP From Apna Rozgar):', 'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP): '+str(otp)), to=[username])
+				email=EmailMessage('अपना रोज़ागर से ओटीपी (OTP From Apna Rozgar):', 'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP): '+str(otp), to=[username])
 				email.send()
 				otpdata=""
 				warn="ओटीपी आपके ईमेल पर भेज दिया गया है|(OTP has been sent to your Email-id.)"
@@ -91,7 +91,7 @@ def register_view(request):
 
 		data=Registration_otp(username=username,aadhar=aadhar,otp=str(otp))
 		data.save()			
-		return render(request,'login/register1.html',{"mobile":mobile,"warn":warn,"otp":otpdata})
+		return render(request,'login/register1.html',{"mobile":username,"aadhar":aadhar,"warn":warn,"otp":otpdata})
 
 	elif request.method == 'POST' and 'btn1' in request.POST:
 		mobile=request.POST.get('username')

@@ -2,28 +2,29 @@
 
 {% block content %}
 <div class ='col-sm-6 col-sm-offset-3'>
-<h3>पंजीकरण(Registration</h3>
-   <h5> {{warn}} </h5>
+<h3><u>पंजीकरण (Registration) :</u></h3>
+   <h4> {{warn}} </h4>
  <form method="POST" action="">
  {% csrf_token %}
  <div class="form-group">
-    <label for="username"> मोबाइल नंबर(Mobile Number)</label>
+    <label for="username"> मोबाइल नंबर (Mobile Number) :</label>
     <input type="text" name = 'username' class="form-control" id="username" value="{{mobile}}" readonly>
  </div>
+ <input type="text" name ='last_name' id="last_name" value="{{aadhar}}" hidden readonly></input>
  <div class="form-group">
-    <label for="otp">मोबाइल से ओटीपी(OTP) दर्ज करें</label>
-    <input type="text" name = 'otp' class="form-control" id="contact" value="{{otp}}" placeholder="ओटीपी(otp)" required oninvalid="setCustomValidity('ओटीपी में चार अंक हैं(OTP have four digits.)')">
+    <label for="otp">ओटीपी(OTP) दर्ज करें</label>
+    <input type="text" name = 'otp' class="form-control" id="contact" value="{{otp}}" placeholder="ओटीपी(otp)" required>
 </div>
  <div class="form-group">
-    <label for="first_name">पूरा नाम(Full Name)</label>
-    <input type="text"  name = 'first_name' class="form-control" id="first_name" placeholder="पूरा नाम(Full_name)" required oninvalid="setCustomValidity('पूरा नाम भरें|(Fill full name.)')">
+    <label for="first_name">पूरा नाम (Full Name) दर्ज करें :</label>
+    <input type="text"  name = 'first_name' class="form-control" id="first_name" placeholder="पूरा नाम(Full_name)" required>
 </div>
 
 <div class="form-group">
-    <label for="password">अपना पासवर्ड(Password) चुनें</label>
-    <input type="password" pattern=".{4,12}" name = 'password' class="form-control" id="password" placeholder="पासवर्ड(password)" required oninvalid="setCustomValidity('पासवर्ड न्यूनतम चार अंक होना चाहिए|(Password should be minimum four digit.)')">
+    <label for="password">अपना पासवर्ड (Password) चुनें :</label>
+    <input type="password"  name = 'password' class="form-control" id="password" placeholder="पासवर्ड(password)" required >
 </div>
-<button type="submit" name = 'btn1'>पंजीकरण(Regitration) करे</button>
+<button type="submit" name = 'btn1'><b>पंजीकरण(Regitration) करे</b></button>
 </form>
 </div>
 {% endblock %}

@@ -13,8 +13,8 @@ import random
 from .forms import UserLoginForm, UserRegisterForm
 from .models import LoginAs,Registration_otp
 from django.core.mail import EmailMessage
-
-
+import re
+import string
 def smss(request):
 	
 	email=EmailMessage('hello', 'body goes here', to=['ramnarayanamethi@gmail.com'])
@@ -52,21 +52,46 @@ def login_view(request):
 
 def register_view(request):
 	if request.method == 'POST' and 'btn' in request.POST:
-		mobile=request.POST.get('username',None)
-		if not User.objects.filter(username=mobile).exists():
-			usernam=mobile[3:13]
-			otp=random.randint(1000,9999)
-			#q=sms('8840284384','K9532D')
-			#q.send(usernam,'Welcome to APNA ROZGAR. Your registration OTP is: '+str(otp))
-			#n=q.msgSentToday()
-			#q.logout() 
-			data=Registration_otp(username=mobile,otp=str(otp))
-			data.save()			
-			warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
-			return render(request,'login/register1.html',{"mobile":mobile,"warn":warn,"otp":str(otp)})
-		else:
-			warn="मोबाइल नंबर पहले से मौजूद है|(Mobile number already exists.)"
+		username=request.POST.get('username',None)
+		aadhar=request.POST.get('last_name',None)
+		if len(aadhar)!=12
+			warn="आधार संख्या में 12 अंक होने चाहिए| (Aadhar number have 12 digits.)"
 			return render(request,'login/register.html',{"warn":warn})
+		if User.objects.get(username=username).exists() or User.objects.get(last_name=aadhar).exists() :
+			warn="उपयोगकर्ता नाम या आधार संख्या पहले से मौजूद है| (Username or aadhar number is already exists.)"
+			return render(request,'login/register.html',{"warn":warn})
+		m=re.search('@',username)
+		otp=random.randint(1000,9999)
+		if m is None:
+			if len(username) ==10 and username.isdigit():
+				try:
+					q=sms('8840284384','K9532D')
+					q.send(username,'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP): '+str(otp))
+					n=q.msgSentToday()
+					q.logout()
+					otpdata=""
+					warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+				except:
+					otpdata=str(otp)
+					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
+
+			else:
+				warn="मोबाइल नंबर गलत है।| (Mobile number is incorrect.)"
+				return render(request,'login/register.html',{"warn":warn})
+
+		else:
+			try:
+				email=EmailMessage('अपना रोज़ागर से ओटीपी (OTP From Apna Rozgar):', 'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP): '+str(otp)), to=[username])
+				email.send()
+				otpdata=""
+				warn="ओटीपी आपके ईमेल पर भेज दिया गया है|(OTP has been sent to your Email-id.)"
+			except:
+				otpdata=str(otp)
+				warn="आपका ईमेल गलत है या ईमेल भेजना विफल हो गया है|"
+
+		data=Registration_otp(username=username,aadhar=aadhar,otp=str(otp))
+		data.save()			
+		return render(request,'login/register1.html',{"mobile":mobile,"warn":warn,"otp":otpdata})
 
 	elif request.method == 'POST' and 'btn1' in request.POST:
 		mobile=request.POST.get('username')

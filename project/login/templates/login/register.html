@@ -9,11 +9,11 @@
  {% csrf_token %}
  <div class="form-group">
     <label for="username"><b>अपना मोबाइल नंबर (Mobile Number)/ईमेल(Email) दर्ज करें :</b></label>
-    <input type="text" name = 'username' class="form-control" id="username" placeholder="मोबाइल नंबर (Mobile Number)/ईमेल (Email)">
+    <input type="text" name = 'username' class="form-control" id="username" placeholder="मोबाइल नंबर (Mobile Number)/ईमेल (Email)" required>
  </div>
  <div class="form-group">
     <label for="aadhar">आधार नंबर (Aadhar Number) :</label>
-    <input type="text" name = 'last_name' class="form-control" id="last_name" placeholder="आधार नंबर (Aadhar Number)">
+    <input type="text" name = 'last_name' class="form-control" id="last_name" placeholder="आधार नंबर (Aadhar Number)" required>
  </div>
 
 <button type="submit" name = 'btn'><b>ओटीपी(OTP) प्राप्त करें</b></button>

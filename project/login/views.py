@@ -17,8 +17,9 @@ import re
 import string
 def smss(request):
 	
-	email=EmailMessage('hello', 'body goes here', to=['ramnarayanamethi@gmail.com'])
-	email.send()
+	q=sms('8840284384','K9532D')
+	a=random.randint(1000,9999)
+	q.send('8601867011','From Apna Rozgar OTP:'+str(a))
 	return render(request,'login/form.html')
 def aboutus(request):
 	return 
@@ -66,9 +67,7 @@ def register_view(request):
 			if len(username) ==10 and username.isdigit():
 				try:
 					q=sms('8840284384','K9532D')
-					q.send(username,'Welcome to Apna Rozgar. Your Registration  OTP is: '+str(otp))
-					n=q.msgSentToday()
-					q.logout()
+					q.send(username,'From Apna Rozgar, Your OTP is: '+str(otp))
 					otpdata=""
 					warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
 				except:

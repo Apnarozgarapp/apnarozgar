@@ -19,7 +19,7 @@ def smss(request):
 	
 	q=sms('8840284384','K9532D')
 	a=random.randint(1000,9999)
-	q.send('8267962765','From Apna Rozgar OTP:'+str(a))
+	q.send('8601867011','From Apna Rozgar OTP:'+str(a))
 	return render(request,'login/form.html')
 def aboutus(request):
 	return 

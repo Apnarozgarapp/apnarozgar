@@ -65,12 +65,12 @@ def register_view(request):
 		otp=random.randint(1000,9999)
 		if m is None:
 			if len(username) ==10 and username.isdigit():
-				try:
-					q=sms('8840284384','K9532D')
-					q.send(username,'From Apna Rozgar, Your OTP is: '+str(otp))
-					otpdata=""
-					warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
-				except:
+				#try:
+				#	q=sms('8840284384','K9532D')
+				#	q.send(username,'From Apna Rozgar, Your OTP is: '+str(otp))
+				#	otpdata=""
+				#	warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+				#except:
 					otpdata=str(otp)
 					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 

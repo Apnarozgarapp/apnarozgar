@@ -68,3 +68,18 @@ def view_worker(request):
     return render(request,'worker/view.html',{'data': data})  
   else:
     return HttpResponse(" No Worker available.") 
+
+def search_by_location(request):
+  return HttpResponse(" No Worker available.")
+
+def search_by_name(request):
+  return HttpResponse(" No Worker available.")
+
+def work_post(request):
+  return HttpResponse(" No Worker available.")
+
+def see_work_post(request):
+  return HttpResponse(" No Worker available.")
+
+def see_contact(request):
+  return HttpResponse(" No Worker available.")

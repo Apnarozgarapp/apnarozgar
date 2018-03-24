@@ -1,21 +1,8 @@
-"""project URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.8/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
-Including another URLconf
-    1. Add an import:  from blog import urls as blog_urls
-    2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
-"""
 from django.conf.urls import include, url
 from django.contrib import admin
 from login.views import (login_view, register_view, logout_view,profile_view,forgot_password_view,change_password_view,smss)
+
+from search.views import (search_by_location,search_by_name,see_contact,work_post,see_work_post)
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login',login_view,name = 'login'),
@@ -27,6 +14,11 @@ urlpatterns = [
       url(r'^change_password',change_password_view,name = 'change_password'),
     url(r'^worker/',include('worker.urls')),
     url(r'^login',login_view,name = 'login'),
-    url(r'^search',include('search.urls'))
+    url(r'^search',include('search.urls')),
+    url(r'^search_by_location',search_by_location,name = 'search_by_location'),
+    url(r'^search_by_name',search_by_name,name = 'search_by_name'),
+    url(r'^work_post',work_post,name = 'work_post'),
+    url(r'^see_work_post',see_work_post,name = 'see_work_post'),
+    url(r'^see_contact',see_contact,name = 'see_contact'),
     
 ]

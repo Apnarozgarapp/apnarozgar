@@ -4,7 +4,17 @@
 
 <div class ='col-sm-6 col-sm-offset-3'>
  {% if request.user.username%}
-  <h4><b><li><a href='/search'>कर्मचारी खोजें (Search for worker)</a></li></b></h4>  
+  <h4><b><li><a href='/search'>कार्य आवश्यकता के अनुसार कर्मचारी को ढूंढें (Find the worker as per work requirement)</a></li></b></h4>
+   <br>
+  <h4><b><li><a href='/search_by_location'>स्थान के नाम से कर्मचारी ढूंढें (Find worker by location name)</a></li></b></h4>
+   <br>
+  <h4><b><li><a href='/search_by_name'>कर्मचारी के नाम से संपर्क खोजें (Find contacts of worker by name)</a></li></b></h4>
+   <br>
+  <h4><b><li><a href='/work_post'>काम का विवरण भरें (Fill the detail of work)</a></li></b></h4>
+   <br>
+  <h4><b><li><a href='/see_work_post'>सभी काम का विवरण देखें (See the details of all work)</a></li></b></h4> 
+   <br>
+  <h4><b><li><a href='/see_contact'>अपने संपर्क विवरण देखें (view your contact detail)</a></li></b></h4>  
    {% else %}
    <h4><b><li><a href='/login'>लॉग इन करें</a></li></b></h4>
    {%endif%}

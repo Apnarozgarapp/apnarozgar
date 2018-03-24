@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 class Posts_of_work(models.Model):
 	username = models.CharField(max_length=100,primary_key = True)
+	name = models.CharField(max_length = 100,blank = True, null = True)
 	s_contact = models.CharField(max_length=50,blank = True,null = True)
 	rskill = models.CharField(max_length = 100,blank = True, null = True)
 	street = models.CharField(max_length=250,blank = True, null = True)

@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.contrib.auth.models import User
 from worker.models import Profile,location
+from .models import Posts_of_work,status
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django import forms
@@ -27,7 +28,7 @@ def search_result(request):
     
     try :
       user1=Profile.objects.filter(Q(skill1=skill)|Q(skill2=skill)|Q(skill3=skill))    
-      user1 = user1.filter(start_date__lte=s_date,end_date__gte=e_date,min_salary__lte=salary)
+      user1 = user1.filter(start_date__lte=s_date,end_date__gte=e_date)
       for data in user1:
         loc=location.objects.get(username=data.user.username)
         dis=discal(float(lat1),float(lng1),float(loc.lat),float(loc.lng))

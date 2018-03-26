@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 from django.contrib import admin
-from login.views import (login_view, register_view, logout_view,profile_view,forgot_password_view,change_password_view,smss)
+from login.views import (login_view, register_view, logout_view,profile_view,forgot_password_view,change_password_view,smss, aboutus)
 
 from search.views import (search_by_location,search_by_name,see_contact,work_post,see_work_post)
 urlpatterns = [
@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^work_post',work_post,name = 'work_post'),
     url(r'^see_work_post',see_work_post,name = 'see_work_post'),
     url(r'^see_contact',see_contact,name = 'see_contact'),
+    url(r'^about_us',aboutus,name = 'about_us'),
     
 ]

@@ -1,14 +1,14 @@
 {% extends "login/header.html" %}
 
 {% block content %}
-
 <div class ='col-sm-6 col-sm-offset-3'>
-<h3>कर्मचारी को ढूंढें</h3><br>
-<form method="POST" action="search">
-   {% csrf_token %}
-<input type="text" name ='username' id="username" value="{{username}}" hidden readonly></input>
 
-<input type="text" name ='name' id="name" value="{{name}}" hidden readonly></input>
+{% if request.user.username%}
+
+<h3>कर्मचारी को ढूंढें</h3><br>
+<h4> <font color="red">{{warn}}</font></h4>
+<form method="POST" action="">
+   {% csrf_token %}
 
 	<div class="form-group">
 	<label for="rskill">कौशल और क्षमताएं </label>
@@ -66,13 +66,35 @@
 	    <label for="Nworker"> आवश्यक कर्मचारी की संख्या (Number of worker required) </label>
 	    <input type="number" name = 'Nworker'  id="Nworker"  placeholder="Number of worker required" class="form-control" required></input>
 	</div>
+
+	<div class="form-group">
+	<label for="Twork">type of work </label>
+	<select name="Twork"   class="form-control" id="Twork" multiple>
+	<option value="daywise">daywise</option>
+	<option value="monthly">monthly</option>
+	<option value="perhour">perhour</option>
+</select>
+</div>
+
 	<div class="form-group">
     <label for="description">कार्य का विवरण(Description of work)</label>
       <input type="text" name ="description" id="descrition" placeholder="ऐच्छिक(optional)" class="form-control" Optional></input>
     </div> 
 
+    <div class="form-group">
+	<label for="status">post type </label>
+	<select name="status"   class="form-control" id="status" >
+	<option value="private">private</option>
+	<option value="public">public</option>
+</select>
+</div>
+
 	<button type="submit" name = 'btn' onclick="latlngcal()" >ढूंढे</button>
 </form>
+{% else %}
+   <h4><b><li><a href='/login'>लॉग इन करें</a></li></b></h4>
+   {%endif%}
+
 </div>
 {% endblock %}
 

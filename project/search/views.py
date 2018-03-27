@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.contrib.auth.models import User
 from worker.models import Profile,location
-from .models import Posts_of_work,status
+from .models import Posts,status
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django import forms
@@ -77,7 +77,49 @@ def search_by_name(request):
   return HttpResponse(" No Worker available.")
 
 def work_post(request):
-  return HttpResponse(" No Worker available.")
+  if request.method == 'POST':
+      s_contact = request.POST.get('s_contact',None)
+      rskill = request.POST.get('rskill',None)
+      street = request.POST.get('street',None)
+      location = request.POST.get('location',None)
+      s_date = request.POST.get('start_date',None)
+      e_date = request.POST.get('end_date',None)
+      lat1 = request.POST.get('lat',None)
+      lng1 = request.POST.get('lng',None)
+      Nworker=request.POST.get('Nworker',None)
+      Twork=request.POST.get('Twork',None)
+      description=request.POST.get('description',None)
+      status=request.POST.get('status',None)
+      if lat1=='0':
+        lat1='25.435801'
+      if lng1=='0':
+        lng1='81.846311'
+      dat=Posts(username=request.user.username,name=request.user.first_name, s_contact=s_contact,rskill=rskill,street=street,start_date=s_date,Nworker=Nworker,Twork=Twork,location=location,end_date=e_date,lat=lat1,lng=lng1,description=description,status=status)
+      dat.save()
+      try :
+        user1=Profile.objects.filter(Q(skill1=rskill)|Q(skill2=rskill)|Q(skill3=rskill))    
+        user1 = user1.filter(start_date__lte=s_date,end_date__gte=e_date)
+        if len(user1) == 0:
+          warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
+          return render(request,'search/pwork.html',{'warn':warn})
+        for data in user1:
+          loc=location.objects.get(username=data.user.username)
+          a=loc.lat
+          b=loc.lng
+          if a=='0':
+            a='25.435801'
+          if b=='0':
+            b='81.846311'
+          dis=discal(float(lat1),float(lng1),float(a),float(b))
+          data.age=dis
+          data.save()
+        user1=user1.order_by('age')
+        return render(request,'search/result.html',{'users' : user1, 'warn' : warn})
+      except Profile.DoesNotExist:
+        warn="आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
+        return render(request,'search/pwork.html',{'warn':warn})
+  else:
+    return render(request,'search/pwork.html')
 
 def see_work_post(request):
   return HttpResponse(" No Worker available.")

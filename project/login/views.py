@@ -21,8 +21,9 @@ def smss(request):
 	a=random.randint(1000,9999)
 	q.send('8601867011','From Apna Rozgar OTP:'+str(a))
 	return render(request,'login/form.html')
+
 def aboutus(request):
-	return 
+	return render(request,'login/aboutus.html')
 	
 def login_view(request):
 	form = UserLoginForm(request.POST or None)

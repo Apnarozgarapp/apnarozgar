@@ -2,32 +2,20 @@
 
 {% block content %}
 
-<div class ='col-sm-6 col-sm-offset-3'>
-	<h4>आपने सफलतापूर्वक लॉग आउट किया है</h4>
-</div>
 
 
-<div class ='col-sm-6 col-sm-offset-3'>
-<h3>लॉग इन करें</h3><br>
+<div class ='col-sm-6 col-sm-offset-2'>
+<h3>क्या है अपना रोज़गार?</h3><br>
 
-<form method="POST" action="login">
-{% csrf_token %}
-<div class="form-group">
-    <label for="username">अपना उपयोगकर्ता नाम दर्ज करें</label>
-    <input type="text" name = 'username' class="form-control" id="username" placeholder="username">
-</div>
-<div class="form-group">
-    <label for="password">अपना पासवर्ड डालें</label>
-    <input type="password" name = 'password' class="form-control" id="password" placeholder="password">
-</div>
-<div class="form-group">
-<label for="loginas">Login As </label>
-<select name="loginas" class="form-control" id="loginas" >
-<option value="worker">worker</option>
-<option value="hirer">hirer</option>
-</select>
-</div>
-<button type="submit" name = 'btn1'>लॉग इन करें</button>
-</form>
+<p >
+	<font size = 4>
+	अपना रोजगार एक एसा प्लेटफार्म है जहां पर हर व्यक्ति अपनी कुशलका के अनुसार एक छोटी अवधि के लिये मानचाहा रोज़गार प्राप्त कर सकता है।
+	<br><br>
+	वर्तमान भारत में कोई भी एसा प्लेटफार्म नहीं है जहां पर कुशल / अकुशल श्रमिक जो कि विभिन्न क्षेत्रों से जुड़े हुए हैं जैसे निर्माण मजदूर, बिजली कारीगर, बढ़ई, पलंबर, रसोइया आदि एक छोटी अवधि के लिये काम करने के लिए उपलब्ध हों। अपना रोजगार इसी कमी को पूरा करने की एक कोशिश है। 
+
+	</font>
+</p>
+
+
 </div>
 {% endblock %}

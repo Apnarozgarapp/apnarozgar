@@ -35,24 +35,11 @@
 	</div>
 
 	<div class="form-group">
-	    <label for="start_date">कार्य शुरुआत तिथि </label>
-	    <input type="date" name = 'start_date' class="form-control" id="start_date" required="True" ></input>
-	</div>
-	<div class="form-group">
-	    <label for="end_date">कार्य की अवधि की समाप्ति तिथि </label>
-	    <input type="date" name = 'end_date' class="form-control" id="end_date" required="True"></input>
-	</div>
-	<div class="form-group">
 	  <label for="address">पूरा पता(Address)</label>
-	      <input name ="address" id="autocomplete" class="form-control" type="text" placeholder="पता(Adress)" required="True"></input>
+	      <input name ="address" id="autocomplete" class="form-control" type="text" placeholder="पता(Adress)" required></input>
 	</div> 
       <input name ="lat" id="latdata" type="number" step="any" value=0 hidden></input>
       <input name ="lng" id="lngdata" type="number" step="any" value=0 hidden></input>
-
-	<div class="form-group">
-	    <label for="salary"> वेतन(salary) </label>
-	    <input type="number" name = 'salary'  id="salary"  placeholder="ऐच्छिक(optional)" class="form-control" optional ></input>
-	</div>
 
 	<button type="submit" name = 'btn' onclick="latlngcal()" >ढूंढे</button>
 </form>

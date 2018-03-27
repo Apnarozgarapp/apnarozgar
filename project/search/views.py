@@ -28,7 +28,7 @@ def search_result(request):
     
     try :
       user1=Profile.objects.filter(Q(skill1=skill)|Q(skill2=skill)|Q(skill3=skill))    
-      user1 = user1.filter(start_date__lte=s_date,end_date__gte=e_date)
+      #user1 = user1.filter(start_date__lte=s_date,end_date__gte=e_date)
       for data in user1:
         loc=location.objects.get(username=data.user.username)
         dis=discal(float(lat1),float(lng1),float(loc.lat),float(loc.lng))
@@ -70,12 +70,6 @@ def view_worker(request):
   else:
     return HttpResponse(" No Worker available.") 
 
-def search_by_location(request):
-  return HttpResponse(" No Worker available.")
-
-def search_by_name(request):
-  return HttpResponse(" No Worker available.")
-
 def work_post(request):
   if request.method == 'POST':
       s_contact = request.POST.get('s_contact',None)
@@ -89,7 +83,7 @@ def work_post(request):
       Nworker=request.POST.get('Nworker',None)
       Twork=request.POST.get('Twork',None)
       description=request.POST.get('description',None)
-      status=request.POST.get('status',None)
+      status='public'
       if lat1=='0':
         lat1='25.435801'
       if lng1=='0':
@@ -122,7 +116,10 @@ def work_post(request):
     return render(request,'search/pwork.html')
 
 def see_work_post(request):
-  return HttpResponse(" No Worker available.")
+  pos=Posts.objects.filter(username=request.user.username)
+  warn=""
+  if len(pos)==0:
+    warn="no posts find"
+  return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
 
-def see_contact(request):
-  return HttpResponse(" No Worker available.")
+

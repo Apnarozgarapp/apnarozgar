@@ -17,12 +17,6 @@ urlpatterns = [
     url(r'^search',include('search.urls')),
     url(r'^work_post',work_post,name = 'work_post'),
     url(r'^see_work_post',see_work_post,name = 'see_work_post'),
-<<<<<<< HEAD
-    url(r'^see_contact',see_contact,name = 'see_contact'),
     url(r'^about',aboutus,name = 'about_us'),
 
-=======
-    url(r'^about_us',aboutus,name = 'about_us'),
-    
->>>>>>> ec69555bc79c9952142e393920f8e085fbcfa917
 ]

@@ -128,7 +128,8 @@ def profile_view(request):
 		return render(request,'search/hirer.html')
 
 def forgot_password_view(request):
-	return HttpResponse("<h2>HEY! forgot password</h2>")
+	return 
+	
 def change_password_view(request):
 	return HttpResponse("<h2>HEY! change password</h2>")
 

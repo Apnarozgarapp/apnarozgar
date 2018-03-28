@@ -1,0 +1,11 @@
+ <form method="POST" action="">
+     {% csrf_token %}
+     <input name ="post_id" type="number" value={{dat.post_id}} hidden></input>
+     <b><button type="submit" name = 'edit' >edit</button>
+     {%if "private" in dat.status%}
+     <button type="submit" name = 'status' >public</button>
+     {%else%}
+     <button type="submit" name = 'status' >private</button>
+     {%endif%}
+   </b>
+  </form>

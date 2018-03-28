@@ -83,7 +83,7 @@ def work_post(request):
       Nworker=request.POST.get('Nworker',None)
       Twork=request.POST.get('Twork',None)
       description=request.POST.get('description',None)
-      status='public'
+      status='private'
       if lat1=='0':
         lat1='25.435801'
       if lng1=='0':
@@ -104,7 +104,7 @@ def work_post(request):
           data.save()
         user1=user1.order_by('age')
         warn = " "
-        return render(request,'search/result.html',{'users' : user1, 'warn' : warn})
+        return render(request,'search/result.html',{'users' : user1, 'warn' : warn,'dat':dat})
       except Profile.DoesNotExist:
         warn="आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
         return render(request,'search/pwork.html',{'warn':warn})
@@ -112,10 +112,40 @@ def work_post(request):
     return render(request,'search/pwork.html')
 
 def see_work_post(request):
-  pos=Posts.objects.filter(username=request.user.username)
-  warn=""
-  if len(pos)==0:
-    warn="no posts find"
-  return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
-
-
+  if request.method=="POST" and 'delete' in request.POST:
+    post_id=request.POST.get('post_id')
+    data=Posts.objects.get(post_id=post_id)
+    data.delete()
+    data.save()
+    pos=Posts.objects.filter(username=request.user.username)
+    warn=""
+    if len(pos)==0:
+      warn="no posts find"
+    return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
+  elif request.method=="POST" and 'status' in request.POST:
+    post_id=request.POST.get('post_id')
+    data=Posts.objects.get(post_id=post_id)
+    if data.status=="public":
+      data.status="private"
+    else:
+      data.status="public"
+    data.save()
+    pos=Posts.objects.filter(username=request.user.username)
+    warn=""
+    if len(pos)==0:
+      warn="no posts find"
+    return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
+  elif request.method=="POST" and 'edit' in request.POST:
+    post_id=request.POST.get('post_id')
+    data=Posts.objects.get(post_id=post_id)
+    pos=Posts.objects.filter(username=request.user.username)
+    warn=""
+    if len(pos)==0:
+      warn="no posts find"
+    return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
+  else:
+    pos=Posts.objects.filter(username=request.user.username)
+    warn=""
+    if len(pos)==0:
+      warn="no posts find"
+    return render(request,'search/postresult.html',{'pos':pos,'warn':warn})

@@ -57,13 +57,14 @@ def register_view(request):
 		username=request.POST.get('username',None)
 		aadhar=request.POST.get('aadhar',None)
 		if len(aadhar)!=12:
-			warn="आधार संख्या में 12 अंक होने चाहिए| (Aadhar number have 12 digits.)"
+			warn="आधार संख्या में 12 अंक होने चाहिए| (Aadhaar number must have 12 digits.)"
 			return render(request,'login/register.html',{"warn":warn})
 		if User.objects.filter(username=username).exists() or User.objects.filter(last_name=aadhar).exists() :
-			warn="उपयोगकर्ता नाम या आधार संख्या पहले से मौजूद है| (Username or aadhar number is already exists.)"
+			warn="उपयोगकर्ता नाम या आधार संख्या पहले से मौजूद है| (Username or aadhaar number already exists.)"
 			return render(request,'login/register.html',{"warn":warn})
 		m=re.search('@',username)
 		otp=random.randint(1000,9999)
+		warn = " "
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				#try:
@@ -107,7 +108,7 @@ def register_view(request):
 			user.save()
 			return render(request,'login/register2.html')
 		else:
-			warn="ओटीपी का मिलान नहीं हुआ|(OTP did not matched.)"
+			warn="ओटीपी का मिलान नहीं हुआ|(OTP does not match.)"
 			return render(request,'login/register1.html',{"mobile":mobile,"warn":warn})
 	else:
 		warn=""
@@ -128,7 +129,65 @@ def profile_view(request):
 		return render(request,'search/hirer.html')
 
 def forgot_password_view(request):
-	return HttpResponse("<h2>HEY! forgot password</h2>")
+	if request.method == 'POST' and 'btn' in request.POST:
+		username=request.POST.get('username',None)
+		if not User.objects.filter(username=username).exists():
+			warn="उपयोगकर्ता नाम मौजूद नहीं है। कृपया इसे जांचें और पुनः प्रयास करें। (Username does not exist. Please check it and try again)"
+			return render(request,'login/forgot.html',{"warn":warn})
+		m=re.search('@',username)
+		otp=random.randint(1000,9999)
+		warn = " "
+		if m is None:
+			if len(username) ==10 and username.isdigit():
+				#try:
+				#	q=sms('8840284384','K9532D')
+				#	q.send(username,'From Apna Rozgar, Your OTP is: '+str(otp))
+				#	otpdata=""
+				#	warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+				#except:
+					otpdata=str(otp)
+				#	warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
+
+			else:
+				warn="मोबाइल नंबर गलत है।| (Mobile number is incorrect.)"
+				return render(request,'login/forgot.html',{"warn":warn})
+
+		else:
+			try:
+				email=EmailMessage('अपना रोज़ागर से ओटीपी (OTP From Apna Rozgar):', 'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP): '+str(otp), to=[username])
+				email.send()
+				otpdata=""
+				warn="ओटीपी आपके ईमेल पर भेज दिया गया है|(OTP has been sent to your Email-id.)"
+			except:
+				otpdata=str(otp)
+				warn="आपका ईमेल गलत है या ईमेल भेजना विफल हो गया है|"
+
+		data=Registration_otp(username=username,otp=str(otp))
+		data.save()			
+		return render(request,'login/forgot1.html',{"mobile":username,"warn":warn,"otp":otpdata})
+
+	elif request.method == 'POST' and 'btn1' in request.POST:
+		mobile=request.POST.get('username')
+		otp2=request.POST.get('otp')
+		otp1=Registration_otp.objects.get(username=mobile)
+		if otp2==otp1.otp:
+			otp1.delete()
+			warn=" "
+			#form = UserRegisterForm(request.POST)
+			#user = form.save(commit = False)
+			user = User.objects.get(username=mobile)
+			password=request.POST.get('password',None)
+			user.set_password(password)
+			user.save()
+			return render(request,'login/forgot2.html')
+		else:
+			warn="ओटीपी का मिलान नहीं हुआ|(OTP does not match.)"
+			return render(request,'login/forgot1.html',{"mobile":mobile,"warn":warn})
+	else:
+		warn=""
+		return render(request,'login/forgot.html',{"warn":warn})
+
+
 def change_password_view(request):
 	return HttpResponse("<h2>HEY! change password</h2>")
 

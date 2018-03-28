@@ -1,0 +1,22 @@
+{% extends "login/header.html" %}
+
+{% block content %}
+<div class ='col-sm-6 col-sm-offset-2'>
+<h3><u>अपना पासवर्ड रीसेट करें (Reset your password):<u></h3>
+<br>
+ <h4><font color = 'red'> {{warn}}</font> </h4>
+ <form method="POST" action="">
+ {% csrf_token %}
+ <div class="form-group">
+    <label for="username"><b>अपना मोबाइल नंबर (Mobile Number)/ईमेल(Email) दर्ज करें :</b></label><br>
+    <div style = "background: url(static/login/img/ph.png) no-repeat scroll 0px 5px; padding-left:40px; padding-top: 5px; padding-bottom: 10px; width: 100%; ">
+    <input type="text" name = 'username' class="form-control" id="username" placeholder="मोबाइल नंबर (Mobile Number)/ईमेल (Email)" required>
+	</div>
+ </div>
+ <br>
+<button type="submit" name = 'btn'><font size = 4>ओटीपी(OTP) प्राप्त करें</font></button>
+</form>
+</div>
+{% endblock %}
+
+

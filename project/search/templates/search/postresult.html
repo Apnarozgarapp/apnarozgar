@@ -36,7 +36,7 @@ button:hover, a:hover {
 }
 </style>
 
-<h3>परिणाम (Results): </h3><br>
+<h3>परिणाम (Results): </h3>    <br>
    {% csrf_token %}
    {{ warn }}
 {% for data in pos %}
@@ -44,15 +44,30 @@ button:hover, a:hover {
   <div class="card">
   
   <h2>श्रमिक में आवश्यक कौशल: <br> {{data.rskill}}</h2>
-  <p class="title">आपका पता: {{data.location}}</p>
-  <p>प्रकाशित पोस्ट आईडी (ID): {{data.post_id}}</p>
+  <p class="title">आपका पता: {{data.street}} , {{data.location}}</p>
+  <p class="title">Duration: {{data.start_date}} - {{data.end_date}}</p>
+  <p>worker required: {{data.Nworker}}</p>
+  <p>Type of work: {{data.Twork}}</p>
+    {%if data.description%}
+   <p>description: {{data.description}}</p>
+    {%endif%}
   <p><button class = "but">आपका मोबाइल नंबर: {{data.s_contact}}</button></p>
   </div>
-	
-
-
+  <form method="POST" action="">
+     {% csrf_token %}
+     <input name ="post_id" type="number" value={{data.post_id}} hidden></input>
+     <b><button type="submit" name = 'edit' >edit</button>
+     <button type="submit" name = 'delete' >delete</button>
+     {%if "private" in data.status%}
+     <button type="submit" name = 'status' >public</button>
+     {%else%}
+     <button type="submit" name = 'status' >private</button>
+     {%endif%}
+   </b>
+  </form>
     <br>
 {% endfor %}
+  
 </div>
 {% endblock %}
 

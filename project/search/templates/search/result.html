@@ -38,7 +38,7 @@ button:hover, a:hover {
 
 <h3>परिणाम (Results): </h3><br>
    {% csrf_token %}
-   {{ warn }}
+   <h4><font color="red">{{ warn }}</font></h4>
 {% for data in users %}
   <div class="card">
   

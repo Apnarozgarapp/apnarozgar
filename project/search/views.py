@@ -75,7 +75,7 @@ def work_post(request):
       s_contact = request.POST.get('s_contact',None)
       rskill = request.POST.get('rskill',None)
       street = request.POST.get('street',None)
-      location = request.POST.get('location',None)
+      locatio = request.POST.get('location',None)
       s_date = request.POST.get('start_date',None)
       e_date = request.POST.get('end_date',None)
       lat1 = request.POST.get('lat',None)
@@ -88,7 +88,7 @@ def work_post(request):
         lat1='25.435801'
       if lng1=='0':
         lng1='81.846311'
-      dat=Posts(username=request.user.username,name=request.user.first_name, s_contact=s_contact,rskill=rskill,street=street,start_date=s_date,Nworker=Nworker,Twork=Twork,location=location,end_date=e_date,lat=lat1,lng=lng1,description=description,status=status)
+      dat=Posts(username=request.user.username,name=request.user.first_name, s_contact=s_contact,rskill=rskill,street=street,start_date=s_date,Nworker=Nworker,Twork=Twork,location=locatio,end_date=e_date,lat=lat1,lng=lng1,description=description,status=status)
       dat.save()
       try :
         user1=Profile.objects.filter(Q(skill1=rskill)|Q(skill2=rskill)|Q(skill3=rskill))    
@@ -103,6 +103,7 @@ def work_post(request):
           data.age=dis
           data.save()
         user1=user1.order_by('age')
+        warn = " "
         return render(request,'search/result.html',{'users' : user1, 'warn' : warn})
       except Profile.DoesNotExist:
         warn="आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"

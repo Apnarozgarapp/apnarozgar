@@ -17,6 +17,8 @@ class Posts(models.Model):
 	lat = models.CharField(max_length = 50, blank = True, null= True)
 	lng = models.CharField(max_length = 50, blank = True, null= True)
 	status = models.CharField(max_length = 50,blank = True, null = True)
+	distance = models.IntegerField(blank = True, null = True)
+
 	def __str__(self):
 		return self.username
 class status(models.Model):

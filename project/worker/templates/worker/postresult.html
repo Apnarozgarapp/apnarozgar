@@ -38,14 +38,16 @@ button:hover, a:hover {
 
 <h3>परिणाम (Results): </h3><br>
    {% csrf_token %}
-   {{ warn }}
+   <h4><font color="red">{{ warn }}</font></h4>
 {% for data in pos %}
   <div class="card">
-   <p><button class = "but">postid: {{data.post_id}}</button></p>
+  <p><button class = "but">postid: {{data.post_id}}</button></p>
+  <p><button class = "but">Distance: {{data.distance}}</button></p>
   <p><button class = "but">मोबाइल नंबर: {{data.s_contact}}</button></p>
   <p><button class = "but">name: {{data.name}}</button></p>
   <p><button class = "but">address: {{data.location}}</button></p>
-<p><button class = "but">skill: {{data.rskill}}</button></p>
+  <p><button class = "but">skill: {{data.rskill}}</button></p>
+  </div>
   </div>
 	
     <br>

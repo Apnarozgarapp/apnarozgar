@@ -97,14 +97,9 @@ def work_post(request):
           warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
           return render(request,'search/pwork.html',{'warn':warn})
         for data in user1:
-          loc=location.objects.get(username=data.user.username)
-          a=loc.lat
-          b=loc.lng
-          if a=='0':
-            a='25.435801'
-          if b=='0':
-            b='81.846311'
-          dis=discal(float(lat1),float(lng1),float(a),float(b))
+          loc= location.objects.get(username=data.user.username)
+          dis=discal(float(lat1),float(lng1),float(loc.lat),float(loc.lng))
+          print(dis)
           data.age=dis
           data.save()
         user1=user1.order_by('age')

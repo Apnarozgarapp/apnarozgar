@@ -120,7 +120,7 @@ def see_work_post(request):
     pos=Posts.objects.filter(username=request.user.username)
     warn=""
     if len(pos)==0:
-      warn="no posts find"
+      warn="No posts found"
     return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
   elif request.method=="POST" and 'status' in request.POST:
     post_id=request.POST.get('post_id')
@@ -133,7 +133,7 @@ def see_work_post(request):
     pos=Posts.objects.filter(username=request.user.username)
     warn=""
     if len(pos)==0:
-      warn="no posts find"
+      warn="No posts found"
     return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
   elif request.method=="POST" and 'edit' in request.POST:
     post_id=request.POST.get('post_id')
@@ -141,11 +141,11 @@ def see_work_post(request):
     pos=Posts.objects.filter(username=request.user.username)
     warn=""
     if len(pos)==0:
-      warn="no posts find"
+      warn="No posts found"
     return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
   else:
     pos=Posts.objects.filter(username=request.user.username)
     warn=""
     if len(pos)==0:
-      warn="no posts find"
+      warn="No posts found"
     return render(request,'search/postresult.html',{'pos':pos,'warn':warn})

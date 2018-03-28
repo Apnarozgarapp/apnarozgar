@@ -45,10 +45,19 @@ button:hover, a:hover {
 		<div >
 			<ul class="nav nav-pills nav-stacked">
             {% if request.user.profile.skill1 %}
+
+<h3>
+            <li ><a href = '/worker/edit' >अपना विवरण बदलें</a></li>
+            </h3>
+            <h3>
+            <li ><a href = '/worker/seepost' >आपके कौशल से मेल खाने वाले पोस्ट देखें</a></li>
+            </h3>
+
+<h3><li>आपका विवरण:</li></h3>
             <div class="card" style="background-color:#F7EAEB">
 	
-  <h1>{{user.first_name}}</h1>
-  <p class="title">{{user.profile.address}}</p>
+  <h3><button class = "but">{{user.first_name}}</button></h3>
+  <p class="title">{{user.profile.street}}, {{user.profile.address}}</p>
   <br>
   <font color = 'black' size = 5>
 उपलब्धता की अवधि:<br>
@@ -66,13 +75,13 @@ button:hover, a:hover {
  	{{user.profile.skill3}}<br>
 
  </font>
- <br><br>
-{% if user.profile.description != "None" %}
+ <br>
+{% if user.profile.description != None %}
  <font color = 'black' size = 5 >
  	अन्य विवरण:<br>
  </font>
  <font color = 'blue' size = 4>
- 	{{user.profile..description}}<br>
+ 	{{user.profile.description}}<br>
  </font>
 {%endif%}
  <p><button class = "but">मोबाइल नंबर: {{user.profile.s_contact}}</button></p>
@@ -82,13 +91,6 @@ button:hover, a:hover {
 		
 </div>
 
-        		 
-				<h3 align='center'>
-       			<li ><a href = '/worker/edit' >अपना विवरण बदलें</a></li>
-       			</h3>
-       			<h3 align='center'>
-       			<li ><a href = '/worker/seepost' >viewpost</a></li>
-       			</h3>
     		{% else %}
     			<h3 align='center'>
     			<li ><a href = '/worker/edit'>अपना विवरण दर्ज करें</a></li>

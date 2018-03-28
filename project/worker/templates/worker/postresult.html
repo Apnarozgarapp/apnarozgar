@@ -36,22 +36,28 @@ button:hover, a:hover {
 }
 </style>
 
-<h3>परिणाम (Results): </h3><br>
+<h3>आपके कौशल से मेल खाने वाले पोस्ट: </h3>    <br>
    {% csrf_token %}
-   <h4><font color="red">{{ warn }}</font></h4>
+   {{ warn }}
 {% for data in pos %}
-  <div class="card">
-  <p><button class = "but">postid: {{data.post_id}}</button></p>
-  <p><button class = "but">Distance: {{data.distance}}</button></p>
-  <p><button class = "but">मोबाइल नंबर: {{data.s_contact}}</button></p>
-  <p><button class = "but">name: {{data.name}}</button></p>
-  <p><button class = "but">address: {{data.location}}</button></p>
-  <p><button class = "but">skill: {{data.rskill}}</button></p>
+ 
+  <div class="card" style="background-color:#F7EAEB">
+  
+  <h3></h3>
+  <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
+  <p class="title">काम की जगह का पता: <br> {{data.street}}, {{data.location}}</p>
+  <p class="title">कार्य की अवधि: <br>{{data.start_date}} - {{data.end_date}}</p>
+  <p>आवश्यक श्रमिकों की संख्या: {{data.Nworker}}</p>
+  <p>वेतन भुगतान का तरीका: {{data.Twork}}</p>
+    {%if data.description%}
+   <p>अन्य विवरण: {{data.description}}</p>
+    {%endif%}
+  <p><button class = "but">नियोक्ता का मोबाइल नंबर: {{data.s_contact}}</button></p>
   </div>
-  </div>
-	
+  
     <br>
 {% endfor %}
+  
 </div>
 {% endblock %}
 

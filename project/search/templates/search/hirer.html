@@ -2,15 +2,15 @@
 
 {% block content %}
 
-<div class ='col-sm-6 col-sm-offset-3'>
+<div class ='col-sm-6 col-sm-offset-2'>
  {% if request.user.username%}
-  <h4><b><li><a href='/search'>कार्य आवश्यकता के अनुसार कर्मचारी को ढूंढें (Find the worker as per work requirement)</a></li></b></h4>
+  <h3><b><a href='/search'>अपने कार्य के बारे में विस्तृत विवरण दिए बिना कर्मचारी खोजें</a></li></b></h4>
    <br>
-  <h4><b><li><a href='/work_post'>काम का विवरण भरें (Fill the detail of work)</a></li></b></h4>
+  <h3><b><a href='/work_post'>अपने काम के बारे में विस्तृत विवरण दें और एक पोस्ट प्रकाशित करें</a></li></b></h4>
    <br>
-  <h4><b><li><a href='/see_work_post'>सभी काम का विवरण देखें (See the details of all work)</a></li></b></h4>   
+  <h3><b><a href='/see_work_post'>अब तक आपके द्वारा प्रकाशित की गईं पोस्ट देखें, संशोधित करें और तदनुसार कर्मचारी खोजें</a></li></b></h4>   
    {% else %}
-   <h4><b><li><a href='/login'>लॉग इन करें</a></li></b></h4>
+   <h3><b><a href='/login'>लॉग इन करें</a></b></h4>
    {%endif%}
 </div>
 {% endblock %}

@@ -5,21 +5,17 @@
 
 {% if request.user.username%}
 
-<h3><u>कर्मचारी को ढूंढें :-</u></h3><br>
+<h3><u>कृपया नीचे दिए गए फ़ील्ड भरें:-</u></h3><br>
 <h4> <font color="red">{{warn}}</font></h4>
-<form method="POST" action="/update">
+<form method="POST" action="">
    {% csrf_token %}
-   <input name ="post_id" type="number"  value={{data.post_id}} hidden></input>
-   <div class="form-group" >
-    <label for="name">Full name"</label>
-    <input type="text"  name = 'name' class="form-control"  placeholder="name" value ="{{data.name}}" required>
-    </div>
+
 	<div class="form-group">
-	<label for="rskill">कौशल और क्षमताएं </label>
+	<label for="rskill">कर्मचारी में आवश्यक कौशल </label>
 	<select name="rskill"   class="form-control" id="rskill">
-	<option value ="{{data.rskill}}">{{data.rskill}}</option>
 	<option value="निर्माण मजदूर(Construction worker)">निर्माण मजदूर(Construction worker)</option>
-	<option value="बिजली कारीगर(Electrician)">बिजली कारीगर(Electrician)</option>
+	<option value="छोटे पैमाने पर बिजली कारीगर(Small-scale electrician)">छोटे पैमाने पर बिजली कारीगर(Small-scale electrician)</option>
+	<option value="बड़े पैमाने पर बिजली कारीगर(Large-scale electrician)">बड़े पैमाने पर बिजली कारीगर(Large-scale electrician)</option>
 	<option value="बढ़ई(Carpenter)">बढ़ई(Carpenter)</option>
 	<option value="पेंटर(Painter)">सफेदी कर्मी(White Washer)</option>
 	<option value="वेल्डर(Plumber)">वेल्डर(Welder)</option>
@@ -45,49 +41,53 @@
 
 	<div class="form-group">
 	    <label for="start_date">कार्य शुरुआत तिथि </label>
-	    <input type="date" name = 'start_date' class="form-control" id="start_date" required="True" value ={{data.start_date|date:"20y-m-d"}}></input>
+	    <input type="date" name = 'start_date' class="form-control" id="start_date" required="True" ></input>
 	</div>
 	<div class="form-group">
 	    <label for="end_date">कार्य की अवधि की समाप्ति तिथि </label>
-	    <input type="date" name = 'end_date' class="form-control" id="end_date" required="True" value ={{data.end_date|date:"20y-m-d"}}></input>
+	    <input type="date" name = 'end_date' class="form-control" id="end_date" required="True"></input>
 	</div>
 
 	<div class="form-group" >
-    <label for="s_contact">मोबाइल नंबर(Mobile Number)"</label>
-    <input type="text"  name = 's_contact' class="form-control" id="s_contact" placeholder="मोबाइल नंबर(Mobile Number)" required value ="{{data.s_contact}}">
+    <label for="s_contact">मोबाइल नंबर</label>
+    <input type="text"  name = 's_contact' class="form-control" id="s_contact" placeholder="मोबाइल नंबर(Mobile Number)" required>
     </div>
 	<div class="form-group">
-	    <label for="street">मकान संख्या/मुहल्ला(Street name) </label>
-	    <input type="text" name = 'street'  id="street"  placeholder="ऐच्छिक(optional)" class="form-control" optional value ="{{data.street}}"></input>
+	    <label for="street">मकान संख्या/मुहल्ला</label>
+	    <input type="text" name = 'street'  id="street"  placeholder="ऐच्छिक(optional)" class="form-control" optional ></input>
 	</div>
 	<div class="form-group">
-	  <label for="location">पूरा पता(Address)</label>
-	      <input name ="location" id="autocomplete" class="form-control" type="text" placeholder="पता(Adress)" required value ="{{data.location}}"></input>
+	  <label for="location">पूरा पता</label>
+	      <input name ="location" id="autocomplete" class="form-control" type="text" placeholder="पता(Adress)" required</input>
 	</div> 
-      <input name ="lat" id="latdata" type="number" step="any" value=0 hidden></input>
-      <input name ="lng" id="lngdata" type="number" step="any" value=0 hidden></input>
+      <input name ="lat" id="latdata" type="number" step="any" value=25.4358 hidden></input>
+      <input name ="lng" id="lngdata" type="number" step="any" value=81.8463 hidden></input>
 
 	<div class="form-group">
-	    <label for="Nworker"> आवश्यक कर्मचारी की संख्या (Number of worker required) </label>
-	    <input type="number" name = 'Nworker'  id="Nworker"  placeholder="Number of worker required" class="form-control" required value ="{{data.Nworker}}"></input>
+	    <label for="Nworker"> आवश्यक कर्मचारियो की संख्या</label>
+	    <input type="number" name = 'Nworker'  id="Nworker"  placeholder="Number of worker(s) required" class="form-control" required></input>
 	</div>
 
 	<div class="form-group">
-	<label for="Twork">type of work </label>
+	<label for="Twork">वेतन भुगतान का तरीका</label>
 	<select name="Twork"   class="form-control" id="Twork" >
-	<option value="daywise">daywise </option>
-	<option value="monthly">monthly</option>
-	<option value="perhour">perhour</option>
-	<option value="other">other</option>
+	<option value="प्रति घंटा भुगतान (Hourly payment)">प्रति घंटा भुगतान (Hourly payment)</option>
+	<option value="दैनिक भुगतान (Daily Payment)">दैनिक भुगतान (Daily Payment)</option>
+	<option value="मासिक भुगतान (Monthly Payment)">मासिक भुगतान (Monthly Payment)</option>
 </select>
 </div>
 
 	<div class="form-group">
-    <label for="description">कार्य का विवरण(Description of work)</label>
-      <input type="text" name ="description" id="descrition" placeholder="ऐच्छिक(optional)" class="form-control" Optional value ="{{data.description}}"></input>
+    <label for="description">अपने काम के बारे में विस्तृत विवरण जोड़ें</label>
+      <textarea type="text" name ="description" id="descrition" placeholder="Work description" class="form-control" style = "height: 70px" Optional></textarea>
     </div> 
 
-	<button type="submit" name = 'update' onclick="latlngcal()" >submit </button>
+    <div class="form-group">
+    <label for="status">पोस्ट का प्रकार (सार्वजनिक पोस्ट श्रमिक देख सकते हैं)</label><br>
+    <input type="radio" name="status" value="public"  checked>सार्वजनिक (public) पोस्ट</input><br>
+  <input type="radio" name="status" value="private" >निजी (private) पोस्ट</input>
+</div>
+	<button type="submit" name = 'workdata' onclick="latlngcal()" >पोस्ट करें</button>
 </form>
 {% else %}
    <h4><b><li><a href='/login'>लॉग इन करें</a></li></b></h4>

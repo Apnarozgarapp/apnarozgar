@@ -1,0 +1,98 @@
+{% extends "login/header.html" %}
+
+{% block content %}
+<div class ='col-sm-6 col-sm-offset-3'>
+
+{% if request.user.username%}
+
+<h3><u>कर्मचारी को ढूंढें :-</u></h3><br>
+<h4> <font color="red">{{warn}}</font></h4>
+<form method="POST" action="/update">
+   {% csrf_token %}
+   <input name ="post_id" type="number"  value={{data.post_id}} hidden></input>
+   <div class="form-group" >
+    <label for="name">Full name"</label>
+    <input type="text"  name = 'name' class="form-control"  placeholder="name" value ="{{data.name}}" required>
+    </div>
+	<div class="form-group">
+	<label for="rskill">कौशल और क्षमताएं </label>
+	<select name="rskill"   class="form-control" id="rskill">
+	<option value ="{{data.rskill}}">{{data.rskill}}</option>
+	<option value="निर्माण मजदूर(Construction worker)">निर्माण मजदूर(Construction worker)</option>
+	<option value="बिजली कारीगर(Electrician)">बिजली कारीगर(Electrician)</option>
+	<option value="बढ़ई(Carpenter)">बढ़ई(Carpenter)</option>
+	<option value="पेंटर(Painter)">सफेदी कर्मी(White Washer)</option>
+	<option value="वेल्डर(Plumber)">वेल्डर(Welder)</option>
+	<option value="पलंबर(Painter)">पलंबर(Plumber)</option>
+	<option value="सफाई कर्मचारी(Cleanliness worker)">सफाई कर्मचारी(Cleanliness worker)</option>
+	<option value="दूधवाला(Milkman)">दूधवाला(Milkman)</option>
+	<option value="राजमिस्री(Mason)">राजमिस्री(Mason)</option>
+	<option value="हलवाई(Confectioner)">हलवाई(Confectioner)</option>
+	<option value="रसोइया(Cook)">रसोइया(Cook)</option>
+	<option value="काँचकर्मी(Glazier)">काँचकर्मी(Glazier)</option>
+	<option value="बेकर(baker)">बेकर(baker)</option>
+	<option value="सुरक्षा कर्मी(Security guard)">सुरक्षा कर्मी(Security guard)</option>
+	<option value="वाहन मिस्त्री(Vehicle Mechanic)">वाहन मिस्त्री(Vehicle Mechanic)</option>
+	<option value="फोटोग्राफर(Photographer)">फोटोग्राफर(Photographer)</option>
+	<option value="नाई(Barber)">नाई(Barber)</option>
+	<option value="कुम्हार(Potter)">कुम्हार(Potter)</option>
+	<option value="कलाकार(Artist)">कलाकार(Artist)</option>
+	<option value="डीजेवाला(DJwala)">डीजेवाला(DJwala)</option>
+	<option value="माली(Gardener)">माली(Gardener)</option>
+	<option value="नौकरानी(Maid)">नौकरानी(Maid)</option>
+	</select>
+	</div>
+
+	<div class="form-group">
+	    <label for="start_date">कार्य शुरुआत तिथि </label>
+	    <input type="date" name = 'start_date' class="form-control" id="start_date" required="True" value ={{data.start_date|date:"20y-m-d"}}></input>
+	</div>
+	<div class="form-group">
+	    <label for="end_date">कार्य की अवधि की समाप्ति तिथि </label>
+	    <input type="date" name = 'end_date' class="form-control" id="end_date" required="True" value ={{data.end_date|date:"20y-m-d"}}></input>
+	</div>
+
+	<div class="form-group" >
+    <label for="s_contact">मोबाइल नंबर(Mobile Number)"</label>
+    <input type="text"  name = 's_contact' class="form-control" id="s_contact" placeholder="मोबाइल नंबर(Mobile Number)" required value ="{{data.s_contact}}">
+    </div>
+	<div class="form-group">
+	    <label for="street">मकान संख्या/मुहल्ला(Street name) </label>
+	    <input type="text" name = 'street'  id="street"  placeholder="ऐच्छिक(optional)" class="form-control" optional value ="{{data.street}}"></input>
+	</div>
+	<div class="form-group">
+	  <label for="location">पूरा पता(Address)</label>
+	      <input name ="location" id="autocomplete" class="form-control" type="text" placeholder="पता(Adress)" required value ="{{data.location}}"></input>
+	</div> 
+      <input name ="lat" id="latdata" type="number" step="any" value=0 hidden></input>
+      <input name ="lng" id="lngdata" type="number" step="any" value=0 hidden></input>
+
+	<div class="form-group">
+	    <label for="Nworker"> आवश्यक कर्मचारी की संख्या (Number of worker required) </label>
+	    <input type="number" name = 'Nworker'  id="Nworker"  placeholder="Number of worker required" class="form-control" required value ="{{data.Nworker}}"></input>
+	</div>
+
+	<div class="form-group">
+	<label for="Twork">type of work </label>
+	<select name="Twork"   class="form-control" id="Twork" multiple>
+	<option value="daywise">daywise </option>
+	<option value="monthly">monthly</option>
+	<option value="perhour">perhour</option>
+	<option value="other">other</option>
+</select>
+</div>
+
+	<div class="form-group">
+    <label for="description">कार्य का विवरण(Description of work)</label>
+      <input type="text" name ="description" id="descrition" placeholder="ऐच्छिक(optional)" class="form-control" Optional value ="{{data.description}}"></input>
+    </div> 
+
+	<button type="submit" name = 'update' onclick="latlngcal()" >submit </button>
+</form>
+{% else %}
+   <h4><b><li><a href='/login'>लॉग इन करें</a></li></b></h4>
+   {%endif%}
+
+</div>
+{% endblock %}
+

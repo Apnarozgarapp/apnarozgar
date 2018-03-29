@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from search.models import Posts,status
+from search.models import Posts,Status
 
 admin.site.register(Posts)
-admin.site.register(status)
+admin.site.register(Status)

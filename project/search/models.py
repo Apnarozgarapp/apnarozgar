@@ -21,10 +21,10 @@ class Posts(models.Model):
 
 	def __str__(self):
 		return self.username
-class status(models.Model):
+class Status(models.Model):
 	status_id=models.AutoField(primary_key=True)
 	post_id=models.IntegerField(blank = True, null = True)
-	worker = models.CharField(max_length = 100,blank = True, null = True)
+	hirer = models.CharField(max_length = 100,blank = True, null = True)
 	worker = models.CharField(max_length = 100,blank = True, null = True)
 	hirer_status = models.CharField(max_length = 10,blank = True, null = True)
 	worker_status = models.CharField(max_length = 10,blank = True, null = True)

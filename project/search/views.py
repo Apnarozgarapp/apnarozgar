@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.contrib.auth.models import User
 from worker.models import Profile,location
-from .models import Posts,status
+from .models import Posts,Status
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django import forms
@@ -99,7 +99,6 @@ def work_post(request):
         for data in user1:
           loc= location.objects.get(username=data.user.username)
           dis=discal(float(lat1),float(lng1),float(loc.lat),float(loc.lng))
-          print(dis)
           data.age=dis
           data.save()
         user1=user1.order_by('age')
@@ -135,17 +134,80 @@ def see_work_post(request):
     if len(pos)==0:
       warn="No posts found"
     return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
+
+  elif request.method=="POST" and 'selected' in request.POST:
+    post_id=request.POST.get('post_id')
+    data=Posts.objects.get(post_id=post_id)
+    selected=Status.objects.filter(post_id=post_id)
+    warn=""
+    if len(selected)==0:
+      warn="No  worker is selected"
+    return render(request,'search/selected.html',{'data':data,'warn':warn,'selected':selected})
+
+  elif request.method=="POST" and 'search' in request.POST:
+    post_id=request.POST.get('post_id')
+    data=Posts.objects.get(post_id=post_id)
+    try :
+        user1=Profile.objects.filter(Q(skill1=data.rskill)|Q(skill2=data.rskill)|Q(skill3=data.rskill))    
+        user1 = user1.filter(start_date__lte=data.start_date,end_date__gte=data.end_date)
+        if len(user1) == 0:
+          warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
+          pos=Posts.objects.filter(username=request.user.username)
+          return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
+        for dat in user1:
+          loc= location.objects.get(username=dat.user.username)
+          dis=discal(float(data.lat),float(data.lng),float(loc.lat),float(loc.lng))
+          data.age=dis
+          data.save()
+        user1=user1.order_by('age')
+        warn = " "
+        return render(request,'search/result.html',{'users' : user1, 'warn' : warn,'dat':data})
+    except Profile.DoesNotExist:
+        warn="आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
+        pos=Posts.objects.filter(username=request.user.username)
+        return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
+
   elif request.method=="POST" and 'edit' in request.POST:
     post_id=request.POST.get('post_id')
     data=Posts.objects.get(post_id=post_id)
-    pos=Posts.objects.filter(username=request.user.username)
-    warn=""
-    if len(pos)==0:
-      warn="No posts found"
-    return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
+    return render(request,'search/pwork1.html',{'data':data})
+
   else:
     pos=Posts.objects.filter(username=request.user.username)
     warn=""
     if len(pos)==0:
       warn="No posts found"
     return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
+
+def update(request):
+  if request.method=="POST" and 'update' in request.POST:
+    post_id=request.POST.get('post_id',None)
+    name=request.POST.get('name')
+    s_contact = request.POST.get('s_contact',None)
+    rskill = request.POST.get('rskill',None)
+    street = request.POST.get('street',None)
+    locatio = request.POST.get('location',None)
+    s_date = request.POST.get('start_date',None)
+    e_date = request.POST.get('end_date',None)
+    lat1 = request.POST.get('lat',None)
+    lng1 = request.POST.get('lng',None)
+    Nworker=request.POST.get('Nworker',None)
+    Twork=request.POST.get('Twork',None)
+    description=request.POST.get('description',None)
+    data=Posts.objects.get(post_id=post_id)
+    data.name=name
+    data.s_contact=s_contact
+    data.rskill=rskill
+    data.street==street
+    data.location=locatio
+    data.start_date=s_date
+    data.end_date=e_date
+    data.Nworker=Nworker
+    data.Twork=Twork
+    data.description=description
+    if lat1 !='0':
+      data.lat=lat1
+      data.lng=lng1
+    data.save()
+    warn="submit successfully"
+    return render(request,'search/update.html',{'data':data,'warn':warn})

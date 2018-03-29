@@ -62,10 +62,11 @@ def discal(a,b,c,d):
 
   distance = R * c
   return round(distance,2)
+
 def view_worker(request):
   if request.method == 'GET':
     dat = request.GET['data']
-    data= Profile.objects.get(  user_id= dat)
+    data= Profile.objects.get( user_id= dat)
     return render(request,'worker/view.html',{'data': data})  
   else:
     return HttpResponse(" No Worker available.") 

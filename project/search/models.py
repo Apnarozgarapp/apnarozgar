@@ -24,9 +24,9 @@ class Posts(models.Model):
 class Status(models.Model):
 	status_id=models.AutoField(primary_key=True)
 	post_id=models.IntegerField(blank = True, null = True)
+	user_id=models.IntegerField(blank = True, null = True)
 	hirer = models.CharField(max_length = 100,blank = True, null = True)
 	worker = models.CharField(max_length = 100,blank = True, null = True)
-	hirer_status = models.CharField(max_length = 10,blank = True, null = True)
-	worker_status = models.CharField(max_length = 10,blank = True, null = True)
-	def __str__(self):
-		return self.username
+	hirer_status = models.IntegerField(blank = True, null = True)
+	worker_status = models.IntegerField(blank = True, null = True)
+

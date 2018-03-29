@@ -19,20 +19,15 @@ from django.db.models import Q
 def search_result(request):
   if request.method == 'POST':
     skill = request.POST.get('skill',None)
-    s_date = request.POST.get('start_date',None)
-    e_date = request.POST.get('end_date',None)
     address = request.POST.get('address',None)
-    salary = request.POST.get('salary',None)
     lat1 = request.POST.get('lat',None)
     lng1 = request.POST.get('lng',None)
     
     try :
       user1=Profile.objects.filter(Q(skill1=skill)|Q(skill2=skill)|Q(skill3=skill))    
-      #user1 = user1.filter(start_date__lte=s_date,end_date__gte=e_date)
       for data in user1:
         loc=location.objects.get(username=data.user.username)
         dis=discal(float(lat1),float(lng1),float(loc.lat),float(loc.lng))
-        print(dis)
         data.age=dis
         data.save()
       user1=user1.order_by('age')
@@ -72,7 +67,7 @@ def view_worker(request):
     return HttpResponse(" No Worker available.") 
 
 def work_post(request):
-  if request.method == 'POST':
+  if request.method == 'POST' and 'workdata' in request.POST:
       s_contact = request.POST.get('s_contact',None)
       rskill = request.POST.get('rskill',None)
       street = request.POST.get('street',None)
@@ -84,30 +79,17 @@ def work_post(request):
       Nworker=request.POST.get('Nworker',None)
       Twork=request.POST.get('Twork',None)
       description=request.POST.get('description',None)
-      status='private'
+      status=request.POST.get('status',None)
       if lat1=='0':
         lat1='25.435801'
       if lng1=='0':
         lng1='81.846311'
       dat=Posts(username=request.user.username,name=request.user.first_name, s_contact=s_contact,rskill=rskill,street=street,start_date=s_date,Nworker=Nworker,Twork=Twork,location=locatio,end_date=e_date,lat=lat1,lng=lng1,description=description,status=status)
       dat.save()
-      try :
-        user1=Profile.objects.filter(Q(skill1=rskill)|Q(skill2=rskill)|Q(skill3=rskill))    
-        user1 = user1.filter(start_date__lte=s_date,end_date__gte=e_date)
-        if len(user1) == 0:
-          warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
-          return render(request,'search/pwork.html',{'warn':warn})
-        for data in user1:
-          loc= location.objects.get(username=data.user.username)
-          dis=discal(float(lat1),float(lng1),float(loc.lat),float(loc.lng))
-          data.age=dis
-          data.save()
-        user1=user1.order_by('age')
-        warn = " "
-        return render(request,'search/result.html',{'users' : user1, 'warn' : warn,'dat':dat})
-      except Profile.DoesNotExist:
-        warn="आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
-        return render(request,'search/pwork.html',{'warn':warn})
+      warn=""
+      return render(request,'search/update.html',{'warn' : warn,'data':dat})
+    
+
   else:
     return render(request,'search/pwork.html')
 
@@ -130,11 +112,8 @@ def see_work_post(request):
     else:
       data.status="public"
     data.save()
-    pos=Posts.objects.filter(username=request.user.username)
     warn=""
-    if len(pos)==0:
-      warn="No posts found"
-    return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
+    return render(request,'search/update.html',{'data':data,'warn':warn})
 
   elif request.method=="POST" and 'selected' in request.POST:
     post_id=request.POST.get('post_id')
@@ -147,14 +126,14 @@ def see_work_post(request):
 
   elif request.method=="POST" and 'search' in request.POST:
     post_id=request.POST.get('post_id')
+    sta=Status.objects.filter(post_id=post_id)
     data=Posts.objects.get(post_id=post_id)
     try :
         user1=Profile.objects.filter(Q(skill1=data.rskill)|Q(skill2=data.rskill)|Q(skill3=data.rskill))    
         user1 = user1.filter(start_date__lte=data.start_date,end_date__gte=data.end_date)
         if len(user1) == 0:
           warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
-          pos=Posts.objects.filter(username=request.user.username)
-          return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
+          return render(request,'search/update.html',{'data':data,'warn':warn})
         for dat in user1:
           loc= location.objects.get(username=dat.user.username)
           dis=discal(float(data.lat),float(data.lng),float(loc.lat),float(loc.lng))
@@ -162,17 +141,59 @@ def see_work_post(request):
           data.save()
         user1=user1.order_by('age')
         warn = " "
-        return render(request,'search/result.html',{'users' : user1, 'warn' : warn,'dat':data})
+        return render(request,'search/presult.html',{'users' : user1, 'warn' : warn,'dat':data,'sta':sta})
     except Profile.DoesNotExist:
         warn="आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
-        pos=Posts.objects.filter(username=request.user.username)
-        return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
+        return render(request,'search/update.html',{'data':data,'warn':warn})
 
   elif request.method=="POST" and 'edit' in request.POST:
     post_id=request.POST.get('post_id')
     data=Posts.objects.get(post_id=post_id)
     return render(request,'search/pwork1.html',{'data':data})
 
+
+  elif request.method=="POST" and 'gotopost' in request.POST:
+    post_id=request.POST.get('post_id')
+    data=Posts.objects.get(post_id=post_id)
+    warn=""
+    return render(request,'search/update.html',{'data':data,'warn':warn})
+
+  elif request.method=="POST" and ('hire' in request.POST or 'chire' in request.POST ):
+    post_id=request.POST.get('post_id')
+    user_id=request.POST.get('user_id')
+    worker=request.POST.get('worker')
+    hirer=request.POST.get('hirer')
+    abc=Status.objects.filter(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer)
+    if len(abc)==0 and 'hire' in request.POST:
+      cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,worker_status=user_id)
+      cba.save()
+    for dcba in abc:
+      pqr=Status.objects.get(status_id=dcba.status_id)
+      if 'chire' in request.POST:
+        pqr.worker_status=""
+      else:
+        pqr.worker_status=user_id
+      pqr.save()
+
+    sta=Status.objects.filter(post_id=post_id)
+    data=Posts.objects.get(post_id=post_id)
+    try :
+        user1=Profile.objects.filter(Q(skill1=data.rskill)|Q(skill2=data.rskill)|Q(skill3=data.rskill))    
+        user1 = user1.filter(start_date__lte=data.start_date,end_date__gte=data.end_date)
+        if len(user1) == 0:
+          warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
+          return render(request,'search/update.html',{'data':data,'warn':warn})
+        for dat in user1:
+          loc= location.objects.get(username=dat.user.username)
+          dis=discal(float(data.lat),float(data.lng),float(loc.lat),float(loc.lng))
+          data.age=dis
+          data.save()
+        user1=user1.order_by('age')
+        warn = " "
+        return render(request,'search/presult.html',{'users' : user1, 'warn' : warn,'dat':data,'sta':sta})
+    except Profile.DoesNotExist:
+        warn="आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
+        return render(request,'search/update.html',{'data':data,'warn':warn})
   else:
     pos=Posts.objects.filter(username=request.user.username)
     warn=""

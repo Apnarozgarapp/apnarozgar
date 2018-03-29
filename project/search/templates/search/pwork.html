@@ -69,7 +69,7 @@
 
 	<div class="form-group">
 	<label for="Twork">type of work </label>
-	<select name="Twork"   class="form-control" id="Twork" multiple>
+	<select name="Twork"   class="form-control" id="Twork" >
 	<option value="daywise">daywise </option>
 	<option value="monthly">monthly</option>
 	<option value="perhour">perhour</option>
@@ -82,6 +82,11 @@
       <input type="text" name ="description" id="descrition" placeholder="ऐच्छिक(optional)" class="form-control" Optional></input>
     </div> 
 
+    <div class="form-group">
+    <label for="status">type of work post</label><br>
+    <input type="radio" name="status" value="public"  checked>public</input>
+  <input type="radio" name="status" value="private" >private</input>
+</div>
 	<button type="submit" name = 'workdata' onclick="latlngcal()" >ढूंढे</button>
 </form>
 {% else %}

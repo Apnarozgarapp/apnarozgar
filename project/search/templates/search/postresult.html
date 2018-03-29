@@ -36,21 +36,20 @@ button:hover, a:hover {
 }
 </style>
 
-<h3>परिणाम (Results): </h3>    <br>
+<h3>अब तक आपके द्वारा प्रकाशित की गईं पोस्ट: </h3>    <br>
    {% csrf_token %} 
    {{ warn }}
 {% for data in pos %}
  
   <div class="card" style="background-color:#F7EAEB">
   
-  <h2>श्रमिक में आवश्यक कौशल: <br> {{data.rskill}}</h2>
-  <p class="title">आपका name: {{data.name}}</p>
-  <p class="title">आपका पता: {{data.street}} , {{data.location}}</p>
-  <p class="title">Duration: {{data.start_date}} - {{data.end_date}}</p>
-  <p>worker required: {{data.Nworker}}</p>
-  <p>Type of work: {{data.Twork}}</p>
+  <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
+  <p class="title">काम की जगह का पता: <br>{{data.street}}, {{data.location}}</p>
+  <p class="title">कार्य की अवधि: <br>{{data.start_date}} - {{data.end_date}}</p>
+ <p>आवश्यक श्रमिकों की संख्या: {{data.Nworker}}</p>
+  <p>वेतन भुगतान का तरीका: {{data.Twork}}</p>
     {%if data.description%}
-   <p>description: {{data.description}}</p>
+   <p>अन्य विवरण: {{data.description}}</p>
     {%endif%}
   <p><button class = "but">आपका मोबाइल नंबर: {{data.s_contact}}</button></p>
   </div>

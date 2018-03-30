@@ -36,43 +36,44 @@ button:hover, a:hover {
 }
 </style>
 
-<h3>परिणाम (Results): </h3>    <br>
-<h4><b><li><a href='/see_work_post'>सभी काम का विवरण देखें (See the details of all work)</a></li></b></h4> 
-   {% csrf_token %}
+
    <h4><font color="red"> {{ warn }}</font></h4>
 
   <div class="card" style="background-color:#F7EAEB">
   
-  <h2>श्रमिक में आवश्यक कौशल: <br> {{data.rskill}}</h2>
-  <p class="title">आपका name: {{data.name}}</p>
-  <p class="title">आपका पता: {{data.street}} , {{data.location}}</p>
-  <p class="title">Duration: {{data.start_date}} - {{data.end_date}}</p>
-  <p>worker required: {{data.Nworker}}</p>
-  <p>Type of work: {{data.Twork}}</p>
+  <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
+  <p class="title">काम की जगह का पता: <br>{{data.street}}, {{data.location}}</p>
+  <p class="title">कार्य की अवधि: <br>{{data.start_date}} - {{data.end_date}}</p>
+ <p>आवश्यक श्रमिकों की संख्या: {{data.Nworker}}</p>
+  <p>वेतन भुगतान का तरीका: {{data.Twork}}</p>
     {%if data.description%}
-   <p>description: {{data.description}}</p>
+   <p>अन्य विवरण: {{data.description}}</p>
     {%endif%}
   <p><button class = "but">आपका मोबाइल नंबर: {{data.s_contact}}</button></p>
   </div>
   <form method="POST" action="/see_work_post">
      {% csrf_token %}
+
      <input name ="post_id" type="number" value={{data.post_id}} hidden></input>
-     <b><button type="submit" name = 'delete' >delete post</button>
-     <button type="submit" name = 'selected' >selected worker </button>
+     <b><button type="submit" name = 'delete' >पोस्ट को हटा दें (Delete)</button>
+     <button type="submit" name = 'selected' >इस पोस्ट के लिए चयनित श्रमिकों को देखें</button>
      {%if "private" in data.status%}
-     <button type="submit" name = 'status' >public </button>
+     <button type="submit" name = 'status' >सार्वजनिक (public) पोस्ट बनाएं</button>
      {%else%}
-     <button type="submit" name = 'status' >private </button>
+     <button type="submit" name = 'status' >निजी (private) पोस्ट बनाएं</button>
      {%endif%}
-     <button type="submit" name = 'search' >search worker</button>
-     <button type="submit" name = 'edit' >edit</button>
+     <button type="submit" name = 'search' >कर्मचारी ढूंढे</button>
+     <button type="submit" name = 'edit' >पोस्ट में बदलाव करें</button>
    </b>
   </form>
     <br>
+
      {% for data1 in selected %}
+     <h2>
      {{data1.worker}} --- {{data1.hirer_status}}---{{worker.status}}
-     <br>
+     </h2><br>
      {% endfor %}
+     <h4><b><a href='/see_work_post'>अब तक आपके द्वारा प्रकाशित की गईं पोस्ट देखें, संशोधित करें और तदनुसार कर्मचारी खोजें</a></b></h4> 
 </div>
 {% endblock %}
 

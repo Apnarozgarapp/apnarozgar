@@ -118,6 +118,19 @@ def see_work_post(request):
     post_id=request.POST.get('post_id')
     data=Posts.objects.get(post_id=post_id)
     selected=Status.objects.filter(post_id=post_id)
+    for select in selected:
+      if select.worker_status==select.post_id and select.hirer_status==select.user_id:
+        select.temp='a'
+        select.save()
+      elif select.worker_status==select.post_id:
+        select.temp='c'
+        select.save()
+      elif select.hirer_status==select.user_id:
+        select.temp='b'
+        select.save()
+      else:
+        select.temp='d'
+        select.save()
     warn=""
     if len(selected)==0:
       warn="No  worker is selected"
@@ -176,9 +189,11 @@ def see_work_post(request):
     user_id=request.POST.get('user_id')
     worker=request.POST.get('worker')
     hirer=request.POST.get('hirer')
-    abc=Status.objects.filter(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer)
+    userworker=request.POST.get('userworker')
+    userhirer=request.POST.get('userhirer')
+    abc=Status.objects.filter(post_id=post_id,user_id=user_id)
     if len(abc)==0 and 'hire' in request.POST:
-      cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,hirer_status=user_id)
+      cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,hirer_status=user_id,userworker=userworker,userhirer=userhirer)
       cba.save()
     for dcba in abc:
       pqr=Status.objects.get(status_id=dcba.status_id)
@@ -187,6 +202,8 @@ def see_work_post(request):
       else:
         pqr.hirer_status=user_id
       pqr.save()
+      if 'schire' in request.POST and pqr.worker_status!=post_id:
+        pqr.delete()
 
     sta=Status.objects.filter(post_id=post_id)
     sta1=" "
@@ -221,6 +238,38 @@ def see_work_post(request):
     except Profile.DoesNotExist:
         warn="आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
         return render(request,'search/update.html',{'data':data,'warn':warn})
+  elif request.method=="POST" and ('shire' in request.POST or 'schire' in request.POST ):
+    post_id=request.POST.get('post_id')
+    user_id=request.POST.get('user_id')
+    worker=request.POST.get('worker')
+    hirer=request.POST.get('hirer')
+    pqr=Status.objects.get(post_id=post_id,user_id=user_id)
+    if 'schire' in request.POST :
+      pqr.hirer_status=0
+    else:
+      pqr.hirer_status=user_id
+    pqr.save()
+    if 'schire' in request.POST and pqr.worker_status!=post_id:
+      pqr.delete()
+    data=Posts.objects.get(post_id=post_id)
+    selected=Status.objects.filter(post_id=post_id)
+    for select in selected:
+      if select.worker_status==select.post_id and select.hirer_status==select.user_id:
+        select.temp='a'
+        select.save()
+      elif select.worker_status==select.post_id:
+        select.temp='c'
+        select.save()
+      elif select.hirer_status==select.user_id:
+        select.temp='b'
+        select.save()
+      else:
+        select.temp='d'
+        select.save()
+    warn=""
+    if len(selected)==0:
+      warn="No  worker is selected"
+    return render(request,'search/selected.html',{'data':data,'warn':warn,'selected':selected})
   else:
     pos=Posts.objects.filter(username=request.user.username)
     warn=""

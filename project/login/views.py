@@ -12,6 +12,7 @@ from .way2sms import sms
 import random
 from .forms import UserLoginForm, UserRegisterForm
 from .models import LoginAs,Registration_otp
+from search.models import Status
 from django.core.mail import EmailMessage
 import re
 import string
@@ -247,4 +248,105 @@ def change_password_view(request):
 		warn=""
 		return render(request,'login/forgot.html',{"warn":warn})
 
+def workrequest(request):
+	if request.method=="POST" and ('hhire' in request.POST or 'hchire' in request.POST ):
+		post_id=request.POST.get('post_id')
+		user_id=request.POST.get('user_id')
+		pqr=Status.objects.get(post_id=post_id,user_id=user_id)
+		if 'hchire' in request.POST :
+			pqr.hirer_status=0
+		else:
+			pqr.hirer_status=user_id
+			pqr.save()
+		if 'hchire' in request.POST and pqr.worker_status!=post_id:
+			pqr.delete()
+		data=Status.objects.filter(userhirer=request.user.username)
+		for select in data:
+			if select.worker_status==select.post_id and select.hirer_status==select.user_id:
+				select.temp='a'
+				select.save()
+			elif select.worker_status==select.post_id:
+				select.temp='c'
+				select.save()
+			elif select.hirer_status==select.user_id:
+				select.temp='b'
+				select.save()
+			else:
+				select.temp='d'
+				select.save()        
+		warn=""
+		if len(data)==0:
+			warn="no request"
+		return render(request,'search/workrequest.html',{'data':data,'warn':warn})
+	elif request.method=="POST" and ('whire' in request.POST or 'wchire' in request.POST ):
+		post_id=request.POST.get('post_id')
+		user_id=request.POST.get('user_id')
+		pqr=Status.objects.get(post_id=post_id,user_id=user_id)
+		if 'wchire' in request.POST :
+			pqr.worker_status=0
+		else:
+			pqr.worker_status=post_id
+		pqr.save()
+		if 'wchire' in request.POST and pqr.hirer_status!=user_id:
+			pqr.delete()
+		data=Status.objects.filter(userworker=request.user.username)
+		for select in data:
+			if select.worker_status==select.post_id and select.hirer_status==select.user_id:
+				select.temp='a'
+				select.save()
+			elif select.worker_status==select.post_id:
+				select.temp='b'
+				select.save()
+			elif select.hirer_status==select.user_id:
+				select.temp='c'
+				select.save()
+			else:
+				select.temp='d'
+				select.save()        
+		warn=""
+		if len(data)==0:
+			warn="no request"
+		return render(request,'worker/workrequest.html',{'data':data,'warn':warn})
+	else: 	
+		value=LoginAs.objects.get(username=request.user.username)
+		if value.loginas=="worker":
+			data=Status.objects.filter(userworker=request.user.username)        
+			for select in data:
+				if select.worker_status==select.post_id and select.hirer_status==select.user_id:
+					select.temp='a'
+					select.save()
+				elif select.worker_status==select.post_id:
+					select.temp='b'
+					select.save()
+				elif select.hirer_status==select.user_id:
+					select.temp='c'
+					select.save()
+				else:
+					select.temp='d'
+					select.save()        
+			warn=""
+			if len(data)==0:
+				warn="no request"
+			return render(request,'worker/workrequest.html',{'data':data,'warn':warn})
+
+		
+		else:
+			data=Status.objects.filter(userhirer=request.user.username)
+			for select in data:
+				if select.worker_status==select.post_id and select.hirer_status==select.user_id:
+					select.temp='a'
+					select.save()
+				elif select.worker_status==select.post_id:
+					select.temp='c'
+					select.save()
+				elif select.hirer_status==select.user_id:
+					select.temp='b'
+					select.save()
+				else:
+					select.temp='d'
+					select.save()        
+			warn=""
+			if len(data)==0:
+				warn="no request"
+			return render(request,'search/workrequest.html',{'data':data,'warn':warn})
 

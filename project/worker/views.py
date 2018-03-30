@@ -15,6 +15,14 @@ import datetime
 @login_required
 @transaction.atomic
 
+def detail_post(request):
+  if request.method == 'GET':
+    dat = request.GET['data']
+    data= Posts.objects.get( post_id= dat)
+    return render(request,'search/view.html',{'data': data})  
+  else:
+    return HttpResponse(" No post available.") 
+
 def update_profile(request):
   
     if request.method == 'POST' and 'save_changes1' in request.POST:
@@ -60,6 +68,20 @@ def discal(a,b,c,d):
   distance = R * c
   return round(distance,2)
 
+def all_post(request):
+  pos=Posts.objects.filter(status='public')
+  pos=pos.filter(start_date__gte=datetime.datetime.today())
+  if len(pos)==0:
+    warn=' No post is available|'
+    return render(request,'worker/postresult.html',{'pos':pos,'warn':warn})
+  loc=location.objects.get(username=request.user.username)
+  for dat in pos :
+    dis=discal(float(dat.lat),float(dat.lng),float(loc.lat),float(loc.lng))
+    dat.distance=dis
+    dat.save()
+  pos=pos.order_by('distance')
+  warn=""
+  return render(request,'worker/allpostresult.html',{'pos':pos,'warn':warn})
 def viewpost(request):
   data=Profile.objects.get(user=request.user)
   pos=Posts.objects.filter(Q(rskill=data.skill1)|Q(rskill=data.skill2)|Q(rskill=data.skill3))

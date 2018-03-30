@@ -27,6 +27,9 @@ class Status(models.Model):
 	user_id=models.IntegerField(blank = True, null = True)
 	hirer = models.CharField(max_length = 100,blank = True, null = True)
 	worker = models.CharField(max_length = 100,blank = True, null = True)
+	userhirer = models.CharField(max_length = 100,blank = True, null = True)
+	userworker = models.CharField(max_length = 100,blank = True, null = True)
 	hirer_status = models.IntegerField(blank = True, null = True)
 	worker_status = models.IntegerField(blank = True, null = True)
+	temp=models.CharField(max_length = 2,blank = True, null = True)
 

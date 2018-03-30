@@ -1,0 +1,64 @@
+{% extends "login/header.html" %}
+
+{% block content %}
+<div class ='col-sm-6 col-sm-offset-2'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.title {
+  color: blue;
+  font-size: 18px;
+}
+
+.but {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+
+button:hover, a:hover {
+  opacity: 0.7;
+}
+</style>
+
+<h3>All पोस्ट: </h3>    <br>
+   {% csrf_token %}
+   {{ warn }}
+{% for data in pos %}
+ 
+  <div class="card" style="background-color:#F7EAEB">
+  
+  <h3></h3>
+  <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
+  <p class="title">काम की जगह का पता: <br> {{data.street}}, {{data.location}}</p>
+  <p class="title">कार्य की अवधि: <br>{{data.start_date}} - {{data.end_date}}</p>
+  <p>आवश्यक श्रमिकों की संख्या: {{data.Nworker}}</p>
+  <p>वेतन भुगतान का तरीका: {{data.Twork}}</p>
+  <p>नियोक्ता का नाम: {{data.name}}</p>
+    {%if data.description%}
+   <p>अन्य विवरण: {{data.description}}</p>
+    {%endif%}
+  <p><button class = "but">नियोक्ता का मोबाइल नंबर: {{data.s_contact}}</button></p>
+  </div>
+  
+    <br>
+{% endfor %}
+  
+</div>
+{% endblock %}
+

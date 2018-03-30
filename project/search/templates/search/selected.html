@@ -67,10 +67,10 @@ button:hover, a:hover {
    </b>
   </form>
     <br>
-
+<h2>इस पोस्ट के लिए चयनित श्रमिक</h2>
      {% for data1 in selected %}
      <h2>
-     {{data1.worker}} --- {{data1.hirer_status}}---{{worker.status}}
+     <h2><a href="/search/?data={{data1.user_id}}">{{data1.worker}}</a></h2>
      </h2><br>
      {% endfor %}
      <h4><b><a href='/see_work_post'>अब तक आपके द्वारा प्रकाशित की गईं पोस्ट देखें, संशोधित करें और तदनुसार कर्मचारी खोजें</a></b></h4> 

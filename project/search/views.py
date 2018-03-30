@@ -88,17 +88,16 @@ def work_post(request):
       dat.save()
       warn=""
       return render(request,'search/update.html',{'warn' : warn,'data':dat})
-    
 
   else:
     return render(request,'search/pwork.html')
+
 
 def see_work_post(request):
   if request.method=="POST" and 'delete' in request.POST:
     post_id=request.POST.get('post_id')
     data=Posts.objects.get(post_id=post_id)
     data.delete()
-    data.save()
     pos=Posts.objects.filter(username=request.user.username)
     warn=""
     if len(pos)==0:
@@ -127,6 +126,11 @@ def see_work_post(request):
   elif request.method=="POST" and 'search' in request.POST:
     post_id=request.POST.get('post_id')
     sta=Status.objects.filter(post_id=post_id)
+    sta1=" "
+    sta2=" "
+    for pqrs in sta:
+      sta1=sta1+str(pqrs.hirer_status)
+      sta2=sta2+str(pqrs.worker_status)
     data=Posts.objects.get(post_id=post_id)
     try :
         user1=Profile.objects.filter(Q(skill1=data.rskill)|Q(skill2=data.rskill)|Q(skill3=data.rskill))    
@@ -137,11 +141,20 @@ def see_work_post(request):
         for dat in user1:
           loc= location.objects.get(username=dat.user.username)
           dis=discal(float(data.lat),float(data.lng),float(loc.lat),float(loc.lng))
-          data.age=dis
-          data.save()
+          dat.age=dis
+          if str(dat.user_id) in sta1 and str(post_id) in sta2:
+            dat.joinrequest='a'
+          elif str(dat.user_id) in sta1:
+            dat.joinrequest='b'
+          elif str(post_id) in sta2:
+            dat.joinrequest='c'
+          else:
+            dat.joinrequest='d'
+          dat.save()
+
         user1=user1.order_by('age')
         warn = " "
-        return render(request,'search/presult.html',{'users' : user1, 'warn' : warn,'dat':data,'sta':sta})
+        return render(request,'search/presult.html',{'users' : user1, 'warn' : warn,'dat':data})
     except Profile.DoesNotExist:
         warn="आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
         return render(request,'search/update.html',{'data':data,'warn':warn})
@@ -165,17 +178,23 @@ def see_work_post(request):
     hirer=request.POST.get('hirer')
     abc=Status.objects.filter(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer)
     if len(abc)==0 and 'hire' in request.POST:
-      cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,worker_status=user_id)
+      cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,hirer_status=user_id)
       cba.save()
     for dcba in abc:
       pqr=Status.objects.get(status_id=dcba.status_id)
       if 'chire' in request.POST:
-        pqr.worker_status=""
+        pqr.hirer_status=0
       else:
-        pqr.worker_status=user_id
+        pqr.hirer_status=user_id
       pqr.save()
 
     sta=Status.objects.filter(post_id=post_id)
+    sta1=" "
+    sta2=" "
+    for pqrs in sta:
+      sta1=sta1+str(pqrs.hirer_status)
+      sta2=sta2+str(pqrs.worker_status)
+
     data=Posts.objects.get(post_id=post_id)
     try :
         user1=Profile.objects.filter(Q(skill1=data.rskill)|Q(skill2=data.rskill)|Q(skill3=data.rskill))    
@@ -186,11 +205,19 @@ def see_work_post(request):
         for dat in user1:
           loc= location.objects.get(username=dat.user.username)
           dis=discal(float(data.lat),float(data.lng),float(loc.lat),float(loc.lng))
-          data.age=dis
-          data.save()
+          dat.age=dis
+          if str(dat.user_id) in sta1 and str(post_id) in sta2:
+            dat.joinrequest='a'
+          elif str(dat.user_id) in sta1:
+            dat.joinrequest='b'
+          elif str(post_id) in sta2:
+            dat.joinrequest='c'
+          else:
+            dat.joinrequest='d'
+          dat.save()
         user1=user1.order_by('age')
         warn = " "
-        return render(request,'search/presult.html',{'users' : user1, 'warn' : warn,'dat':data,'sta':sta})
+        return render(request,'search/presult.html',{'users' : user1, 'warn' : warn,'dat':data})
     except Profile.DoesNotExist:
         warn="आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
         return render(request,'search/update.html',{'data':data,'warn':warn})
@@ -227,9 +254,14 @@ def update(request):
     data.Nworker=Nworker
     data.Twork=Twork
     data.description=description
-    if lat1 !='0':
-      data.lat=lat1
-      data.lng=lng1
+    data.lat=lat1
+    data.lng=lng1
     data.save()
     warn="submit successfully"
     return render(request,'search/update.html',{'data':data,'warn':warn})
+  else:
+    pos=Posts.objects.filter(username=request.user.username)
+    warn=""
+    if len(pos)==0:
+      warn="No posts found"
+    return render(request,'search/postresult.html',{'pos':pos,'warn':warn})

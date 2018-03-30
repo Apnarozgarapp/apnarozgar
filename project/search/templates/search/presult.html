@@ -60,21 +60,24 @@ button:hover, a:hover {
      <input name ="worker" type="text" value={{data.user.first_name}} hidden></input>
      <input name ="hirer" type="text" value={{dat.name}} hidden></input>
 
-     {%if data.user_id == sta.worker_status%}
-    <b><button type="submit" name = 'chire' >कार्य अनुरोध (request) रद्द करें</button>
-    {%if dat.post_id == sta.hirer_status%}
-       <b><u>confirm</u></b>
-       {%else}
-       <b><u>not confirm</u></b>
-       {%endif%}
-     {%else%}
-    <b><button type="submit" name = 'hire' >कार्य अनुरोध (request) भेजें</button>
-        {%if dat.post_id == sta.hirer_status%}
-       <b><u>worker send join request</u></b>
-       {%else}
-       <b><u>worker send join request</u></b>
-       {%endif%}
+     {%if "a" in data.joinrequest %}
+     <p><b> join request confirm</b></p>
+     <b><button type="submit" name = 'chire' >कार्य अनुरोध (request) रद्द करें</button>
+     
      {%endif%}
+     {%if "b" in data.joinrequest %}
+     <p><b> join request Not confirm</b></p>
+     <b><button type="submit" name = 'chire' >कार्य अनुरोध (request) रद्द करें</button>
+    {%endif%}
+    {%if "c" in data.joinrequest %} 
+    <p><b> worker sent join request</b></p>
+     <b><button type="submit" name = 'hire' >कार्य अनुरोध (request) भेजें</button> 
+        
+    {%endif%}
+      {%if "d" in data.joinrequest %} 
+    <b><button type="submit" name = 'hire' >कार्य अनुरोध (request) भेजें</button> 
+     {%endif%}
+     
    </b>
   </form>
     <br>

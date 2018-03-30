@@ -36,7 +36,6 @@ button:hover, a:hover {
 }
 </style>
 
-<h3>All पोस्ट: </h3>    <br>
    {% csrf_token %}
    {{ warn }}
 {% for data in pos %}
@@ -45,6 +44,7 @@ button:hover, a:hover {
   
   <h3></h3>
   <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
+  <p class="title">पोस्ट ID: {{data.post_id}}</p>
   <p class="title">काम की जगह का पता: <br> {{data.street}}, {{data.location}}</p>
   <p class="title">कार्य की अवधि: <br>{{data.start_date}} - {{data.end_date}}</p>
   <p>आवश्यक श्रमिकों की संख्या: {{data.Nworker}}</p>

@@ -56,8 +56,8 @@ button:hover, a:hover {
      {% csrf_token %}
      <input name ="post_id" type="number" value={{dat.post_id}} hidden></input>
      <input name ="user_id" type="number" value={{data.user_id}} hidden></input>
-     <input name ="worker" type="text" value={{data.user.first_name}} hidden></input>
-     <input name ="hirer" type="text" value={{dat.name}} hidden></input>
+     <input name ="worker" type="text" value="{{data.user.first_name}}" hidden></input>
+     <input name ="hirer" type="text" value="{{dat.name}}" hidden></input>
      <input name ="userworker" type="text" value={{data}} hidden></input>
      <input name ="userhirer" type="text" value={{dat.username}} hidden></input>
 

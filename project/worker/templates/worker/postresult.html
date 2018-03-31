@@ -44,8 +44,8 @@ button:hover, a:hover {
   <div class="card" style="background-color:#F7EAEB">
   
   <h3></h3>
-  <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
-  <p class="title">काम की जगह का पता: <br> {{data.street}}, {{data.location}}</p>
+  <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट :-<{{data.post_id}}></button></p>
+  <p class="title">काम की जगह का पता: <br> {{data.street}}, {{data.location}} (distance:-{{data.distance}} km)</p>
   <p class="title">कार्य की अवधि: <br>{{data.start_date}} - {{data.end_date}}</p>
   <p>आवश्यक श्रमिकों की संख्या: {{data.Nworker}}</p>
   <p>वेतन भुगतान का तरीका: {{data.Twork}}</p>
@@ -56,6 +56,33 @@ button:hover, a:hover {
   <p><button class = "but">नियोक्ता का मोबाइल नंबर: {{data.s_contact}}</button></p>
   </div>
   
+  <form method="POST" action="/worker/seepost">
+     {% csrf_token %}
+     <input name ="post_id" type="number" value={{data.post_id}} hidden></input>
+     <input name ="user_id" type="number" value={{user1.user_id}} hidden></input>
+     <input name ="worker" type="text" value="{{user1.user.first_name}}" hidden></input>
+     <input name ="hirer" type="text" value="{{data.name}}" hidden></input>
+     <input name ="userworker" type="text" value={{user1.user.username}} hidden></input>
+     <input name ="userhirer" type="text" value={{data.username}} hidden></input>
+     {%if 'a' in data.temp %}
+     <p><b> join request confirm</b></p>
+     <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें</button>
+     
+     {%endif%}
+     {%if 'b' in data.temp %}
+     <p><b> join request Not confirm</b></p>
+     <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें</button>
+    {%endif%}
+    {%if 'c' in data.temp %} 
+    <p><b> hirer sent join request</b></p>
+     <b><button type="submit" name = 'whire' >कार्य अनुरोध (request) भेजें</button> 
+    {%endif%}
+    {%if 'd' in data.temp %} 
+    <b><button type="submit" name = 'whire' >कार्य अनुरोध (request) भेजें</button> 
+     {%endif%}   
+   </b>
+  </form>
+
     <br>
 {% endfor %}
   

@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.contrib.auth.models import User
 from .models import Profile,location
-from search.models import Posts
+from search.models import Posts,Status
 import login
 import re
 import urllib.request
@@ -82,19 +82,84 @@ def all_post(request):
   pos=pos.order_by('distance')
   warn=""
   return render(request,'worker/allpostresult.html',{'pos':pos,'warn':warn})
+
 def viewpost(request):
-  data=Profile.objects.get(user=request.user)
-  pos=Posts.objects.filter(Q(rskill=data.skill1)|Q(rskill=data.skill2)|Q(rskill=data.skill3))
-  pos=pos.filter(status='public')
-  pos=pos.filter(start_date__gte=datetime.datetime.today())
-  if len(pos)==0:
-    warn='आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|'
-    return render(request,'worker/postresult.html',{'pos':pos,'warn':warn})
-  loc=location.objects.get(username=request.user.username)
-  for dat in pos :
-    dis=discal(float(dat.lat),float(dat.lng),float(loc.lat),float(loc.lng))
-    dat.distance=dis
-    dat.save()
-  pos=pos.order_by('distance')
-  warn=""
-  return render(request,'worker/postresult.html',{'pos':pos,'warn':warn})
+  if request.method=="POST" and ('whire' in request.POST or 'wchire' in request.POST ):
+    post_id=request.POST.get('post_id')
+    user_id=request.POST.get('user_id')
+    worker=request.POST.get('worker')
+    hirer=request.POST.get('hirer')
+    userworker=request.POST.get('userworker')
+    userhirer=request.POST.get('userhirer')
+    abc=Status.objects.filter(post_id=post_id,user_id=user_id)
+    if len(abc)==0 and 'whire' in request.POST:
+      cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,worker_status=post_id,userworker=userworker,userhirer=userhirer)
+      cba.save()
+    pqr=Status.objects.get(post_id=post_id,user_id=user_id)
+    if 'wchire' in request.POST :
+      pqr.worker_status=0
+    else:
+      pqr.worker_status=post_id
+    pqr.save()
+    if 'wchire' in request.POST and pqr.hirer_status!= user_id:
+      pqr.delete()
+    sta=Status.objects.filter(user_id=user_id)
+    sta1=" "
+    sta2=" "
+    for pqrs in sta:
+      sta1=sta1+str(pqrs.hirer_status)
+      sta2=sta2+str(pqrs.worker_status)
+    data=Profile.objects.get(user=request.user)
+    pos=Posts.objects.filter(Q(rskill=data.skill1)|Q(rskill=data.skill2)|Q(rskill=data.skill3))
+    pos=pos.filter(status='public')
+    pos=pos.filter(start_date__gte=datetime.datetime.today())
+    if len(pos)==0:
+      warn='आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|'
+      return render(request,'worker/postresult.html',{'pos':pos,'warn':warn})
+    loc=location.objects.get(username=request.user.username)
+    for dat in pos :
+      dis=discal(float(dat.lat),float(dat.lng),float(loc.lat),float(loc.lng))
+      dat.distance=dis
+      if str(dat.post_id) in sta2 and str(data.user_id) in sta1 :
+            dat.temp='a'
+      elif str(dat.post_id) in sta2:
+            dat.temp='b'
+      elif str(data.user_id) in sta1:
+            dat.temp='c'
+      else:
+            dat.temp='d' 
+      dat.save()
+    pos=pos.order_by('distance')
+    warn=""
+    return render(request,'worker/postresult.html',{'pos':pos,'user1':data,'warn':warn})
+  else:
+
+    data=Profile.objects.get(user=request.user)
+    sta=Status.objects.filter(user_id=data.user_id)
+    sta1=" "
+    sta2=" "
+    for pqrs in sta:
+      sta1=sta1+str(pqrs.hirer_status)
+      sta2=sta2+str(pqrs.worker_status)
+    pos=Posts.objects.filter(Q(rskill=data.skill1)|Q(rskill=data.skill2)|Q(rskill=data.skill3))
+    pos=pos.filter(status='public')
+    pos=pos.filter(start_date__gte=datetime.datetime.today())
+    if len(pos)==0:
+      warn='आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|'
+      return render(request,'worker/postresult.html',{'pos':pos,'warn':warn})
+    loc=location.objects.get(username=request.user.username)
+    for dat in pos :
+      dis=discal(float(dat.lat),float(dat.lng),float(loc.lat),float(loc.lng))
+      dat.distance=dis
+      if str(dat.post_id) in sta2 and str(data.user_id) in sta1 :
+            dat.temp='a'
+      elif str(dat.post_id) in sta2:
+            dat.temp='b'
+      elif str(data.user_id) in sta1:
+            dat.temp='c'
+      else:
+            dat.temp='d' 
+      dat.save()
+    pos=pos.order_by('distance')
+    warn=""
+    return render(request,'worker/postresult.html',{'pos':pos,'user1':data,'warn':warn})

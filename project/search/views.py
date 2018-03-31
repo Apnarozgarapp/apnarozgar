@@ -195,15 +195,14 @@ def see_work_post(request):
     if len(abc)==0 and 'hire' in request.POST:
       cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,hirer_status=user_id,userworker=userworker,userhirer=userhirer)
       cba.save()
-    for dcba in abc:
-      pqr=Status.objects.get(status_id=dcba.status_id)
-      if 'chire' in request.POST:
+    pqr=Status.objects.get(post_id=post_id,user_id=user_id)
+    if 'chire' in request.POST:
         pqr.hirer_status=0
-      else:
-        pqr.hirer_status=user_id
-      pqr.save()
-      if 'schire' in request.POST and pqr.worker_status!=post_id:
-        pqr.delete()
+    else:
+      pqr.hirer_status=user_id
+    pqr.save()
+    if 'schire' in request.POST and pqr.worker_status!=post_id:
+      pqr.delete()
 
     sta=Status.objects.filter(post_id=post_id)
     sta1=" "

@@ -96,10 +96,10 @@ button:hover, a:hover {
   </form>
 </div>
     <br>
-<h2>इस पोस्ट के लिए चयनित श्रमिक</h2>
+<br>
+<ol>
      {% for data1 in selected %}
-     <h2>
-     <h2><a href="/search/?data={{data1.user_id}}">{{data1.worker}}</a></h2>
+     <h3><li><a href="/search/?data={{data1.user_id}}">{{data1.worker}}</a> को इस पोस्ट के लिए उचित माना गया है।</li></h3>
      <form method="POST" action="/see_work_post">
      {% csrf_token %}
      <input name ="post_id" type="number" value={{data1.post_id}} hidden></input>
@@ -108,25 +108,28 @@ button:hover, a:hover {
      <input name ="hirer" type="text" value={{data1.hirer}} hidden></input>
      <input name ="userworker" type="text" value={{data1.userworker}} hidden></input>
      <input name ="userhirer" type="text" value={{data1.userhirer}} hidden></input>
-
+     <font size = 3.5>
      {%if "a" in data1.temp %}
-     <p><b> join request confirm</b></p>
+
+     <font color = "green"><p><b>कर्मचारी ने इस पोस्ट के लिए काम करने की पुष्टि दी है (Confirmed)</b></p></font>
      <b><button type="submit" name = 'schire' >कार्य अनुरोध (request) रद्द करें</button>
      
      {%endif%}
      {%if "b" in data1.temp %}
-     <p><b> join request Not confirm</b></p>
+     <font color = "red"><p><b>इस पोस्ट के लिए काम करने की पुष्टि नहीं हुई है (Not Confirmed)</b></p></font>
      <b><button type="submit" name = 'schire' >कार्य अनुरोध (request) रद्द करें</button>
     {%endif%}
     {%if "c" in data1.temp %} 
-    <p><b> worker sent join request</b></p>
-     <b><button type="submit" name = 'shire' >कार्य अनुरोध (request) भेजें</button> 
+    <p><b>कर्मचारी ने आपको इस पोस्ट के लिए काम करने का अनुरोध भेजा है</b></p>
+     <b><button type="submit" name = 'shire' >कार्य अनुरोध (request) स्वीकार करें</button> 
     {%endif%}   
    </b>
+ </font>
   </form>
 
      </h2><br>
      {% endfor %}
+   </ol>
      
 </div>
 {% endblock %}

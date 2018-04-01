@@ -21,7 +21,7 @@ def detail_post(request):
     data= Posts.objects.get( post_id= dat)
     return render(request,'search/view.html',{'data': data})  
   else:
-    return HttpResponse(" No post available.") 
+    return HttpResponse("कोई पोस्ट नहीं मिला।") 
 
 def update_profile(request):
   
@@ -36,7 +36,7 @@ def update_profile(request):
 	            da.save()
             return render(request,'worker/worker2.html')
         else:
-          warn ="Correct the details."
+          warn ="कृपया विवरण को सही करें"
           return render(request,'worker/worker1.html',{"warn":warn})
     if request.method == 'POST' and 'save_changes2' in request.POST:
       profile_form = ProfileForm2(request.POST, instance=request.user.profile)
@@ -44,7 +44,7 @@ def update_profile(request):
          profile_form.save()
          return render(request,'worker/success.html')
       else:
-          warn ="Correct the details."
+          warn ="कृपया विवरण को सही करें"
           return render(request,'worker/worker2.html',{"warn":warn})
     else:
        return render(request,'worker/worker1.html')

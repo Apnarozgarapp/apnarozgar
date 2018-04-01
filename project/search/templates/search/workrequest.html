@@ -71,6 +71,7 @@ button:hover, a:hover {
 <ol>
      {% for data1 in data%}
      <h3><li>कर्मचारी <a href="/seeworker/?data={{data1.user_id}}">({{data1.worker}})</a> और आपके बीच <a href="/detailpost/?data={{data1.post_id}}">यहां वर्णित </a>पोस्ट के लिए काम का अनुरोध किया गया है।</li></h3>
+      <h4> duration:- {{data1.start_date|date:"d/m/20y"}} - {{data1.end_date|date:"d/m/20y"}}</h4>
      <form method="POST" action="/workrequest">
      {% csrf_token %}
      <input name ="post_id" type="number" value={{data1.post_id}} hidden></input>
@@ -79,6 +80,8 @@ button:hover, a:hover {
      <input name ="hirer" type="text" value={{data1.hirer}} hidden></input>
      <input name ="userworker" type="text" value={{data1.userworker}} hidden></input>
      <input name ="userhirer" type="text" value={{data1.userhirer}} hidden></input>
+     <input type="date" name ='end_date' value={{data1.end_date|date:"20y-m-d"}} hidden></input>
+     <input type="date" name ='start_date' value={{data1.start_date|date:"20y-m-d"}} hidden></input>
      <font size = 3.5>
      {%if "a" in data1.temp %}
      <font color = "green" ><p><b>कर्मचारी ने इस पोस्ट के लिए काम करने की पुष्टि दी है (Confirmed)</b></p></font>
@@ -91,7 +94,8 @@ button:hover, a:hover {
     {%endif%}
     {%if "c" in data1.temp %} 
     <p><b>कर्मचारी ने आपको इस पोस्ट के लिए काम करने का अनुरोध भेजा है</b></p>
-     <b><button type="submit" name = 'hhire' >कार्य अनुरोध (request) स्वीकार करें</button> 
+    <b><button type="submit" name = 'hhire' >कार्य अनुरोध (request) स्वीकार करें</button> 
+    <b><button type="submit" name = 'hchire' >कार्य अनुरोध (request) रद्द करें</button>
     {%endif%}   
    </b>
  </font>

@@ -61,7 +61,12 @@ button:hover, a:hover {
      <input name ="hirer" type="text" value="{{dat.name}}" hidden></input>
      <input name ="userworker" type="text" value={{data}} hidden></input>
      <input name ="userhirer" type="text" value={{dat.username}} hidden></input>
+     <input type="date" name ='end_date' value={{dat.end_date|date:"20y-m-d"}} hidden></input>
+     <input type="date" name ='start_date' value={{dat.start_date|date:"20y-m-d"}} hidden></input>
     <font size = 3.5>
+      {%if "e" in data.joinrequest %}
+     <font color = "green"><p><b>श्रमिक इस तिथि पर उपलब्ध नहीं है।</b></p></font>
+     {%endif%}
      {%if "a" in data.joinrequest %}
      <font color = "green"><p><b>कर्मचारी ने इस पोस्ट के लिए काम करने की पुष्टि दी है (Confirmed)</b></p></font>
      <b><button type="submit" name = 'chire' >कार्य अनुरोध (request) रद्द करें</button>
@@ -74,7 +79,7 @@ button:hover, a:hover {
     {%if "c" in data.joinrequest %} 
     <p><b>कर्मचारी ने आपको इस पोस्ट के लिए काम करने का अनुरोध भेजा है</b></p>
      <b><button type="submit" name = 'hire' >कार्य अनुरोध (request) स्वीकार करें</button> 
-        
+      <b><button type="submit" name = 'chire' >कार्य अनुरोध (request) रद्द करें</button>
     {%endif%}
       {%if "d" in data.joinrequest %} 
     <b><button type="submit" name = 'hire' >कार्य अनुरोध (request) भेजें</button> 

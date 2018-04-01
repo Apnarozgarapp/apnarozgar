@@ -69,7 +69,7 @@ button:hover, a:hover {
   <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
   <p class="title">पोस्ट ID: {{data.post_id}}</p>
   <p class="title">काम की जगह का पता: <br>{{data.street}}, {{data.location}}</p>
-  <p class="title">कार्य की अवधि: <br>{{data.start_date}} - {{data.end_date}}</p>
+  <p class="title">कार्य की अवधि: <br>{{data.start_date|date:"d/m/20y"}} - {{data.end_date|date:"d/m/20y"}}</p>
  <p>आवश्यक श्रमिकों की संख्या: {{data.Nworker}}</p>
   <p>वेतन भुगतान का तरीका: {{data.Twork}}</p>
     {%if data.description%}

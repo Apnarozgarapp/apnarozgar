@@ -21,6 +21,7 @@ class Profile(models.Model):
     Twork = models.CharField(max_length = 250,blank = True, null = True)
     worker_age=models.IntegerField(blank = True, null = True)
     joinrequest=models.CharField(max_length = 2,blank = True, null = True)
+    temp=models.CharField(max_length = 2,blank = True, null = True)
 
     def __str__(self):
     	return self.user.username

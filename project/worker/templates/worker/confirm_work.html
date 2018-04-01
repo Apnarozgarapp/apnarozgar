@@ -60,26 +60,30 @@ button:hover, a:hover {
     background-color: #3e8e41;
 }
 </style>
-
+<h4><b><a href='/worker/seepost'>आपके कौशल से मेल खाने वाले पोस्ट देखें</a></b></h4> 
 
    <h4><font color="red"> {{ warn }}</font></h4>
 
-  <div class="card" style="background-color:#F7EAEB">
   
-  <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
-  <p class="title">पोस्ट ID: {{data.post_id}}</p>
-  <p class="title">काम की जगह का पता: <br>{{data.street}}, {{data.location}}</p>
-  <p class="title">कार्य की अवधि: <br>{{data.start_date|date:"d/m/20y"}} - {{data.end_date|date:"d/m/20y"}}</p>
- <p>आवश्यक श्रमिकों की संख्या: {{data.Nworker}}</p>
-  <p>वेतन भुगतान का तरीका: {{data.Twork}}</p>
-    {%if data.description%}
-   <p>अन्य विवरण: {{data.description}}</p>
-    {%endif%}
-  <p><button class = "but">मोबाइल नंबर (<b>{{data.name}}</b>) :- {{data.s_contact}}</button></p>
-  
-</div>
-    <br>
+     {% for data1 in selected %}
+      <h3><li>{{data1.hirer}} और आपके बीच <a href="/detailpost/?data={{data1.post_id}}">यहां वर्णित </a>पोस्ट के लिए काम का अनुरोध किया गया है।</li></h3>
+      <h4> duration:- {{data1.start_date|date:"d/m/20y"}} - {{data1.end_date|date:"d/m/20y"}}</h4>
+     <form method="POST" action="/see_work_post">
+     {% csrf_token %}
+     <input name ="post_id" type="number" value={{data1.post_id}} hidden></input>
+     <input name ="user_id" type="number" value={{data1.user_id}} hidden></input>
+     <font size = 3.5>
+     <font color = "green"><p><b>आपने इस पोस्ट के लिए काम करने की पुष्टि दी है (Confirmed)</b></p></font>
+     <b><button type="submit" name = 'cwchire' >कार्य अनुरोध (request) रद्द करें</button>
+     
+   </b>
+ </font>
+  </form>
 
+     </h2><br>
+     {% endfor %}
+   </ol>
+     
 </div>
 {% endblock %}
 

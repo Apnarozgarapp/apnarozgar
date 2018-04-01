@@ -19,6 +19,7 @@ class Posts(models.Model):
 	status = models.CharField(max_length = 50,blank = True, null = True)
 	distance = models.IntegerField(blank = True, null = True)
 	temp=models.CharField(max_length = 2,blank = True, null = True)
+	temp1=models.CharField(max_length = 2,blank = True, null = True)
 	def __str__(self):
 		return self.username
 class Status(models.Model):
@@ -31,5 +32,10 @@ class Status(models.Model):
 	userworker = models.CharField(max_length = 100,blank = True, null = True)
 	hirer_status = models.IntegerField(blank = True, null = True)
 	worker_status = models.IntegerField(blank = True, null = True)
+	confirm=models.CharField(max_length = 2,blank = True, null = True)
 	temp=models.CharField(max_length = 2,blank = True, null = True)
+	start_date = models.DateField(blank = True, null = True)
+	end_date = models.DateField(blank = True, null = True)
+	pay=models.CharField(max_length = 2,blank = True, null = True)
+	rating=models.CharField(max_length = 2,blank = True, null = True)
 

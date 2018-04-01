@@ -15,6 +15,24 @@ import datetime
 @login_required
 @transaction.atomic
 
+def confirm_work(request):
+  if request.method=="POST" and 'cwchire' in request.POST:
+    post_id=request.POST.get('post_id')
+    user_id=request.POST.get('user_id')
+    pqr=Status.objects.get(post_id=post_id,user_id=user_id)
+    pqr.delete()
+    selected=Status.objects.filter(userworker=request.user.username,confirm='a')
+    warn=""
+    if len(selected)==0:
+      warn="कोई भी श्रमिक चयनित नहीं है"
+    return render(request,'worker/confirm_work.html',{'warn':warn,'selected':selected})
+  else:
+    selected=Status.objects.filter(userworker=request.user.username,confirm='a')
+    warn=""
+    if len(selected)==0:
+      warn="कोई भी श्रमिक चयनित नहीं है"
+    return render(request,'worker/confirm_work.html',{'warn':warn,'selected':selected})
+
 def detail_post(request):
   if request.method == 'GET':
     dat = request.GET['data']
@@ -70,7 +88,7 @@ def discal(a,b,c,d):
 
 def all_post(request):
   pos=Posts.objects.filter(status='public')
-  pos=pos.filter(start_date__gte=datetime.datetime.today())
+  pos=pos.filter(end_date__gte=datetime.datetime.today())
   if len(pos)==0:
     warn=' No post is available|'
     return render(request,'worker/postresult.html',{'pos':pos,'warn':warn})
@@ -91,43 +109,50 @@ def viewpost(request):
     hirer=request.POST.get('hirer')
     userworker=request.POST.get('userworker')
     userhirer=request.POST.get('userhirer')
+    start_date=request.POST.get('start_date')
+    end_date=request.POST.get('end_date')
     abc=Status.objects.filter(post_id=post_id,user_id=user_id)
     if len(abc)==0 and 'whire' in request.POST:
-      cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,worker_status=post_id,userworker=userworker,userhirer=userhirer)
+      cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,worker_status=post_id,userworker=userworker,userhirer=userhirer,start_date=start_date,end_date=end_date)
       cba.save()
-    pqr=Status.objects.get(post_id=post_id,user_id=user_id)
-    if 'wchire' in request.POST :
-      pqr.worker_status=0
     else:
+      pqr=Status.objects.get(post_id=post_id,user_id=user_id)
       pqr.worker_status=post_id
-    pqr.save()
-    if 'wchire' in request.POST and pqr.hirer_status!= user_id:
-      pqr.delete()
+      pqr.confirm='a'
+      pqr.save()
+      if 'wchire' in request.POST:
+        pqr.delete()
     sta=Status.objects.filter(user_id=user_id)
-    sta1=" "
-    sta2=" "
-    for pqrs in sta:
-      sta1=sta1+str(pqrs.hirer_status)
-      sta2=sta2+str(pqrs.worker_status)
     data=Profile.objects.get(user=request.user)
     pos=Posts.objects.filter(Q(rskill=data.skill1)|Q(rskill=data.skill2)|Q(rskill=data.skill3))
     pos=pos.filter(status='public')
-    pos=pos.filter(start_date__gte=datetime.datetime.today())
+    pos=pos.filter(end_date__gte=datetime.datetime.today())
     if len(pos)==0:
       warn='आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|'
       return render(request,'worker/postresult.html',{'pos':pos,'warn':warn})
     loc=location.objects.get(username=request.user.username)
     for dat in pos :
+      r=Status.objects.filter(user_id=data.user_id,confirm='a')
+      p=r.filter(Q(start_date__lte=dat.end_date,start_date__gte=dat.start_date)|Q(end_date__lte=dat.end_date,end_date__gte=dat.start_date))
       dis=discal(float(dat.lat),float(dat.lng),float(loc.lat),float(loc.lng))
       dat.distance=dis
-      if str(dat.post_id) in sta2 and str(data.user_id) in sta1 :
-            dat.temp='a'
-      elif str(dat.post_id) in sta2:
-            dat.temp='b'
-      elif str(data.user_id) in sta1:
-            dat.temp='c'
+      if len(p)!=0:
+        dat.temp='e'
+        for pp in p:
+              if pp.post_id==dat.post_id:
+                dat.temp='a'
       else:
-            dat.temp='d' 
+        f=sta.filter(post_id=dat.post_id)
+        if len(f)==0:
+          dat.temp='d'
+        else:
+          for ff in f:
+            if ff.post_id==ff.worker_status and ff.user_id==ff.hirer_status:
+                  dat.temp='a'
+            elif ff.post_id==ff.worker_status:
+                  dat.temp='b'
+            elif ff.user_id==ff.hirer_status:
+                  dat.temp='c' 
       dat.save()
     pos=pos.order_by('distance')
     warn=""
@@ -135,12 +160,7 @@ def viewpost(request):
   else:
 
     data=Profile.objects.get(user=request.user)
-    sta=Status.objects.filter(user_id=data.user_id)
-    sta1=" "
-    sta2=" "
-    for pqrs in sta:
-      sta1=sta1+str(pqrs.hirer_status)
-      sta2=sta2+str(pqrs.worker_status)
+    
     pos=Posts.objects.filter(Q(rskill=data.skill1)|Q(rskill=data.skill2)|Q(rskill=data.skill3))
     pos=pos.filter(status='public')
     pos=pos.filter(start_date__gte=datetime.datetime.today())
@@ -148,17 +168,30 @@ def viewpost(request):
       warn='आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|'
       return render(request,'worker/postresult.html',{'pos':pos,'warn':warn})
     loc=location.objects.get(username=request.user.username)
+    sta=Status.objects.filter(user_id=data.user_id)
     for dat in pos :
+      r=Status.objects.filter(user_id=data.user_id,confirm='a')
+      p=r.filter(Q(start_date__lte=dat.end_date,start_date__gte=dat.start_date)|Q(end_date__lte=dat.end_date,end_date__gte=dat.start_date))
+      
       dis=discal(float(dat.lat),float(dat.lng),float(loc.lat),float(loc.lng))
       dat.distance=dis
-      if str(dat.post_id) in sta2 and str(data.user_id) in sta1 :
-            dat.temp='a'
-      elif str(dat.post_id) in sta2:
-            dat.temp='b'
-      elif str(data.user_id) in sta1:
-            dat.temp='c'
+      if len(p)!=0:
+        dat.temp='e'
+        for pp in p:
+              if pp.post_id==dat.post_id:
+                dat.temp='a'
       else:
-            dat.temp='d' 
+        f=sta.filter(post_id=dat.post_id)
+        if len(f)==0:
+          dat.temp='d'
+        else:
+          for ff in f:
+            if ff.post_id==ff.worker_status and ff.user_id==ff.hirer_status:
+                  dat.temp='a'
+            elif ff.post_id==ff.worker_status:
+                  dat.temp='b'
+            elif ff.user_id==ff.hirer_status:
+                  dat.temp='c' 
       dat.save()
     pos=pos.order_by('distance')
     warn=""

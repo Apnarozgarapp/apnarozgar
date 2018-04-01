@@ -12,7 +12,7 @@ import re
 import urllib.request
 from math import sin, cos, sqrt, atan2, radians
 from django.db.models import Q
-
+import datetime
 @login_required
 @transaction.atomic
 
@@ -117,20 +117,7 @@ def see_work_post(request):
   elif request.method=="POST" and 'selected' in request.POST:
     post_id=request.POST.get('post_id')
     data=Posts.objects.get(post_id=post_id)
-    selected=Status.objects.filter(post_id=post_id)
-    for select in selected:
-      if select.worker_status==select.post_id and select.hirer_status==select.user_id:
-        select.temp='a'
-        select.save()
-      elif select.worker_status==select.post_id:
-        select.temp='c'
-        select.save()
-      elif select.hirer_status==select.user_id:
-        select.temp='b'
-        select.save()
-      else:
-        select.temp='d'
-        select.save()
+    selected=Status.objects.filter(post_id=post_id,confirm='a')
     warn=""
     if len(selected)==0:
       warn="कोई भी श्रमिक चयनित नहीं है"
@@ -139,11 +126,6 @@ def see_work_post(request):
   elif request.method=="POST" and 'search' in request.POST:
     post_id=request.POST.get('post_id')
     sta=Status.objects.filter(post_id=post_id)
-    sta1=" "
-    sta2=" "
-    for pqrs in sta:
-      sta1=sta1+str(pqrs.hirer_status)
-      sta2=sta2+str(pqrs.worker_status)
     data=Posts.objects.get(post_id=post_id)
     try :
         user1=Profile.objects.filter(Q(skill1=data.rskill)|Q(skill2=data.rskill)|Q(skill3=data.rskill))    
@@ -152,19 +134,29 @@ def see_work_post(request):
           warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
           return render(request,'search/update.html',{'data':data,'warn':warn})
         for dat in user1:
+          r=Status.objects.filter(user_id=dat.user_id,confirm='a')
+          p=r.filter(Q(start_date__lte=data.end_date,start_date__gte=data.start_date)|Q(end_date__lte=data.end_date,end_date__gte=data.start_date))
           loc= location.objects.get(username=dat.user.username)
           dis=discal(float(data.lat),float(data.lng),float(loc.lat),float(loc.lng))
           dat.age=dis
-          if str(dat.user_id) in sta1 and str(post_id) in sta2:
-            dat.joinrequest='a'
-          elif str(dat.user_id) in sta1:
-            dat.joinrequest='b'
-          elif str(post_id) in sta2:
-            dat.joinrequest='c'
+          if len(p)!=0:
+            dat.joinrequest='e'
+            for pp in p:
+              if pp.post_id==data.post_id:
+                dat.joinrequest='a'
           else:
-            dat.joinrequest='d'
+            f=sta.filter(user_id=dat.user_id)
+            if len(f)==0:
+              dat.joinrequest='d'
+            else:
+              for ff in f:    
+                if ff.user_id==ff.hirer_status and ff.post_id ==ff.worker_status:
+                    dat.joinrequest='a'
+                elif ff.user_id==ff.hirer_status:
+                  dat.joinrequest='b'
+                elif ff.post_id ==ff.worker_status:
+                  dat.joinrequest='c'
           dat.save()
-
         user1=user1.order_by('age')
         warn = " "
         return render(request,'search/presult.html',{'users' : user1, 'warn' : warn,'dat':data})
@@ -191,26 +183,20 @@ def see_work_post(request):
     hirer=request.POST.get('hirer')
     userworker=request.POST.get('userworker')
     userhirer=request.POST.get('userhirer')
+    start_date=request.POST.get('start_date')
+    end_date=request.POST.get('end_date')
     abc=Status.objects.filter(post_id=post_id,user_id=user_id)
     if len(abc)==0 and 'hire' in request.POST:
-      cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,hirer_status=user_id,userworker=userworker,userhirer=userhirer)
+      cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,hirer_status=user_id,userworker=userworker,userhirer=userhirer,start_date=start_date,end_date=end_date)
       cba.save()
-    pqr=Status.objects.get(post_id=post_id,user_id=user_id)
-    if 'chire' in request.POST:
-        pqr.hirer_status=0
     else:
+      pqr=Status.objects.get(post_id=post_id,user_id=user_id)
       pqr.hirer_status=user_id
-    pqr.save()
-    if 'schire' in request.POST and pqr.worker_status!=post_id:
-      pqr.delete()
-
+      pqr.confirm='a'
+      pqr.save()
+      if 'chire' in request.POST:
+        pqr.delete()
     sta=Status.objects.filter(post_id=post_id)
-    sta1=" "
-    sta2=" "
-    for pqrs in sta:
-      sta1=sta1+str(pqrs.hirer_status)
-      sta2=sta2+str(pqrs.worker_status)
-
     data=Posts.objects.get(post_id=post_id)
     try :
         user1=Profile.objects.filter(Q(skill1=data.rskill)|Q(skill2=data.rskill)|Q(skill3=data.rskill))    
@@ -219,17 +205,28 @@ def see_work_post(request):
           warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
           return render(request,'search/update.html',{'data':data,'warn':warn})
         for dat in user1:
+          r=Status.objects.filter(user_id=dat.user_id,confirm='a')
+          p=r.filter(Q(start_date__lte=data.end_date,start_date__gte=data.start_date)|Q(end_date__lte=data.end_date,end_date__gte=data.start_date))
           loc= location.objects.get(username=dat.user.username)
           dis=discal(float(data.lat),float(data.lng),float(loc.lat),float(loc.lng))
           dat.age=dis
-          if str(dat.user_id) in sta1 and str(post_id) in sta2:
-            dat.joinrequest='a'
-          elif str(dat.user_id) in sta1:
-            dat.joinrequest='b'
-          elif str(post_id) in sta2:
-            dat.joinrequest='c'
+          if len(p)!=0:
+            dat.joinrequest='e'
+            for pp in p:
+              if pp.post_id==data.post_id:
+                dat.joinrequest='a'
           else:
-            dat.joinrequest='d'
+            f=sta.filter(user_id=dat.user_id)
+            if len(f)==0:
+              dat.joinrequest='d'
+            else:
+              for ff in f:    
+                if ff.user_id==ff.hirer_status and ff.post_id ==ff.worker_status:
+                    dat.joinrequest='a'
+                elif ff.user_id==ff.hirer_status:
+                  dat.joinrequest='b'
+                elif ff.post_id ==ff.worker_status:
+                  dat.joinrequest='c'
           dat.save()
         user1=user1.order_by('age')
         warn = " "
@@ -237,34 +234,13 @@ def see_work_post(request):
     except Profile.DoesNotExist:
         warn="आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
         return render(request,'search/update.html',{'data':data,'warn':warn})
-  elif request.method=="POST" and ('shire' in request.POST or 'schire' in request.POST ):
+  elif request.method=="POST" and 'schire' in request.POST:
     post_id=request.POST.get('post_id')
     user_id=request.POST.get('user_id')
-    worker=request.POST.get('worker')
-    hirer=request.POST.get('hirer')
     pqr=Status.objects.get(post_id=post_id,user_id=user_id)
-    if 'schire' in request.POST :
-      pqr.hirer_status=0
-    else:
-      pqr.hirer_status=user_id
-    pqr.save()
-    if 'schire' in request.POST and pqr.worker_status!=post_id:
-      pqr.delete()
+    pqr.delete()
     data=Posts.objects.get(post_id=post_id)
-    selected=Status.objects.filter(post_id=post_id)
-    for select in selected:
-      if select.worker_status==select.post_id and select.hirer_status==select.user_id:
-        select.temp='a'
-        select.save()
-      elif select.worker_status==select.post_id:
-        select.temp='c'
-        select.save()
-      elif select.hirer_status==select.user_id:
-        select.temp='b'
-        select.save()
-      else:
-        select.temp='d'
-        select.save()
+    selected=Status.objects.filter(post_id=post_id,confirm='a')
     warn=""
     if len(selected)==0:
       warn="कोई भी श्रमिक चयनित नहीं है"

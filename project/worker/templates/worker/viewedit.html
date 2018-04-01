@@ -66,7 +66,7 @@ button:hover, a:hover {
 उपलब्धता की अवधि:<br>
 </font>
 <font color = 'blue' size = 4>
-{{user.profile.start_date}}  -  {{user.profile.end_date}}
+{{user.profile.start_date|date:"d/m/20y"}}  -  {{user.profile.end_date|date:"d/m/20y"}}
 </font>
 <br><br>
  <font color = 'black' size = 5 >

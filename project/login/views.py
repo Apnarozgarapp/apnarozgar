@@ -16,6 +16,7 @@ from search.models import Status
 from django.core.mail import EmailMessage
 import re
 import string
+from django.db.models import Q
 def smss(request):
 	
 	q=sms('8840284384','K9532D')
@@ -252,13 +253,20 @@ def workrequest(request):
 	if request.method=="POST" and ('hhire' in request.POST or 'hchire' in request.POST ):
 		post_id=request.POST.get('post_id')
 		user_id=request.POST.get('user_id')
+		start_date=request.POST.get('start_date')
+		end_date=request.POST.get('end_date')
 		pqr=Status.objects.get(post_id=post_id,user_id=user_id)
+		warn=""
+		if 'hhire' in request.POST :
+			r=Status.objects.filter(user_id=user_id,confirm='a')
+			p=r.filter(Q(start_date__lte=end_date,start_date__gte=start_date)|Q(end_date__lte=end_date,end_date__gte=start_date))
+			if len(p)==0:
+				pqr.hirer_status=user_id
+				pqr.confirm='a'
+				pqr.save()
+			else:
+				warn="अब मजदूर इस तिथि पर उपलब्ध नहीं है।"
 		if 'hchire' in request.POST :
-			pqr.hirer_status=0
-		else:
-			pqr.hirer_status=user_id
-			pqr.save()
-		if 'hchire' in request.POST and pqr.worker_status!=post_id:
 			pqr.delete()
 		data=Status.objects.filter(userhirer=request.user.username)
 		for select in data:
@@ -274,20 +282,26 @@ def workrequest(request):
 			else:
 				select.temp='d'
 				select.save()        
-		warn=""
 		if len(data)==0:
 			warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
 		return render(request,'search/workrequest.html',{'data':data,'warn':warn})
 	elif request.method=="POST" and ('whire' in request.POST or 'wchire' in request.POST ):
 		post_id=request.POST.get('post_id')
 		user_id=request.POST.get('user_id')
+		start_date=request.POST.get('start_date')
+		end_date=request.POST.get('end_date')
 		pqr=Status.objects.get(post_id=post_id,user_id=user_id)
-		if 'wchire' in request.POST :
-			pqr.worker_status=0
-		else:
-			pqr.worker_status=post_id
-		pqr.save()
-		if 'wchire' in request.POST and pqr.hirer_status!=user_id:
+		warn=""
+		if 'whire' in request.POST :
+			r=Status.objects.filter(user_id=user_id,confirm='a')
+			p=r.filter(Q(start_date__lte=end_date,start_date__gte=start_date)|Q(end_date__lte=end_date,end_date__gte=start_date))
+			if len(p)==0:
+				pqr.worker_status=post_id
+				pqr.confirm='a'
+				pqr.save()
+			else:
+				warn="आप इस तिथि पर उपलब्ध नहीं हैं।"
+		if 'wchire' in request.POST:
 			pqr.delete()
 		data=Status.objects.filter(userworker=request.user.username)
 		for select in data:
@@ -303,7 +317,7 @@ def workrequest(request):
 			else:
 				select.temp='d'
 				select.save()        
-		warn=""
+		
 		if len(data)==0:
 			warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
 		return render(request,'worker/workrequest.html',{'data':data,'warn':warn})

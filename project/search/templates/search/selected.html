@@ -69,7 +69,7 @@ button:hover, a:hover {
   <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
   <p class="title">पोस्ट ID: {{data.post_id}}</p>
   <p class="title">काम की जगह का पता: <br>{{data.street}}, {{data.location}}</p>
-  <p class="title">कार्य की अवधि: <br>{{data.start_date}} - {{data.end_date}}</p>
+  <p class="title">कार्य की अवधि: <br>{{data.start_date|date:"d/m/20y"}} - {{data.end_date|date:"d/m/20y"}}</p>
  <p>आवश्यक श्रमिकों की संख्या: {{data.Nworker}}</p>
   <p>वेतन भुगतान का तरीका: {{data.Twork}}</p>
     {%if data.description%}
@@ -104,25 +104,9 @@ button:hover, a:hover {
      {% csrf_token %}
      <input name ="post_id" type="number" value={{data1.post_id}} hidden></input>
      <input name ="user_id" type="number" value={{data1.user_id}} hidden></input>
-     <input name ="worker" type="text" value={{data1.worker}} hidden></input>
-     <input name ="hirer" type="text" value={{data1.hirer}} hidden></input>
-     <input name ="userworker" type="text" value={{data1.userworker}} hidden></input>
-     <input name ="userhirer" type="text" value={{data1.userhirer}} hidden></input>
      <font size = 3.5>
-     {%if "a" in data1.temp %}
-
      <font color = "green"><p><b>कर्मचारी ने इस पोस्ट के लिए काम करने की पुष्टि दी है (Confirmed)</b></p></font>
-     <b><button type="submit" name = 'schire' >कार्य अनुरोध (request) रद्द करें</button>
-     
-     {%endif%}
-     {%if "b" in data1.temp %}
-     <font color = "red"><p><b>इस पोस्ट के लिए काम करने की पुष्टि नहीं हुई है (Not Confirmed)</b></p></font>
-     <b><button type="submit" name = 'schire' >कार्य अनुरोध (request) रद्द करें</button>
-    {%endif%}
-    {%if "c" in data1.temp %} 
-    <p><b>कर्मचारी ने आपको इस पोस्ट के लिए काम करने का अनुरोध भेजा है</b></p>
-     <b><button type="submit" name = 'shire' >कार्य अनुरोध (request) स्वीकार करें</button> 
-    {%endif%}   
+     <b><button type="submit" name = 'schire' >कार्य अनुरोध (request) रद्द करें</button> 
    </b>
  </font>
   </form>

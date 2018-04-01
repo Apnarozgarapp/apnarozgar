@@ -37,7 +37,7 @@ def search_result(request):
         warn = ""
       return render(request,'search/result.html',{'users' : user1, 'warn' : warn})
     except Profile.DoesNotExist:
-      return HttpResponse(" No Worker available.")  
+      return HttpResponse("कोई मजदूर उपलब्ध नहीं है।")  
   else:
    
       return render(request,'search/search.html')
@@ -64,7 +64,7 @@ def view_worker(request):
     data= Profile.objects.get( user_id= dat)
     return render(request,'worker/view.html',{'data': data})  
   else:
-    return HttpResponse(" No Worker available.") 
+    return HttpResponse("कोई मजदूर उपलब्ध नहीं है।") 
 
 def work_post(request):
   if request.method == 'POST' and 'workdata' in request.POST:
@@ -101,7 +101,7 @@ def see_work_post(request):
     pos=Posts.objects.filter(username=request.user.username)
     warn=""
     if len(pos)==0:
-      warn="No posts found"
+      warn="कोई पोस्ट नहीं मिला।"
     return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
   elif request.method=="POST" and 'status' in request.POST:
     post_id=request.POST.get('post_id')
@@ -133,7 +133,7 @@ def see_work_post(request):
         select.save()
     warn=""
     if len(selected)==0:
-      warn="No  worker is selected"
+      warn="कोई भी श्रमिक चयनित नहीं है"
     return render(request,'search/selected.html',{'data':data,'warn':warn,'selected':selected})
 
   elif request.method=="POST" and 'search' in request.POST:
@@ -267,13 +267,13 @@ def see_work_post(request):
         select.save()
     warn=""
     if len(selected)==0:
-      warn="No  worker is selected"
+      warn="कोई भी श्रमिक चयनित नहीं है"
     return render(request,'search/selected.html',{'data':data,'warn':warn,'selected':selected})
   else:
     pos=Posts.objects.filter(username=request.user.username)
     warn=""
     if len(pos)==0:
-      warn="No posts found"
+      warn="कोई पोस्ट नहीं मिला।"
     return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
 
 def update(request):
@@ -305,11 +305,11 @@ def update(request):
     data.lat=lat1
     data.lng=lng1
     data.save()
-    warn="submit successfully"
+    warn=""
     return render(request,'search/update.html',{'data':data,'warn':warn})
   else:
     pos=Posts.objects.filter(username=request.user.username)
     warn=""
     if len(pos)==0:
-      warn="No posts found"
+      warn="कोई पोस्ट नहीं मिला।"
     return render(request,'search/postresult.html',{'pos':pos,'warn':warn})

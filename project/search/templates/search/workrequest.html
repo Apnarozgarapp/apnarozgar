@@ -70,7 +70,7 @@ button:hover, a:hover {
 </div>
 <ol>
      {% for data1 in data%}
-     <h3><li>कर्मचारी ({{data1.worker}}) और आपके बीच <a href="/view_post/?data={{data1.post_id}}">यहां वर्णित </a>पोस्ट के लिए काम का अनुरोध किया गया है।</li></h3>
+     <h3><li>कर्मचारी <a href="/seeworker/?data={{data1.user_id}}">({{data1.worker}})</a> और आपके बीच <a href="/detailpost/?data={{data1.post_id}}">यहां वर्णित </a>पोस्ट के लिए काम का अनुरोध किया गया है।</li></h3>
      <form method="POST" action="/workrequest">
      {% csrf_token %}
      <input name ="post_id" type="number" value={{data1.post_id}} hidden></input>

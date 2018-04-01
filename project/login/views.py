@@ -34,7 +34,7 @@ def login_view(request):
 		loginas1 = form.cleaned_data.get("loginas")
 		user = authenticate(username = username, password = password)
 		if not user or not user.check_password(password) or not user.is_active:
-			warn="उपयोगकर्ता नाम/ पासवर्ड गलत है । कृपया पुन: प्रयास करें|(Wrong username or password. Try again.)"
+			warn="उपयोगकर्ता नाम/ पासवर्ड गलत है । कृपया पुन: प्रयास करें|(Wrong username or password)"
 			return render(request,'login/form.html',{"form":form,"warn":warn})
 		login(request,user)
 		request.user.is_authenticated()
@@ -58,7 +58,7 @@ def register_view(request):
 		username=request.POST.get('username',None)
 		aadhar=request.POST.get('aadhar',None)
 		if len(aadhar)!=12:
-			warn="आधार संख्या में 12 अंक होने चाहिए| (Aadhaar number must have 12 digits.)"
+			warn="आधार संख्या में 12 अंक होने चाहिए| (Aadhaar must have 12 digits.)"
 			return render(request,'login/register.html',{"warn":warn})
 		if User.objects.filter(username=username).exists() or User.objects.filter(last_name=aadhar).exists() :
 			warn="उपयोगकर्ता नाम या आधार संख्या पहले से मौजूद है| (Username or aadhaar number already exists.)"
@@ -276,7 +276,7 @@ def workrequest(request):
 				select.save()        
 		warn=""
 		if len(data)==0:
-			warn="no request"
+			warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
 		return render(request,'search/workrequest.html',{'data':data,'warn':warn})
 	elif request.method=="POST" and ('whire' in request.POST or 'wchire' in request.POST ):
 		post_id=request.POST.get('post_id')
@@ -305,7 +305,7 @@ def workrequest(request):
 				select.save()        
 		warn=""
 		if len(data)==0:
-			warn="no request"
+			warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
 		return render(request,'worker/workrequest.html',{'data':data,'warn':warn})
 	else: 	
 		value=LoginAs.objects.get(username=request.user.username)
@@ -326,7 +326,7 @@ def workrequest(request):
 					select.save()        
 			warn=""
 			if len(data)==0:
-				warn="no request"
+				warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
 			return render(request,'worker/workrequest.html',{'data':data,'warn':warn})
 
 		
@@ -347,6 +347,6 @@ def workrequest(request):
 					select.save()        
 			warn=""
 			if len(data)==0:
-				warn="no request"
+				warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
 			return render(request,'search/workrequest.html',{'data':data,'warn':warn})
 

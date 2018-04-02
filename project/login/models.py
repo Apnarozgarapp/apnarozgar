@@ -13,3 +13,12 @@ class Registration_otp(models.Model):
     def __str__(self):
     	return self.otp
 
+class Feedback(models.Model):
+    feedback_id=models.AutoField(primary_key=True)
+    userhirer = models.CharField(max_length=100,blank = True, null = True)
+    userworker = models.CharField(max_length=100,blank = True, null = True)
+    post_id=models.IntegerField(blank = True, null = True)
+    feedback=models.TextField(max_length = 500,blank = True, null = True)
+    status = models.CharField(max_length = 2,blank = True, null = True)
+    pay = models.CharField(max_length = 2,blank = True, null = True)
+

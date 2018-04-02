@@ -36,6 +36,4 @@ class Status(models.Model):
 	temp=models.CharField(max_length = 2,blank = True, null = True)
 	start_date = models.DateField(blank = True, null = True)
 	end_date = models.DateField(blank = True, null = True)
-	pay=models.CharField(max_length = 2,blank = True, null = True)
-	rating=models.CharField(max_length = 2,blank = True, null = True)
 

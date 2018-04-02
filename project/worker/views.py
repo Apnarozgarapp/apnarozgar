@@ -133,7 +133,7 @@ def viewpost(request):
     loc=location.objects.get(username=request.user.username)
     for dat in pos :
       r=Status.objects.filter(user_id=data.user_id,confirm='a')
-      p=r.filter(Q(start_date__lte=dat.end_date,start_date__gte=dat.start_date)|Q(end_date__lte=dat.end_date,end_date__gte=dat.start_date))
+      p=r.filter(Q(start_date__lte=dat.start_date,end_date__gte=dat.start_date)|Q(start_date__lte=dat.end_date,end_date__gte=dat.end_date)|Q(start_date__lte=dat.start_date,end_date__gte=dat.end_date)|Q(start_date__gte=dat.start_date,end_date__lte=dat.end_date))
       dis=discal(float(dat.lat),float(dat.lng),float(loc.lat),float(loc.lng))
       dat.distance=dis
       if len(p)!=0:
@@ -171,8 +171,7 @@ def viewpost(request):
     sta=Status.objects.filter(user_id=data.user_id)
     for dat in pos :
       r=Status.objects.filter(user_id=data.user_id,confirm='a')
-      p=r.filter(Q(start_date__lte=dat.end_date,start_date__gte=dat.start_date)|Q(end_date__lte=dat.end_date,end_date__gte=dat.start_date))
-      
+      p=r.filter(Q(start_date__lte=dat.start_date,end_date__gte=dat.start_date)|Q(start_date__lte=dat.end_date,end_date__gte=dat.end_date)|Q(start_date__lte=dat.start_date,end_date__gte=dat.end_date)|Q(start_date__gte=dat.start_date,end_date__lte=dat.end_date))  
       dis=discal(float(dat.lat),float(dat.lng),float(loc.lat),float(loc.lng))
       dat.distance=dis
       if len(p)!=0:

@@ -17,6 +17,7 @@ from django.core.mail import EmailMessage
 import re
 import string
 from django.db.models import Q
+import datetime
 def smss(request):
 	
 	q=sms('8840284384','K9532D')
@@ -126,7 +127,6 @@ def profile_view(request):
 	value=LoginAs.objects.get(username=request.user.username)
 	if value.loginas=="worker":        
 		return render(request,'worker/viewedit.html')
-		#return HttpResponseRedirect('worker/viewprofile')
 	else:
 		return render(request,'search/hirer.html')
 

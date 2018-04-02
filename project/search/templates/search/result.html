@@ -21,13 +21,13 @@
   border: none;
   outline: 0;
   display: inline-block;
-  padding: 8px;
+  padding: 6px;
   color: white;
   background-color: #000;
   text-align: center;
   cursor: pointer;
   width: 100%;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 
@@ -35,17 +35,19 @@ button:hover, a:hover {
   opacity: 0.7;
 }
 </style>
+<h4><b><a href='/search'>&#9664;-- <u>अपने कार्य के बारे में विस्तृत विवरण दिए बिना कर्मचारी खोजें:-</u></a></li></b></h4>
    {% csrf_token %}
+   <h3><u><font color="black">श्रमिकों की सूची :-</font></u></h3>
    <h4><font color="red">{{ warn }}</font></h4>
+
 {% for data in users %}
   <div class="card">
   
-  <h2><a href="/search/?data={{data.user_id}}">{{data.user.first_name}}</a></h2>
+  <h2><a href="/search/?data={{data.user_id}}">&#9679;  {{data.user.first_name}}</a></h2>
   <p class="title">{{data.address}}</p>
   <p>आपसे श्रमिक की दूरी: {{data.age}} km</p>
   <p><button class = "but">मोबाइल नंबर: {{data.s_contact}}</button></p>
   </div>
-	
     <br>
 {% endfor %}
 </div>

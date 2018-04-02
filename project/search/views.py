@@ -22,7 +22,10 @@ def search_result(request):
     address = request.POST.get('address',None)
     lat1 = request.POST.get('lat',None)
     lng1 = request.POST.get('lng',None)
-    
+    if lat1=='0':
+        lat1='25.435801'
+    if lng1=='0':
+        lng1='81.846311'
     try :
       user1=Profile.objects.filter(Q(skill1=skill)|Q(skill2=skill)|Q(skill3=skill))    
       for data in user1:
@@ -37,7 +40,8 @@ def search_result(request):
         warn = ""
       return render(request,'search/result.html',{'users' : user1, 'warn' : warn})
     except Profile.DoesNotExist:
-      return HttpResponse("कोई मजदूर उपलब्ध नहीं है।")  
+      warn="कोई मजदूर उपलब्ध नहीं है।"
+      return render(request,'search/search.html',{'warn':warn})  
   else:
    
       return render(request,'search/search.html')
@@ -135,7 +139,7 @@ def see_work_post(request):
           return render(request,'search/update.html',{'data':data,'warn':warn})
         for dat in user1:
           r=Status.objects.filter(user_id=dat.user_id,confirm='a')
-          p=r.filter(Q(start_date__lte=data.end_date,start_date__gte=data.start_date)|Q(end_date__lte=data.end_date,end_date__gte=data.start_date))
+          p=r.filter(Q(start_date__lte=data.start_date,end_date__gte=data.start_date)|Q(start_date__lte=data.end_date,end_date__gte=data.end_date)|Q(start_date__lte=data.start_date,end_date__gte=data.end_date)|Q(start_date__gte=data.start_date,end_date__lte=data.end_date))
           loc= location.objects.get(username=dat.user.username)
           dis=discal(float(data.lat),float(data.lng),float(loc.lat),float(loc.lng))
           dat.age=dis
@@ -206,7 +210,7 @@ def see_work_post(request):
           return render(request,'search/update.html',{'data':data,'warn':warn})
         for dat in user1:
           r=Status.objects.filter(user_id=dat.user_id,confirm='a')
-          p=r.filter(Q(start_date__lte=data.end_date,start_date__gte=data.start_date)|Q(end_date__lte=data.end_date,end_date__gte=data.start_date))
+          p=r.filter(Q(start_date__lte=data.start_date,end_date__gte=data.start_date)|Q(start_date__lte=data.end_date,end_date__gte=data.end_date)|Q(start_date__lte=data.start_date,end_date__gte=data.end_date)|Q(start_date__gte=data.start_date,end_date__lte=data.end_date))
           loc= location.objects.get(username=dat.user.username)
           dis=discal(float(data.lat),float(data.lng),float(loc.lat),float(loc.lng))
           dat.age=dis

@@ -8,7 +8,7 @@ from django.contrib.auth import (
 	logout,
 	)
 from django.contrib.auth.models import User
-from .way2sms import sms
+from .way2sms import sms,futuresms
 import random
 from .forms import UserLoginForm, UserRegisterForm
 from .models import LoginAs,Registration_otp
@@ -19,10 +19,8 @@ import string
 from django.db.models import Q
 import datetime
 def smss(request):
-	
-	q=sms('8840284384','K9532D')
-	a=random.randint(1000,9999)
-	q.send('9005285986','From Apna Rozgar OTP:'+str(a))
+	#futuresms(phno=phno,passwd=password,set_time='17:47',set_date='15/12/2017',receivernum=receiver mobile num,message='helloworld!!')
+	sms(phno='8601867011',passwd='Ram2003',message='hey',receivernum='9005285986')
 	return render(request,'login/form.html')
 
 def aboutus(request):
@@ -71,10 +69,9 @@ def register_view(request):
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				try:
-					q=sms('8840284384','K9532D')
-					q.send(username,'From Apna Rozgar, Your OTP is: '+str(otp))
-					otpdata=str(otp)
+					sms(phno='8601867011',passwd='Ram2003',message='From Apna Rozgar, your OTP is: '+str(otp),receivernum=username)
 					warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+					otpdata=""
 				except:
 					otpdata=str(otp)
 					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
@@ -142,9 +139,8 @@ def forgot_password_view(request):
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				try:
-					q=sms('8840284384','K9532D')
-					q.send(username,'From Apna Rozgar, Your OTP is: '+str(otp))
-					otpdata=str(otp)
+					sms(phno='8601867011',passwd='Ram2003',message='From Apna Rozgar, your OTP is: '+str(otp),receivernum=username)
+					otpdata=""
 					warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
 				except:
 					otpdata=str(otp)
@@ -202,9 +198,8 @@ def change_password_view(request):
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				try:
-					q=sms('8840284384','K9532D')
-					q.send(username,'From Apna Rozgar, Your OTP is: '+str(otp))
-					otpdata=str(otp)
+					sms(phno='8601867011',passwd='Ram2003',message='From Apna Rozgar, your OTP is: '+str(otp),receivernum=username)
+					otpdata=""
 					warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
 				except:
 					otpdata=str(otp)

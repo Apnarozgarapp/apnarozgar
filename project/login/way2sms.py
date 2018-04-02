@@ -23,7 +23,7 @@ def sms(phno,passwd,receivernum,message):
 		mobile=int(phno)
 		# pw=input(("{0}Password: ").format(GREEN))
 		pw = str(passwd)
-
+		aaa=""
 						
 		try:
 			data = [
@@ -78,9 +78,11 @@ def sms(phno,passwd,receivernum,message):
 
 					if(outcome[0].find('span',{'class':''})):
 						print("\n")
+						aaa="yes"
 						print(outcome[0].find('span',{'class':''}).text)
 					else:
 						print(("{0}Sending Failed !! Try Again !!{1}").format(RED,END))
+						aaa="no"
 
 					# print(outcome)
 					print("\n")
@@ -89,13 +91,13 @@ def sms(phno,passwd,receivernum,message):
 			else:
 				print("\n")
 				print(("{0}Invalid credentials !! Try Again !!{1}").format(RED,END))
-				print("\n")
-				
+				print("\n")	
 		except Exception as e:
 			print("Error : " ,e)
 
 	except Exception as e:
 		print("Error : " ,e)
+	return aaa
 
 
 

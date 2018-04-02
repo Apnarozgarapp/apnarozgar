@@ -16,6 +16,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 @login_required
 @transaction.atomic
 
+
 def confirm_work(request):
   if request.method=="POST" and 'cwchire' in request.POST:
     post_id=request.POST.get('post_id')

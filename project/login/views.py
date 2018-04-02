@@ -69,9 +69,13 @@ def register_view(request):
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				try:
-					sms(phno='8601867011',passwd='Ram2003',message='From Apna Rozgar, your OTP is: '+str(otp),receivernum=username)
-					warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
-					otpdata=""
+					aaa=sms(phno='8601867011',passwd='Ram2003',message='From Apna Rozgar, your OTP is: '+str(otp),receivernum=username)
+					if aaa=="yes":
+						otpdata=""
+						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+					else:
+						otpdata=str(otp)
+						warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 				except:
 					otpdata=str(otp)
 					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
@@ -139,9 +143,13 @@ def forgot_password_view(request):
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				try:
-					sms(phno='8601867011',passwd='Ram2003',message='From Apna Rozgar, your OTP is: '+str(otp),receivernum=username)
-					otpdata=""
-					warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+					aaa=sms(phno='8601867011',passwd='Ram2003',message='From Apna Rozgar, your OTP is: '+str(otp),receivernum=username)
+					if aaa=="yes":
+						otpdata=""
+						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+					else:
+						otpdata=str(otp)
+						warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 				except:
 					otpdata=str(otp)
 					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
@@ -198,9 +206,13 @@ def change_password_view(request):
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				try:
-					sms(phno='8601867011',passwd='Ram2003',message='From Apna Rozgar, your OTP is: '+str(otp),receivernum=username)
-					otpdata=""
-					warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+					aaa=sms(phno='8601867011',passwd='Ram2003',message='From Apna Rozgar, your OTP is: '+str(otp),receivernum=username)
+					if aaa=="yes":
+						otpdata=""
+						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+					else:
+						otpdata=str(otp)
+						warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 				except:
 					otpdata=str(otp)
 					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"

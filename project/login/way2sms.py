@@ -33,7 +33,7 @@ def sms(phno,passwd,receivernum,message):
 
 			# If any proxy set username and password , if not then comment the below line and remove "proxies=proxies" from all "requests.post" lines
 
-			# proxies = {"https":"https://r170065:obanna@10.50.50.64:3128","http":"http://r170065:obanna@10.50.50.111:3128"}
+			#proxies = {"https":"https://iit2014046:abhinav.dpspatna@172.31.1.5:8080","http":"http://iit2014046:abhinav.dpspatna@172.31.1.5:8080"}
 
 			a=requests.post('http://site21.way2sms.com/Login1.action', headers=headers, cookies=cookies, data=data)
 			soup = BeautifulSoup(a.text, 'html.parser')

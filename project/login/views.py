@@ -22,7 +22,7 @@ def smss(request):
 	
 	q=sms('8840284384','K9532D')
 	a=random.randint(1000,9999)
-	q.send('8601867011','From Apna Rozgar OTP:'+str(a))
+	q.send('9005285986','From Apna Rozgar OTP:'+str(a))
 	return render(request,'login/form.html')
 
 def aboutus(request):
@@ -70,12 +70,12 @@ def register_view(request):
 		warn = " "
 		if m is None:
 			if len(username) ==10 and username.isdigit():
-				#try:
-				#	q=sms('8840284384','K9532D')
-				#	q.send(username,'From Apna Rozgar, Your OTP is: '+str(otp))
-				#	otpdata=""
-				#	warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
-				#except:
+				try:
+					q=sms('8840284384','K9532D')
+					q.send(username,'From Apna Rozgar, Your OTP is: '+str(otp))
+					otpdata=str(otp)
+					warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+				except:
 					otpdata=str(otp)
 					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 
@@ -141,14 +141,14 @@ def forgot_password_view(request):
 		warn = " "
 		if m is None:
 			if len(username) ==10 and username.isdigit():
-				#try:
-				#	q=sms('8840284384','K9532D')
-				#	q.send(username,'From Apna Rozgar, Your OTP is: '+str(otp))
-				#	otpdata=""
-				#	warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
-				#except:
+				try:
+					q=sms('8840284384','K9532D')
+					q.send(username,'From Apna Rozgar, Your OTP is: '+str(otp))
 					otpdata=str(otp)
-				#	warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
+					warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+				except:
+					otpdata=str(otp)
+					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 
 			else:
 				warn="मोबाइल नंबर गलत है।| (Mobile number is incorrect.)"
@@ -201,14 +201,14 @@ def change_password_view(request):
 		warn = " "
 		if m is None:
 			if len(username) ==10 and username.isdigit():
-				#try:
-				#	q=sms('8840284384','K9532D')
-				#	q.send(username,'From Apna Rozgar, Your OTP is: '+str(otp))
-				#	otpdata=""
-				#	warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
-				#except:
+				try:
+					q=sms('8840284384','K9532D')
+					q.send(username,'From Apna Rozgar, Your OTP is: '+str(otp))
 					otpdata=str(otp)
-				#	warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
+					warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+				except:
+					otpdata=str(otp)
+					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 
 			else:
 				warn="मोबाइल नंबर गलत है।| (Mobile number is incorrect.)"

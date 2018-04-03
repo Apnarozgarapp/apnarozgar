@@ -176,7 +176,7 @@ def viewpost(request):
     
     pos=Posts.objects.filter(Q(rskill=data.skill1)|Q(rskill=data.skill2)|Q(rskill=data.skill3))
     pos=pos.filter(status='public')
-    pos=pos.filter(start_date__gte=datetime.datetime.today())
+    pos=pos.filter(end_date__gte=datetime.datetime.today().date())
     if len(pos)==0:
       warn='आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|'
       return render(request,'worker/postresult.html',{'pos':pos,'warn':warn})

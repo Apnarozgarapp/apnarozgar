@@ -21,25 +21,40 @@ def confirm_work(request):
   if request.method=="POST" and 'cwchire' in request.POST:
     post_id=request.POST.get('post_id')
     user_id=request.POST.get('user_id')
-    pqr=Status.objects.get(post_id=post_id,user_id=user_id)
-    pqr.delete()
+    page=request.POST.get('page')
+    pq=Status.objects.filter(post_id=post_id,user_id=user_id)
+    if len(pq)!=0:
+       for pqr in pq:
+          pqr.delete()
     selected=Status.objects.filter(userworker=request.user.username,confirm='a')
     warn=""
     if len(selected)==0:
       warn="कोई भी श्रमिक चयनित नहीं है"
-    return render(request,'worker/confirm_work.html',{'warn':warn,'selected':selected})
+    pag = Paginator(selected,3)
+    p = pag.page(int(page))
+    return render(request,'worker/confirm_work.html',{'warn':warn,'selected':p})
   else:
     selected=Status.objects.filter(userworker=request.user.username,confirm='a')
     warn=""
     if len(selected)==0:
       warn="कोई भी श्रमिक चयनित नहीं है"
-    return render(request,'worker/confirm_work.html',{'warn':warn,'selected':selected})
+    pag = Paginator(selected,3)
+    page = request.GET.get('page',None)
+    if not page:
+      page='1'
+    p = pag.page(int(page))
+    return render(request,'worker/confirm_work.html',{'warn':warn,'selected':p})
 
 def detail_post(request):
   if request.method == 'GET':
     dat = request.GET['data']
-    data= Posts.objects.get( post_id= dat)
-    return render(request,'search/view.html',{'data': data})  
+    data= Posts.objects.filter( post_id= dat)
+    if len(data)!=0:
+    	for data1 in data:
+    		return render(request,'search/view.html',{'data': data1})
+    else:
+    	warn="कोई पोस्ट नहीं मिला"  
+    	return render(request,'search/view.html',{'warn': warn})
   else:
     return HttpResponse("कोई पोस्ट नहीं मिला।") 
 
@@ -109,7 +124,7 @@ def all_post(request):
     dat.distance=dis
     dat.save()
   pos=pos.order_by('distance')
-  pag = Paginator(pos,1)
+  pag = Paginator(pos,2)
   page = request.GET.get('page',None)
   if not page:
     page='1'
@@ -127,6 +142,7 @@ def viewpost(request):
     userhirer=request.POST.get('userhirer')
     start_date=request.POST.get('start_date')
     end_date=request.POST.get('end_date')
+    page=request.POST.get('page')
     abc=Status.objects.filter(post_id=post_id,user_id=user_id)
     if len(abc)==0 and 'whire' in request.POST:
       cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,worker_status=post_id,userworker=userworker,userhirer=userhirer,start_date=start_date,end_date=end_date)
@@ -172,10 +188,7 @@ def viewpost(request):
       dat.save()
     pos=pos.order_by('distance')
     warn=""
-    pag = Paginator(pos,1)
-    page = request.GET.get('page',None)
-    if not page:
-      page='1'
+    pag = Paginator(pos,2)  
     p = pag.page(int(page))
     return render(request,'worker/postresult.html',{'pos':p,'user1':data,'warn':warn})
   else:
@@ -214,7 +227,7 @@ def viewpost(request):
                   dat.temp='c' 
       dat.save()
     pos=pos.order_by('distance')
-    pag = Paginator(pos,1)
+    pag = Paginator(pos,2)
     page = request.GET.get('page',None)
     if not page:
       page='1'

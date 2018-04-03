@@ -14,20 +14,20 @@
 
 .title {
   color: blue;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .but {
   border: none;
   outline: 0;
   display: inline-block;
-  padding: 8px;
+  padding: 5px;
   color: white;
   background-color: #000;
   text-align: center;
   cursor: pointer;
   width: 100%;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 
@@ -35,23 +35,24 @@ button:hover, a:hover {
   opacity: 0.7;
 }
 </style>
-
+<h4 align='center'>
+          <a href = '/view'><u>&#9664;-- अपना विवरण देखें </u></a>
+          </h4>
+          <h3><u><b>सभी कार्य पद :--&#9654;</b></u></h3>
    {% csrf_token %}
-   {{ warn }}
+   <h4><font color="red">{{ warn }}</font></h4>
 {% for data in pos %}
  
   <div class="card" style="background-color:#F7EAEB">
-  
-  <h3></h3>
-  <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
-  <p class="title">पोस्ट ID: {{data.post_id}}</p>
-  <p class="title">काम की जगह का पता: <br> {{data.street}}, {{data.location}} (distance:-{{data.distance}} km)</p>
+  <p><button class = "but">&#9679; {{data.rskill}} के लिए प्रकाशित पोस्ट आईडी:- {{data.post_id}} </button></p>
+  <p class="title">काम की जगह का पता: <br> {{data.street}}, {{data.location}} </p>
+  <p><b>आप से दूरी: {{data.distance}} km</b></p>
   <p class="title">कार्य की अवधि: <br>{{data.start_date}} - {{data.end_date}}</p>
   <p>आवश्यक श्रमिकों की संख्या: {{data.Nworker}}</p>
-  <p>वेतन भुगतान का तरीका: {{data.Twork}}</p>
-  <p>नियोक्ता का नाम: {{data.name}}</p>
+  <p><b>वेतन भुगतान का तरीका:</b> {{data.Twork}}</p>
+  <p><b>नियोक्ता का नाम: {{data.name}}</p></b>
     {%if data.description%}
-   <p>अन्य विवरण: {{data.description}}</p>
+   <p><b>अन्य विवरण:</b> {{data.description}}</p>
     {%endif%}
   <p><button class = "but">नियोक्ता का मोबाइल नंबर: {{data.s_contact}}</button></p>
   </div>
@@ -59,6 +60,7 @@ button:hover, a:hover {
     <br>
     
 {% endfor %}
+<b>
 <div class="pagination">
     <span class="step-links">
         {% if pos.has_previous %}
@@ -76,7 +78,7 @@ button:hover, a:hover {
         {% endif %}
     </span>
 </div>
-  
+  </b>
 </div>
 {% endblock %}
 

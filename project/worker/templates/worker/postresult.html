@@ -14,20 +14,20 @@
 
 .title {
   color: blue;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .but {
   border: none;
   outline: 0;
   display: inline-block;
-  padding: 8px;
+  padding: 6px;
   color: white;
   background-color: #000;
   text-align: center;
   cursor: pointer;
   width: 100%;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 
@@ -35,29 +35,31 @@ button:hover, a:hover {
   opacity: 0.7;
 }
 </style>
-
-<h3 align='center'>
-          <li ><a href = '/confirm_work'>सभी चयनित कार्य देखें</a></li>
-          </h3>
+<h4 align='left'>
+          <a href = '/view'><u>&#9664;-- अपना विवरण देखें </u></a>
+          </h4>
+<h4 align='right'>
+          <a href = '/confirm_work'><u>सभी चयनित कार्य देखें :--&#9654;</u></a>
+          </h4>
+          
+          <h4><u><b>कौशल और क्षमता के अनुसार कार्य पद :--&#9654;</b></u></h4>
    {% csrf_token %}
-   {{ warn }}
+   <h4><font color="red">{{ warn }}</font></h4>
 {% for data in pos %}
  
   <div class="card" style="background-color:#F7EAEB">
-  
-  <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
-  <p class="title">पोस्ट ID: {{data.post_id}}</p>
-  <p class="title">काम की जगह का पता: <br> {{data.street}}, {{data.location}}</p>
-  <p >आप से दूरी: {{data.distance}}km</p>
-  <p class="title">कार्य की अवधि: <br>{{data.start_date|date:"d/m/20y"}} - {{data.end_date|date:"d/m/20y"}}</p>
+  <p><button class = "but">&#9679; {{data.rskill}} के लिए प्रकाशित पोस्ट आईडी:- {{data.post_id}} </button></p>
+  <p class="title">काम की जगह का पता: <br> {{data.street}}, {{data.location}} </p>
+  <p><b>आप से दूरी: {{data.distance}} km</b></p>
+  <p class="title">कार्य की अवधि: <br>{{data.start_date}} - {{data.end_date}}</p>
   <p>आवश्यक श्रमिकों की संख्या: {{data.Nworker}}</p>
-  <p>वेतन भुगतान का तरीका: {{data.Twork}}</p>
-  <p><b>नियोक्ता का नाम: {{data.name}}</b></p>
+  <p><b>वेतन भुगतान का तरीका:</b> {{data.Twork}}</p>
+  <p><b>नियोक्ता का नाम: {{data.name}}</p></b>
     {%if data.description%}
-   <p>अन्य विवरण: {{data.description}}</p>
+   <p><b>अन्य विवरण:</b> {{data.description}}</p>
     {%endif%}
   <p><button class = "but">नियोक्ता का मोबाइल नंबर: {{data.s_contact}}</button></p>
-  
+  </div>
   
   <form method="POST" action="/worker/seepost">
      {% csrf_token %}
@@ -69,36 +71,36 @@ button:hover, a:hover {
      <input name ="userhirer" type="text" value={{data.username}} hidden></input>
      <input type="date" name ='end_date' value={{data.end_date|date:"20y-m-d"}} hidden></input>
      <input type="date" name ='start_date' value={{data.start_date|date:"20y-m-d"}} hidden></input>
+     <input name ="page" type="number" value={{pos.number}} hidden></input>
      <font size = 3.5>
       {%if 'e' in data.temp %}
-     <font color = "green"><p><b>आप इस पोस्ट के लिए आवेदन नहीं कर सकते क्योंकि आप इस तिथि पर उपलब्ध नहीं हैं।
+     <font color = "red"><p><b>--&#9654; आप इस पोस्ट के लिए आवेदन नहीं कर सकते क्योंकि आप इस तिथि पर उपलब्ध नहीं हैं।
      </b></p></font>
      {%endif%}
      {%if 'a' in data.temp %}
-     <font color = "green"><p><b>आपने इस पोस्ट के लिए काम करने की पुष्टि दी है (Confirmed)</b></p></font>
-     <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें</button>
+     <font color = "green"><p><b>--&#9654; आपने इस पोस्ट के लिए काम करने की पुष्टि दी है (Confirmed)</b></p></font>
+     <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें--&#9654;</button>
      
      {%endif%}
      {%if 'b' in data.temp %}
-     <font color = "blue">अनुरोध भेजा गया है</font>
-     <font color = "red"><p><b> आपके इस पोस्ट के लिए काम करने की पुष्टि नहीं हुई है (Not Confirmed)</b></p></font>
-     <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें</button>
+     <font color = "blue">"अनुरोध भेजा गया है"</font>
+     <font color = "red"><p><b> --&#9654; आपके इस पोस्ट के लिए काम करने की पुष्टि नहीं हुई है (Not Confirmed)</b></p></font>
+     <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें--&#9654;</button>
     {%endif%}
     {%if 'c' in data.temp %} 
-    <p><b>नियोक्ता ने आपको इस पोस्ट के लिए काम करने का अनुरोध भेजा है</b></p>
-    <b><button type="submit" name = 'whire' >इस पोस्ट के लिए काम करने की पुष्टि दें (Send Confirmation)</button> 
-    <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें</button>
+    <p><b>--&#9654; नियोक्ता ने आपको इस पोस्ट के लिए काम करने का अनुरोध भेजा है</b></p>
+    <b><button type="submit" name = 'whire' >इस पोस्ट के लिए काम करने की पुष्टि दें (Send Confirmation)--&#9654;</button> 
+    <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें--&#9654;</button>
     {%endif%}
     {%if 'd' in data.temp %} 
-    <b><button type="submit" name = 'whire' >इस पोस्ट के लिए नियोक्ता को कार्य अनुरोध (request) भेजें</button> 
+    <b><button type="submit" name = 'whire' >इस पोस्ट के लिए नियोक्ता को कार्य अनुरोध (request) भेजें--&#9654;</button> 
      {%endif%}   
    </b>
  </font>
   </form>
-</div>
-
-    <br><br>
+    <br>
 {% endfor %}
+<b>
   <div class="pagination">
     <span class="step-links">
         {% if pos.has_previous %}
@@ -117,7 +119,7 @@ button:hover, a:hover {
     </span>
 </div>
 
-  
+  <b>
 </div>
 {% endblock %}
 

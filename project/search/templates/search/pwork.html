@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class ='col-sm-6 col-sm-offset-3'>
-
+<b><input type="button" value="&#9664;-- पीछे जाएँ" onclick="history.back(-1)" /></b>
 {% if request.user.username%}
 
 <h3><u>कृपया नीचे दिए गए फ़ील्ड भरें:-</u></h3><br>
@@ -68,7 +68,7 @@
 
 	<div class="form-group">
 	<label for="Twork">वेतन भुगतान का तरीका</label>
-	<select name="Twork"   class="form-control" id="Twork" >
+	<select name="Twork"   class="form-control" id="multiselectio" multiple="multiple" >
 	<option value="प्रति घंटा भुगतान (Hourly payment)">प्रति घंटा भुगतान (Hourly payment)</option>
 	<option value="दैनिक भुगतान (Daily Payment)">दैनिक भुगतान (Daily Payment)</option>
 	<option value="मासिक भुगतान (Monthly Payment)">मासिक भुगतान (Monthly Payment)</option>

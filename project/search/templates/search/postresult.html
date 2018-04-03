@@ -59,7 +59,7 @@ button:hover, a:hover {
     background-color: #3e8e41;
 }
 </style>
-
+<h4><b><a href='/view'>&#9664;-- <u>अपना विवरण देखें :-</u></a></b></h4>
 <h3><u>अब तक आपके द्वारा प्रकाशित की गईं पोस्ट: </u></h3>    <br>
    {% csrf_token %} 
    {{ warn }}
@@ -81,6 +81,7 @@ button:hover, a:hover {
      {% csrf_token %}
      <div class = "btn-group"><font size = 4>
      <input name ="post_id" type="number" value={{data.post_id}} hidden></input>
+     <input name ="page" type="number" value={{pos.number}} hidden></input>
      <b><button type="submit" name = 'delete' >पोस्ट को हटा दें (Delete)</button>
       {%if "private" in data.status%}
      <button type="submit" name = 'status' >सार्वजनिक (public) पोस्ट बनाएं</button>
@@ -95,11 +96,32 @@ button:hover, a:hover {
  </font>
 </div>
   </form>
+  <br>
+  <br>
 </div>
-    <br>
-    <br>
 {% endfor %}
   
+  <b>
+  <div class="pagination">
+    <span class="step-links">
+        {% if pos.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ pos.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ pos.number }} of {{ pos.paginator.num_pages }}.
+        </span>
+
+        {% if pos.has_next %}
+            <a href="?page={{ pos.next_page_number }}">next</a>
+            <a href="?page={{ pos.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+  </b>
+
 </div>
 {% endblock %}
 

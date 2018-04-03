@@ -18,6 +18,7 @@ import re
 import string
 from django.db.models import Q
 import datetime
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def smss(request):
 	#futuresms(phno=phno,passwd=password,set_time='17:47',set_date='15/12/2017',receivernum=receiver mobile num,message='helloworld!!')
 	sms(phno='8601867011',passwd='Ram2003',message='hey',receivernum='9005285986')
@@ -262,19 +263,23 @@ def workrequest(request):
 		user_id=request.POST.get('user_id')
 		start_date=request.POST.get('start_date')
 		end_date=request.POST.get('end_date')
-		pqr=Status.objects.get(post_id=post_id,user_id=user_id)
+		page=request.POST.get('page')
+		pq=Status.objects.filter(post_id=post_id,user_id=user_id)
 		warn=""
-		if 'hhire' in request.POST :
-			r=Status.objects.filter(user_id=user_id,confirm='a')
-			p=r.filter(Q(start_date__lte=end_date,start_date__gte=start_date)|Q(end_date__lte=end_date,end_date__gte=start_date))
-			if len(p)==0:
-				pqr.hirer_status=user_id
-				pqr.confirm='a'
-				pqr.save()
-			else:
-				warn="अब मजदूर इस तिथि पर उपलब्ध नहीं है।"
-		if 'hchire' in request.POST :
-			pqr.delete()
+		if len(pq)!=0:
+			for pqr in pq:
+				
+				if 'hhire' in request.POST :
+					r=Status.objects.filter(user_id=user_id,confirm='a')
+					p=r.filter(Q(start_date__lte=end_date,start_date__gte=start_date)|Q(end_date__lte=end_date,end_date__gte=start_date))
+					if len(p)==0:
+						pqr.hirer_status=user_id
+						pqr.confirm='a'
+						pqr.save()
+					else:
+						warn="अब मजदूर इस तिथि पर उपलब्ध नहीं है।"
+				if 'hchire' in request.POST :
+					pqr.delete()
 		data=Status.objects.filter(userhirer=request.user.username)
 		for select in data:
 			if select.worker_status==select.post_id and select.hirer_status==select.user_id:
@@ -291,25 +296,30 @@ def workrequest(request):
 				select.save()        
 		if len(data)==0:
 			warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
-		return render(request,'search/workrequest.html',{'data':data,'warn':warn})
+		pag = Paginator(data,3)
+		p = pag.page(int(page))
+		return render(request,'search/workrequest.html',{'data':p,'warn':warn})
 	elif request.method=="POST" and ('whire' in request.POST or 'wchire' in request.POST ):
 		post_id=request.POST.get('post_id')
 		user_id=request.POST.get('user_id')
 		start_date=request.POST.get('start_date')
 		end_date=request.POST.get('end_date')
-		pqr=Status.objects.get(post_id=post_id,user_id=user_id)
+		pq=Status.objects.filter(post_id=post_id,user_id=user_id)
+		page=request.POST.get('page')
 		warn=""
-		if 'whire' in request.POST :
-			r=Status.objects.filter(user_id=user_id,confirm='a')
-			p=r.filter(Q(start_date__lte=end_date,start_date__gte=start_date)|Q(end_date__lte=end_date,end_date__gte=start_date))
-			if len(p)==0:
-				pqr.worker_status=post_id
-				pqr.confirm='a'
-				pqr.save()
-			else:
-				warn="आप इस तिथि पर उपलब्ध नहीं हैं।"
-		if 'wchire' in request.POST:
-			pqr.delete()
+		if len(pq)!=0:
+			for pqr in pq:
+				if 'whire' in request.POST :
+					r=Status.objects.filter(user_id=user_id,confirm='a')
+					p=r.filter(Q(start_date__lte=end_date,start_date__gte=start_date)|Q(end_date__lte=end_date,end_date__gte=start_date))
+					if len(p)==0:
+						pqr.worker_status=post_id
+						pqr.confirm='a'
+						pqr.save()
+					else:
+						warn="आप इस तिथि पर उपलब्ध नहीं हैं।"
+				if 'wchire' in request.POST:
+					pqr.delete()
 		data=Status.objects.filter(userworker=request.user.username)
 		for select in data:
 			if select.worker_status==select.post_id and select.hirer_status==select.user_id:
@@ -327,7 +337,9 @@ def workrequest(request):
 		
 		if len(data)==0:
 			warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
-		return render(request,'worker/workrequest.html',{'data':data,'warn':warn})
+		pag = Paginator(data,3)
+		p = pag.page(int(page))
+		return render(request,'worker/workrequest.html',{'data':p,'warn':warn})
 	else: 	
 		value=LoginAs.objects.get(username=request.user.username)
 		if value.loginas=="worker":
@@ -348,7 +360,12 @@ def workrequest(request):
 			warn=""
 			if len(data)==0:
 				warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
-			return render(request,'worker/workrequest.html',{'data':data,'warn':warn})
+			pag = Paginator(data,3)
+			page = request.GET.get('page',None)
+			if not page:
+				page='1'
+			p = pag.page(int(page))
+			return render(request,'worker/workrequest.html',{'data':p,'warn':warn})
 
 		
 		else:
@@ -369,5 +386,10 @@ def workrequest(request):
 			warn=""
 			if len(data)==0:
 				warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
-			return render(request,'search/workrequest.html',{'data':data,'warn':warn})
+			pag = Paginator(data,3)
+			page = request.GET.get('page',None)
+			if not page:
+				page='1'
+			p = pag.page(int(page))
+			return render(request,'search/workrequest.html',{'data':p,'warn':warn})
 

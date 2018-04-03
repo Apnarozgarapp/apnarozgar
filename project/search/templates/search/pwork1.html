@@ -2,50 +2,17 @@
 
 {% block content %}
 <div class ='col-sm-6 col-sm-offset-3'>
-
+<b><input type="button" value="&#9664;-- पीछे जाएँ" onclick="history.back(-1)" /></b>
 {% if request.user.username%}
 
 <h3><u>कृपया नीचे दिए गए फ़ील्ड भरें:-</u></h3><br>
 <h4> <font color="red">{{warn}}</font></h4>
 <form method="POST" action="/update">
    {% csrf_token %}
+   <h4> <u>कर्मचारी में आवश्यक कौशल:-</u> <b>{{data.rskill}}</b></h4>
+       
+       <h4><u> अवधि:-</u> <b>{{data.start_date|date:"d/m/20y"}} - {{data.end_date|date:"d/m/20y"}}</b></h4>
 <input name ="post_id"  type="number"  value={{data.post_id}} hidden></input>
-	<div class="form-group">
-	<label for="rskill">कर्मचारी में आवश्यक कौशल </label>
-	<select name="rskill"   class="form-control" id="rskill">
-	<option value="{{data.rskill}}">"{{data.rskill}}"</option>
-	<option value="निर्माण मजदूर(Construction worker)">निर्माण मजदूर(Construction worker)</option>
-	<option value="छोटे पैमाने पर बिजली कारीगर(Small-scale electrician)">छोटे पैमाने पर बिजली कारीगर(Small-scale electrician)</option>
-	<option value="बड़े पैमाने पर बिजली कारीगर(Large-scale electrician)">बड़े पैमाने पर बिजली कारीगर(Large-scale electrician)</option>
-	<option value="बढ़ई(Carpenter)">बढ़ई(Carpenter)</option>
-	<option value="पेंटर(Painter)">पेंटर(Painter)</option>
-	<option value="वेल्डर(Welder)">वेल्डर(Welder)</option>
-	<option value="पलंबर(Plumber)">पलंबर(Plumber)</option>
-	<option value="सफाई कर्मचारी(Cleanliness worker)">सफाई कर्मचारी(Cleanliness worker)</option>
-	<option value="दूध वितरक(Milk Supplier)">दूध वितरक(Milk Supplier)</option>
-	<option value="राजमिस्री(Mason)">राजमिस्री(Mason)</option>
-	<option value="हलवाई(Confectioner)">हलवाई(Confectioner)</option>
-	<option value="रसोइया(Cook)">रसोइया(Cook)</option>
-	<option value="काँचकर्मी(Glazier)">काँचकर्मी(Glazier)</option>
-	<option value="बेकर(baker)">बेकर(baker)</option>
-	<option value="सुरक्षा कर्मी(Security guard)">सुरक्षा कर्मी(Security guard)</option>
-	<option value="वाहन मिस्त्री(Vehicle Mechanic)">वाहन मिस्त्री(Vehicle Mechanic)</option>
-	<option value="फोटोग्राफर(Photographer)">फोटोग्राफर(Photographer)</option>
-	<option value="नाई(Barber)">नाई(Barber)</option>
-	<option value="कुम्हार(Potter)">कुम्हार(Potter)</option>
-	<option value="माली(Gardener)">माली(Gardener)</option>
-	<option value="नौकरानी(Maid)">नौकरानी(Maid)</option>
-	</select>
-	</div>
-
-	<div class="form-group">
-	    <label for="start_date">कार्य शुरुआत तिथि </label>
-	    <input type="date" name = 'start_date' class="form-control" id="start_date" required="True" value={{data.start_date|date:"20y-m-d"}}></input>
-	</div>
-	<div class="form-group">
-	    <label for="end_date">कार्य की अवधि की समाप्ति तिथि </label>
-	    <input type="date" name = 'end_date' class="form-control" id="end_date" required="True" value={{data.end_date|date:"20y-m-d"}}></input>
-	</div>
 
 	<div class="form-group" >
     <label for="name">आपका नाम</label>
@@ -75,8 +42,7 @@
 
 	<div class="form-group">
 	<label for="Twork">वेतन भुगतान का तरीका</label>
-	<select name="Twork"   class="form-control" id="Twork" >
-	<option value="{{data.Twork}}">"{{data.Twork}}"</option>
+	<select name="Twork"   class="form-control" id="multiselectio" multiple="multiple" >
 	<option value="प्रति घंटा भुगतान (Hourly payment)">प्रति घंटा भुगतान (Hourly payment)</option>
 	<option value="दैनिक भुगतान (Daily Payment)">दैनिक भुगतान (Daily Payment)</option>
 	<option value="मासिक भुगतान (Monthly Payment)">मासिक भुगतान (Monthly Payment)</option>

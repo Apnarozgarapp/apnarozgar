@@ -13,6 +13,7 @@ import urllib.request
 from math import sin, cos, sqrt, atan2, radians
 from django.db.models import Q
 import datetime
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 @login_required
 @transaction.atomic
 
@@ -38,6 +39,11 @@ def search_result(request):
         warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
       else:
         warn = ""
+      pag = Paginator(user1,2)
+      page = request.GET.get('page',None)
+      if not page:
+        page='1'
+      p = pag.page(int(page))
       return render(request,'search/result.html',{'users' : user1, 'warn' : warn})
     except Profile.DoesNotExist:
       warn="कोई मजदूर उपलब्ध नहीं है।"
@@ -90,8 +96,9 @@ def work_post(request):
         lng1='81.846311'
       dat=Posts(username=request.user.username,name=request.user.first_name, s_contact=s_contact,rskill=rskill,street=street,start_date=s_date,Nworker=Nworker,Twork=Twork,location=locatio,end_date=e_date,lat=lat1,lng=lng1,description=description,status=status)
       dat.save()
+      dataa=Posts.objects.get(post_id=dat.post_id)
       warn=""
-      return render(request,'search/update.html',{'warn' : warn,'data':dat})
+      return render(request,'search/update.html',{'warn' : warn,'data':dataa})
 
   else:
     return render(request,'search/pwork.html')
@@ -106,7 +113,10 @@ def see_work_post(request):
     warn=""
     if len(pos)==0:
       warn="कोई पोस्ट नहीं मिला।"
-    return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
+    pag = Paginator(pos,2)
+    page='1'
+    p = pag.page(int(page))
+    return render(request,'search/postresult.html',{'pos':p,'warn':warn})
   elif request.method=="POST" and 'status' in request.POST:
     post_id=request.POST.get('post_id')
     data=Posts.objects.get(post_id=post_id)
@@ -254,18 +264,20 @@ def see_work_post(request):
     warn=""
     if len(pos)==0:
       warn="कोई पोस्ट नहीं मिला।"
-    return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
+    pag = Paginator(pos,2)
+    page = request.GET.get('page',None)
+    if not page:
+      page='1'
+    p = pag.page(int(page))
+    return render(request,'search/postresult.html',{'pos':p,'warn':warn})
 
 def update(request):
   if request.method=="POST" and 'update' in request.POST:
     post_id=request.POST.get('post_id',None)
     name=request.POST.get('name')
     s_contact = request.POST.get('s_contact',None)
-    rskill = request.POST.get('rskill',None)
     street = request.POST.get('street',None)
     locatio = request.POST.get('location',None)
-    s_date = request.POST.get('start_date',None)
-    e_date = request.POST.get('end_date',None)
     lat1 = request.POST.get('lat',None)
     lng1 = request.POST.get('lng',None)
     Nworker=request.POST.get('Nworker',None)
@@ -274,11 +286,9 @@ def update(request):
     data=Posts.objects.get(post_id=post_id)
     data.name=name
     data.s_contact=s_contact
-    data.rskill=rskill
+   
     data.street==street
     data.location=locatio
-    data.start_date=s_date
-    data.end_date=e_date
     data.Nworker=Nworker
     data.Twork=Twork
     data.description=description

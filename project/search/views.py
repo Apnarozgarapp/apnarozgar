@@ -285,6 +285,7 @@ def update(request):
     data.lat=lat1
     data.lng=lng1
     data.save()
+    data=Posts.objects.get(post_id=post_id)
     warn="डेटा को सफलतापूर्वक सबमिट किया गया है"
     return render(request,'search/update.html',{'data':data,'warn':warn})
   else:

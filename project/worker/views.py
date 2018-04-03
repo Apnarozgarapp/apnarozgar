@@ -12,6 +12,7 @@ import urllib.request
 from django.db.models import Q
 from math import sin, cos, sqrt, atan2, radians
 import datetime
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 @login_required
 @transaction.atomic
 
@@ -90,6 +91,7 @@ def discal(a,b,c,d):
 def all_post(request):
   pos=Posts.objects.filter(status='public')
   pos=pos.filter(end_date__gte=datetime.datetime.today().date())
+
   if len(pos)==0:
     warn=' No post is available|'
     return render(request,'worker/postresult.html',{'pos':pos,'warn':warn})
@@ -99,8 +101,13 @@ def all_post(request):
     dat.distance=dis
     dat.save()
   pos=pos.order_by('distance')
+  pag = Paginator(pos,1)
+  page = request.GET.get('page',None)
+  if not page:
+    page='1'
+  p = pag.page(int(page))
   warn=""
-  return render(request,'worker/allpostresult.html',{'pos':pos,'warn':warn})
+  return render(request,'worker/allpostresult.html',{'pos':p,'warn':warn})
 
 def viewpost(request):
   if request.method=="POST" and ('whire' in request.POST or 'wchire' in request.POST ):
@@ -157,7 +164,12 @@ def viewpost(request):
       dat.save()
     pos=pos.order_by('distance')
     warn=""
-    return render(request,'worker/postresult.html',{'pos':pos,'user1':data,'warn':warn})
+    pag = Paginator(pos,1)
+    page = request.GET.get('page',None)
+    if not page:
+      page='1'
+    p = pag.page(int(page))
+    return render(request,'worker/postresult.html',{'pos':p,'user1':data,'warn':warn})
   else:
 
     data=Profile.objects.get(user=request.user)
@@ -194,5 +206,10 @@ def viewpost(request):
                   dat.temp='c' 
       dat.save()
     pos=pos.order_by('distance')
+    pag = Paginator(pos,1)
+    page = request.GET.get('page',None)
+    if not page:
+      page='1'
+    p = pag.page(int(page))
     warn=""
-    return render(request,'worker/postresult.html',{'pos':pos,'user1':data,'warn':warn})
+    return render(request,'worker/postresult.html',{'pos':p,'user1':data,'warn':warn})

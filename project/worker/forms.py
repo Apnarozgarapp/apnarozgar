@@ -14,5 +14,5 @@ class ProfileForm1(forms.ModelForm):
 class ProfileForm2(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('skill1','skill2','skill3','description','min_salary')
+        fields = ('skill1','skill2','skill3','description1','description2','description3','description')
 

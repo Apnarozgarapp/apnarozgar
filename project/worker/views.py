@@ -49,11 +49,19 @@ def update_profile(request):
         profile_form = ProfileForm1(request.POST, instance=request.user.profile)
         lat=request.POST.get('lat')
         lng=request.POST.get('lng')
+        name=request.POST.get('first_name')
+        request.user.first_name=name
+        request.user.save()
         if profile_form.is_valid():
             profile_form.save()
             if lat != '0':
-	            da=location(username=request.user.username,lat=lat,lng=lng)
-	            da.save()
+                da=location(username=request.user.username,lat=lat,lng=lng)
+                da.save()
+            else:
+                da=location.objects.filter(username=request.user.username)
+                if len(da)==0:
+                    da=location(username=request.user.username,lat='25.435801',lng='81.846311')
+                    da.save()
             return render(request,'worker/worker2.html')
         else:
           warn ="कृपया विवरण को सही करें"

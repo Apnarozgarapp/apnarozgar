@@ -59,7 +59,7 @@ button:hover, a:hover {
    <p><b>अन्य विवरण:</b> {{data.description}}</p>
     {%endif%}
   <p><button class = "but">नियोक्ता का मोबाइल नंबर: {{data.s_contact}}</button></p>
-  </div>
+  
   
   <form method="POST" action="/worker/seepost">
      {% csrf_token %}
@@ -98,6 +98,8 @@ button:hover, a:hover {
    </b>
  </font>
   </form>
+  </div>
+    <br>
     <br>
 {% endfor %}
 <b>

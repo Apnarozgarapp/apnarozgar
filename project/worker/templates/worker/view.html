@@ -37,10 +37,17 @@ button:hover, a:hover {
 }
 </style>
 <b><input type="button" value="&#9664;-- पीछे जाएँ" onclick="history.back(-1)" /></b>
+
 <div class="card">
-	
+	<h4><font color="red">{{warn}}</font></h4>
   <h1>{{data.user.first_name}}</h1>
-  <p class="title">{{data.address}}</p>
+  {% if data.rating %}
+   (rating= "{{data.rating}}")
+  {%endif%}
+  <font color = 'black' size = 5>
+ पूरा पता:-:<br>
+</font>
+  <p class="title"> {{data.street}} , {{data.address}}</p>
   <br>
   <font color = 'black' size = 5>
 उपलब्धता की अवधि:<br>
@@ -53,13 +60,40 @@ button:hover, a:hover {
  	कौशल और क्षमताएं:<br>
  </font>
  <font color = 'blue' size = 4>
- 	{{data.skill1}}<br>
- 	{{data.skill2}}<br>
- 	{{data.skill3}}<br>
-
+ {% if data.skill1 %}
+ 1--&#9656;   <u>{{data.skill1}}</u><br>
+ {% if data.description1 %}
+  कौशल #1 विवरण:<br>{{data.description1}}<br>{{data.description11}} 
+  <br>
+  <br>
+ 	{%endif%}
+  {%endif%}
+  {% if data.skill2 %}
+ 2--&#9656;  <u>{{data.skill2}}</u><br>
+ {% if data.description2 %}
+  कौशल #2 विवरण:<br>{{data.description2}} 
+  <br>
+  <br>
+  {%endif%}
+  {%endif%}
+  {% if data.skill3 %}
+ 3--&#9656;  <u>{{data.skill3}}</u><br>
+ {% if data.description3 %}
+  कौशल #3 विवरण:<br>{{data.description3}}
+  <br>
+  <br>
+  {%endif%}
+  {%endif%}
+</font>
+ 	 {% if data.ptype %}
+   <font color = 'black' size = 4 >
+  अपेक्षित वेतन भुगतान का तरीका::<br>
  </font>
- <br><br>
-{% if data.description != "None" %}
+ {{data.ptype}}
+ <br>
+ {%endif%}
+<br>
+{% if data.description  %}
  <font color = 'black' size = 5 >
  	अन्य विवरण:<br>
  </font>
@@ -71,6 +105,9 @@ button:hover, a:hover {
  
 </div>
 	<br>
+  <h3 align="center">
+            <li ><a href = '/feedback'>फीडबैक</a></li>
+            </h3>
 		
 </div>
 

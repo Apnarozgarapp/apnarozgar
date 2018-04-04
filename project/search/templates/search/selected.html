@@ -80,16 +80,15 @@ button:hover, a:hover {
      {% csrf_token %}
      <div class = "btn-group"><font size = 4>
      <input name ="post_id" type="number" value={{data.post_id}} hidden></input>
-     <input name ="page" type="number" value={{pos.number}} hidden></input>
-     <b><button type="submit" name = 'delete' >पोस्ट को हटा दें  ( Delete )</button>
+     <b><button type="submit" name = 'delete' >पोस्ट को हटा दें (Delete)</button>
       {%if "private" in data.status%}
      <button type="submit" name = 'status' >सार्वजनिक (public) पोस्ट बनाएं</button>
      {%else%}
      <button type="submit" name = 'status' >इसे निजी (private) पोस्ट बनाएं</button>
      {%endif%}
      <button type="submit" name = 'selected' >इस पोस्ट के लिए चयनित श्रमिक देखें</button>
-     <button type="submit" name = 'edit' style = "width : 50% ">पोस्ट में बदलाव करे</button>
-     <button type="submit" name = 'search' style = "width: 50%">कर्मचारी ढूंढे</button>
+     <button type="submit" name = 'edit' style = "width : 40% ">पोस्ट में बदलाव करे</button>
+     <button type="submit" name = 'search' style = "width: 100%">कर्मचारी ढूंढे</button>
    </b>
  </font>
 </div>

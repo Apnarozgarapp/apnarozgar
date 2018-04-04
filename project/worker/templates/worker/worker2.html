@@ -16,7 +16,7 @@
 
 <div class="form-group">
 <label for="skill1">कौशल #1 (अनिवार्य)</label>
-<select name="skill1" class="form-control" id="skill1" onchange="dynamicdropdown(this.options[this.selectedIndex].value);">
+<select name="skill1" class="form-control" id="skill1" onchange="dynamicdropdown(this.options[this.selectedIndex].value);"  required>
 <option value="" selected>इन विकल्पों से कौशल चुनें</option>
 <option value="निर्माण मजदूर(Construction worker)">निर्माण मजदूर(Construction worker)</option>
 	<option value="बिजली कारीगर(Electrician)">बिजली कारीगर(Electrician)</option>
@@ -42,11 +42,11 @@
 <div class="form-group">
   <label for="description1">कौशल #1 का विवरण 1:</label>
   		<script type="text/javascript" language="JavaScript">
-                document.write('<select name ="description1" class="form-control" id="multiselection"><option value="">इन विकल्पों से चुनें</option></select>')
+                document.write('<select name ="description1" class="form-control" id="multiselection" size="3" multiple ><option value="">इन विकल्पों से चुनें</option></select>')
         </script>
         <noscript>
         	
-      <select name ="description1" class="form-control" id="multiselection" >
+      <select name ="description1" class="form-control" id="multiselection" size="3" multiple>
       	<option value="">इन विकल्पों से चुनें</option>
       </select>
       </noscript>
@@ -86,11 +86,11 @@
 <div class="form-group">
   <label for="description2">कौशल #2 का विवरण:</label>
   		<script type="text/javascript" language="JavaScript">
-                document.write('<select name ="description2" class="form-control" id="multiselecti"><option value="">इन विकल्पों से चुनें</option></select>')
+                document.write('<select name ="description2" class="form-control" id="multiselecti" size="3" multiple><option value="">इन विकल्पों से चुनें</option></select>')
         </script>
         <noscript>
         	
-      <select name ="description2" class="form-control" id="multiselecti" >
+      <select name ="description2" class="form-control" id="multiselecti" size="3" multiple>
       	<option value="">इन विकल्पों से चुनें</option>
       </select>
       </noscript>
@@ -108,7 +108,7 @@
 <div class="form-group">
 	<label for="ptype">अपेक्षित वेतन भुगतान का तरीका:</label>
 	<br>
-	<select name="ptype"   class="form-control" id="multiselectio" multiple="multiple" >
+	<select name="ptype"   class="form-control" id="multiselectio" multiple required>
 	<option value="प्रति घंटा भुगतान (Hourly payment)">प्रति घंटा भुगतान (Hourly payment)</option>
 	<option value="दैनिक भुगतान (Daily Payment)">दैनिक भुगतान (Daily Payment)</option>
 	<option value="मासिक भुगतान (Monthly Payment)">मासिक भुगतान (Monthly Payment)</option>

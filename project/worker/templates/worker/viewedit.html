@@ -59,7 +59,7 @@ button:hover, a:hover {
 <h3><li>आपका विवरण:</li></h3>
             <div class="card" style="background-color:#F7EAEB">
 	
-  <h3><button class = "but">{{user.first_name}}</button></h3>
+  <h3><button class = "but"><a href = '/profile'>{{user.first_name}}</a></button></h3>
   <p class="title">{{user.profile.street}}, {{user.profile.address}}</p>
   <br>
   <font color = 'black' size = 5>
@@ -91,6 +91,7 @@ button:hover, a:hover {
  
 </div>
 	<br>
+  
 
     		{% else %}
     			<h3>

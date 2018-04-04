@@ -87,7 +87,7 @@ def work_post(request):
       lat1 = request.POST.get('lat',None)
       lng1 = request.POST.get('lng',None)
       Nworker=request.POST.get('Nworker',None)
-      Twork=request.POST.get('Twork',None)
+      Twork=request.POST.getlist('Twork',None)
       description=request.POST.get('description',None)
       status=request.POST.get('status',None)
       if lat1=='0':
@@ -281,7 +281,7 @@ def update(request):
     lat1 = request.POST.get('lat',None)
     lng1 = request.POST.get('lng',None)
     Nworker=request.POST.get('Nworker',None)
-    Twork=request.POST.get('Twork',None)
+    Twork=request.POST.getlist('Twork',None)
     description=request.POST.get('description',None)
     data=Posts.objects.get(post_id=post_id)
     data.name=name

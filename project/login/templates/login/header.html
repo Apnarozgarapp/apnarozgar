@@ -26,15 +26,15 @@
   </head>
   
 
-<body class="body" style="background-color:#d7f0ff">
-  <img class = 'bg' src = "{% static 'login/img/img.jpg' %}">
-	<div class="container-fluid" style="min-height:95%; ">
+<body class="body" style="background-color:#D1D8F5">
+  <img  class = 'bg' src = "{% static 'login/img/img2.jpg' %}">
+	<div class="container-fluid" style="min-height:94% ">
 	  
 		<div class="row">
 			  <div class="col-sm-2">
 				<br>
 				  <center>
-					<img src="{% static 'login/img/profile.jpg' %}" class="img-responsive" style='max-height:100px;' alt="logo">
+					
 					{% if request.user.username %}
 				  	<p><b> {{request.user.first_name}}</b> ने लॉगिन किया है</p>
 					{% endif %}
@@ -84,6 +84,8 @@
 		</div> 
 	</div>
   </img>
+  <br>
+  <br>
 	  <footer>
          <br>
          <br>

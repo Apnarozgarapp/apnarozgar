@@ -23,7 +23,7 @@ class Profile(models.Model):
     min_salary = models.IntegerField(blank = True, null = True)
     rating = models.FloatField(blank = True, null = True)
     nhirer = models.IntegerField(blank = True, null = True)
-    ptype = models.CharField(max_length = 250,blank = True, null = True)
+    ptype = models.TextField(max_length = 250,blank = True, null = True)
     worker_age=models.IntegerField(blank = True, null = True)
     joinrequest=models.CharField(max_length = 2,blank = True, null = True)
     temp=models.CharField(max_length = 2,blank = True, null = True)

@@ -16,7 +16,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 @login_required
 @transaction.atomic
 
-
+def feedback(request):
+  return HttpResponse("hey")
 def confirm_work(request):
   if request.method=="POST" and 'cwchire' in request.POST:
     post_id=request.POST.get('post_id')
@@ -83,10 +84,17 @@ def update_profile(request):
           return render(request,'worker/worker1.html',{"warn":warn})
     if request.method == 'POST' and 'save_changes2' in request.POST:
       skill1 = request.POST.get('skill1')
+      ptype = request.POST.getlist('ptype')
+      description1 = request.POST.getlist('description1')
+      description2 = request.POST.getlist('description2')
       warn = ""
       profile_form = ProfileForm2(request.POST, instance=request.user.profile)
       if profile_form.is_valid() and skill1:
          profile_form.save()
+         request.user.profile.ptype=ptype
+         request.user.profile.description1=description1
+         request.user.profile.description2=description2
+         request.user.profile.save()
          return render(request,'worker/success.html',{"warn":warn})
       else:
           warn ="कृपया विवरण को सही करें, कौशल 1 अनिवार्य है।"
@@ -94,8 +102,14 @@ def update_profile(request):
     else:
        return render(request,'worker/worker1.html')
 
-def view_profile(request):
-    return render(request,'worker/view.html')
+def profile(request):
+  if request.user:
+    data=Profile.objects.get(user=request.user)
+    return render(request,'worker/view.html',{'data':data})
+  else:
+    warn="कृपया लॉगिन करें"
+    return render(request,'worker/view.html',{'warn':warn})
+
 
 def discal(a,b,c,d):
   R = 6373.0

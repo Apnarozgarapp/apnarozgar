@@ -5,7 +5,7 @@
 
 <div class ='col-sm-6 col-sm-offset-3'>
 <h3>यहां अपना योग्यता(Skills) दर्ज करें</h3><br>
-<p>{{warn}}</p>
+<p><font color = "red">{{warn}}</font></p>
 
         <!--<meta http-equiv="Content-Type" content="text/html;" /> -->
         
@@ -15,7 +15,7 @@
 {% csrf_token %}
 
 <div class="form-group">
-<label for="skill1">कौशल #1 </label>
+<label for="skill1">कौशल #1 (अनिवार्य)</label>
 <select name="skill1" class="form-control" id="skill1" onchange="dynamicdropdown(this.options[this.selectedIndex].value);">
 <option value="" selected>इन विकल्पों से कौशल चुनें</option>
 <option value="निर्माण मजदूर(Construction worker)">निर्माण मजदूर(Construction worker)</option>
@@ -54,20 +54,12 @@
 
 <div class="form-group">
   <label for="description11">कौशल #1 का विवरण 2:</label>
-  		<script type="text/javascript" language="JavaScript">
-                document.write('<select name ="description11" class="form-control" id="multiselection"><option value="">इन विकल्पों से चुनें</option></select>')
-        </script>
-        <noscript>
-        	
-      <select name ="description11" class="form-control" id="multiselection" >
-      	<option value="">इन विकल्पों से चुनें</option>
-      </select>
-      </noscript>
-</div> 
+      <input type="text" name ="description11" id="descrition11" placeholder="ऐच्छिक(optional)" class="form-control" value="{{user.profile.description11}}" Optional></input>
+    </div>
 
 
 <div class="form-group">
-<label for="skill2">कौशल #2 </label>
+<label for="skill2">कौशल #2 (ऐच्छिक)</label>
 <select name="skill2" class="form-control" id="skill2" onchange="dynamicdropdow(this.options[this.selectedIndex].value);">
 <option value="" selected>इन विकल्पों से कौशल चुनें</option>
 <option value="निर्माण मजदूर(Construction worker)">निर्माण मजदूर(Construction worker)</option>
@@ -105,15 +97,23 @@
 </div>
 
 <div class="form-group">
-<label for="skill3">कौशल और क्षमताएं :3 </label>
+<label for="skill3">कौशल #3 (ऐच्छिक)</label>
 <input type="text" name="skill3"   class="form-control" id="skill3" value="{{user.profile.skill3}}" optional> </input>
 </div>
 
 <div class="form-group">
-  <label for="description3">कौशल और क्षमताएं :3 का विवरण</label>
+  <label for="description3">कौशल #3 का विवरण:</label>
       <input type="text" name ="description3" id="descrition3" placeholder="ऐच्छिक(optional)" class="form-control" value="{{user.profile.description3}}" Optional></input>
     </div> 
-
+<div class="form-group">
+	<label for="ptype">अपेक्षित वेतन भुगतान का तरीका:</label>
+	<br>
+	<select name="ptype"   class="form-control" id="multiselectio" multiple="multiple" >
+	<option value="प्रति घंटा भुगतान (Hourly payment)">प्रति घंटा भुगतान (Hourly payment)</option>
+	<option value="दैनिक भुगतान (Daily Payment)">दैनिक भुगतान (Daily Payment)</option>
+	<option value="मासिक भुगतान (Monthly Payment)">मासिक भुगतान (Monthly Payment)</option>
+</select>
+</div>
 <div class="form-group">
   <label for="description">कोई अन्य विवरण(Description about skills)</label>
       <textarea type="text" name ="description" id="descrition" placeholder="ऐच्छिक(optional)" class="form-control" value="{{user.profile.description}}" Optional></textarea>

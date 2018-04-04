@@ -44,12 +44,12 @@ button:hover, a:hover {
 			<!--<div class="well bs-sidebar affix" id="sidebar" style="background-color:#fff">-->
 		<div >
 			<ul class="nav nav-pills nav-stacked">
-         <h3>
+         
+            {% if request.user.profile.skill1 %}
+<h3>
             <li ><a href = '/allpost' >सभी उपलब्ध पोस्ट देखें</a></li>
             </h3>
-            {% if request.user.profile.skill1 %}
-
-<h3>
+            <h3>
             <li ><a href = '/worker/edit' >अपना विवरण बदलें</a></li>
             </h3>
             <h3>
@@ -93,7 +93,7 @@ button:hover, a:hover {
 	<br>
 
     		{% else %}
-    			<h3 align='center'>
+    			<h3>
     			<li ><a href = '/worker/edit'>अपना विवरण दर्ज करें</a></li>
     			</h3>
     		{% endif %}

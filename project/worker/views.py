@@ -29,7 +29,7 @@ def confirm_work(request):
     selected=Status.objects.filter(userworker=request.user.username,confirm='a')
     warn=""
     if len(selected)==0:
-      warn="कोई भी श्रमिक चयनित नहीं है"
+      warn="आप किसी भी पोस्ट के लिए अभी तक चयनित नहीं हैं।"
     pag = Paginator(selected,3)
     p = pag.page(int(page))
     return render(request,'worker/confirm_work.html',{'warn':warn,'selected':p})
@@ -37,7 +37,7 @@ def confirm_work(request):
     selected=Status.objects.filter(userworker=request.user.username,confirm='a')
     warn=""
     if len(selected)==0:
-      warn="कोई भी श्रमिक चयनित नहीं है"
+      warn="आप किसी भी पोस्ट के लिए अभी तक चयनित नहीं हैं।"
     pag = Paginator(selected,3)
     page = request.GET.get('page',None)
     if not page:
@@ -82,12 +82,14 @@ def update_profile(request):
           warn ="कृपया विवरण को सही करें"
           return render(request,'worker/worker1.html',{"warn":warn})
     if request.method == 'POST' and 'save_changes2' in request.POST:
+      skill1 = request.POST.get('skill1')
+      warn = ""
       profile_form = ProfileForm2(request.POST, instance=request.user.profile)
-      if profile_form.is_valid():
+      if profile_form.is_valid() and skill1:
          profile_form.save()
-         return render(request,'worker/success.html')
+         return render(request,'worker/success.html',{"warn":warn})
       else:
-          warn ="कृपया विवरण को सही करें"
+          warn ="कृपया विवरण को सही करें, कौशल 1 अनिवार्य है।"
           return render(request,'worker/worker2.html',{"warn":warn})
     else:
        return render(request,'worker/worker1.html')
@@ -116,7 +118,7 @@ def all_post(request):
   pos=pos.filter(end_date__gte=datetime.datetime.today().date())
 
   if len(pos)==0:
-    warn=' No post is available|'
+    warn='आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|'
     return render(request,'worker/postresult.html',{'pos':pos,'warn':warn})
   loc=location.objects.get(username=request.user.username)
   for dat in pos :

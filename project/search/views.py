@@ -16,7 +16,9 @@ import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 @login_required
 @transaction.atomic
-
+def done(request):
+  if request.method == 'POST':
+    rating=request.POST.get('skill')
 def search_result(request):
   if request.method == 'POST':
     skill = request.POST.get('skill',None)

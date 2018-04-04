@@ -27,7 +27,13 @@ class Profile(models.Model):
     worker_age=models.IntegerField(blank = True, null = True)
     joinrequest=models.CharField(max_length = 2,blank = True, null = True)
     temp=models.CharField(max_length = 2,blank = True, null = True)
-
+    ac = models.CharField(max_length=100,blank = True, null = True)
+    ifsc = models.CharField(max_length=100,blank = True, null = True)
+    paytm = models.CharField(max_length=100,blank = True, null = True)
+    upi = models.CharField(max_length=100,blank = True, null = True)
+    acname = models.CharField(max_length=100,blank = True, null = True)
+    bank = models.CharField(max_length=100,blank = True, null = True)
+    mode = models.CharField(max_length=50,blank = True, null = True)
     def __str__(self):
     	return self.user.username
 

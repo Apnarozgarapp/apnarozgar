@@ -9,7 +9,8 @@
 <h4> <font color="red">{{warn}}</font></h4>
 <form method="POST" action="">
    {% csrf_token %}
-
+    <input name ="post_id" type="number" value={{post_id}} hidden></input>
+    <input name ="user_id" type="number" value={{user_id}} hidden></input>
 	<div class="form-group">
 	<h3>वेतन भुगतान के तरीके के बारे में जानकारी दें</h3>
 	<label for="pmode">वेतन भुगतान का प्रकार: </label>
@@ -73,7 +74,7 @@
 	</select>
 	</div>
 
-	<button type="submit" name = 'done' >submit</button>
+	<button type="submit" name = 'done1' >फीडबैक और भुगतान विवरण सबमिट करें</button>
 </form>
 {% else %}
    <h4><b><li><a href='/login'>लॉग इन करें</a></li></b></h4>

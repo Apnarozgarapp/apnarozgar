@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.contrib.auth.models import User
 from worker.models import Profile,location
+from login.models import Feedback
 from .models import Posts,Status
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
@@ -17,8 +18,46 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 @login_required
 @transaction.atomic
 def done(request):
-  if request.method == 'POST':
-    rating=request.POST.get('skill')
+  if request.method == 'POST' and 'done1' in request.POST:
+    post_id=request.POST.get('post_id')
+    user_id=request.POST.get('user_id')
+    pmode=request.POST.get('pmode')
+    pdate=request.POST.get('pdate')
+    description=request.POST.get('description')
+    rating=request.POST.get('rating')
+    feedback1=request.POST.get('feedback1')
+    feedback2=request.POST.get('feedback2')
+    feedback3=request.POST.get('feedback3')
+    wuser=Profile.objects.get(user_id=user_id)
+    if not wuser.rating:
+      wuser.rating=float(rating)
+      wuser.nhirer=1
+    else:
+      wuser.rating=(wuser.rating*wuser.nhirer+float(rating))/(wuser.nhirer+1)
+      wuser.nhirer=wuser.nhirer+1
+    wuser.save()
+    data1=Feedback(userhirer=request.user.username,userworker=wuser,post_id=post_id,feedback1=feedback1,feedback2=feedback2,feedback3=feedback3,pmode=pmode,pdate=pdate,description=description)
+    data1.save()
+    data=Posts.objects.get(post_id=post_id)
+    data2=Status.objects.get(post_id=post_id,user_id=user_id)
+    data2.done='a'
+    data2.save()
+    selected=Status.objects.filter(post_id=post_id,confirm='a')
+    warn=" प्रतिक्रिया (Feedback) और भुगतान विवरण सफलतापूर्वक सबमिट किया गया "
+    return render(request,"search/selected.html",{'data':data,'selected':selected,'warn':warn})
+  elif request.method == 'POST' and 'done' in request.POST:
+    post_id=request.POST.get('post_id')
+    user_id=request.POST.get('user_id')
+    data2=Status.objects.get(post_id=post_id,user_id=user_id)
+    if data2.start_date<=datetime.datetime.today().date():
+      return render(request,"search/done.html",{'post_id':post_id,'user_id':user_id})
+    else:
+      data=Posts.objects.get(post_id=post_id)
+      selected=Status.objects.filter(post_id=post_id,confirm='a')
+      warn=" काम अभी तक शुरू नहीं हुआ है "
+      return render(request,"search/selected.html",{'data':data,'selected':selected,'warn':warn})
+
+
 def search_result(request):
   if request.method == 'POST':
     skill = request.POST.get('skill',None)

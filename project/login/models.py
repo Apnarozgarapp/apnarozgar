@@ -18,7 +18,10 @@ class Feedback(models.Model):
     userhirer = models.CharField(max_length=100,blank = True, null = True)
     userworker = models.CharField(max_length=100,blank = True, null = True)
     post_id=models.IntegerField(blank = True, null = True)
-    feedback=models.TextField(max_length = 500,blank = True, null = True)
-    status = models.CharField(max_length = 2,blank = True, null = True)
-    pay = models.CharField(max_length = 2,blank = True, null = True)
+    feedback1=models.TextField(max_length = 100,blank = True, null = True)
+    feedback2=models.TextField(max_length = 100,blank = True, null = True)
+    feedback3=models.TextField(max_length = 100,blank = True, null = True)
+    description=models.TextField(max_length = 200,blank = True, null = True)
+    pmode = models.CharField(max_length = 2,blank = True, null = True)
+    pdate = models.DateField(blank = True, null = True)
 

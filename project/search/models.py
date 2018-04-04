@@ -36,4 +36,5 @@ class Status(models.Model):
 	temp=models.CharField(max_length = 2,blank = True, null = True)
 	start_date = models.DateField(blank = True, null = True)
 	end_date = models.DateField(blank = True, null = True)
+	done=models.CharField(max_length = 2,blank = True, null = True)
 

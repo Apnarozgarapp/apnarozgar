@@ -1,0 +1,88 @@
+{% extends "login/header.html" %}
+
+{% block content %}
+<div class ='col-sm-6 col-sm-offset-3'>
+<b><input type="button" value="&#9664;-- पीछे जाएँ" onclick="history.back(-1)" /></b>
+{% if request.user.username%}
+
+<h3><u>कृपया नीचे दिए गए फ़ील्ड भरें:-</u></h3><br>
+<h4> <font color="red">{{warn}}</font></h4>
+<form method="POST" action="">
+   {% csrf_token %}
+
+	<div class="form-group">
+	<label for="pmode">भुगतान का प्रकार: </label>
+	<select name="pmode"   class="form-control" id="pmode" required>
+	<option value="CASH">CASH</option>
+	<option value="paytm">paytm</option>
+	<option value="direct transfer to account">direct transfer to account</option>
+	<option value="UPI">UPI</option>
+	<option value="other">other</option>
+	</select>
+	</div>
+		<div class="form-group">
+	    <label for="pdate">payment date</label>
+	    <input type="pdate" name = 'pdate' class="form-control" id="date" required="True"></input>
+	</div>
+	<div class="form-group">
+	    <label for="description">description (other payment verification details) </label>
+	    <input type="text" name = 'description' class="form-control" ></input>
+	</div>
+	
+
+	<div class="form-group">
+	<label for="rating">rating: </label>
+	<select name="rating"   class="form-control" id="rating" required>
+	<option value="1">1</option>
+	<option value="2">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+	<option value="5">5</option>
+	</select>
+	</div>
+
+	
+	
+	
+	<div class="form-group">
+	<label for="feedback1">भुगतान का प्रकार: </label>
+	<select name="feedback1"   class="form-control" id="feedback1" required>
+	<option value="CASH">CASH</option>
+	<option value="paytm">paytm</option>
+	<option value="direct transfer to account">direct transfer to account</option>
+	<option value="UPI">UPI</option>
+	<option value="other">other</option>
+	</select>
+	</div>
+
+	<div class="form-group">
+	<label for="feedback2">भुगतान का प्रकार: </label>
+	<select name="feedback2"   class="form-control" id="feedback2" required>
+	<option value="CASH">CASH</option>
+	<option value="paytm">paytm</option>
+	<option value="direct transfer to account">direct transfer to account</option>
+	<option value="UPI">UPI</option>
+	<option value="other">other</option>
+	</select>
+	</div>
+    
+    <div class="form-group">
+	<label for="feedback2">भुगतान का प्रकार: </label>
+	<select name="feedback2"   class="form-control" id="feedback2" required>
+	<option value="CASH">CASH</option>
+	<option value="paytm">paytm</option>
+	<option value="direct transfer to account">direct transfer to account</option>
+	<option value="UPI">UPI</option>
+	<option value="other">other</option>
+	</select>
+	</div>
+
+	<button type="submit" name = 'done' >submit</button>
+</form>
+{% else %}
+   <h4><b><li><a href='/login'>लॉग इन करें</a></li></b></h4>
+   {%endif%}
+
+</div>
+{% endblock %}
+

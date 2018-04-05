@@ -41,7 +41,6 @@ def done(request):
     data=Posts.objects.get(post_id=post_id)
     data2=Status.objects.get(post_id=post_id,user_id=user_id)
     data2.done='a'
-
     data2.save()
     selected=Status.objects.filter(post_id=post_id,confirm='a')
     warn=" प्रतिक्रिया (Feedback) और भुगतान विवरण सफलतापूर्वक सबमिट किया गया "

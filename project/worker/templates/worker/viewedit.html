@@ -45,59 +45,48 @@ button:hover, a:hover {
 		<div >
 			<ul class="nav nav-pills nav-stacked">
          <h4><font color="red">{{warn}}</h4></font>
+         <h3> आपके सभी विवरण हमारे साथ सुरक्षित हैं </h3>
+
             {% if request.user.profile.skill1 %}
+            
+              <h4><li><b><a href = '/profile'>अपना विवरण देखें--&#9654</a></b></li></h4>
+             <h4>
+            <li ><b><a href = '/worker/edit' >अपना विवरण बदलें--&#9654</a></b></li>
+            </h4>
+            <br>
+         
+
+
+              <h3>आपके लिए सही रोजगार यहां है</h3>
+              <h4>
+            <li ><b><a href = '/allpost' >सभी उपलब्ध पोस्ट देखें--&#9654</a></b></li>
+            </h4>
+            <h4>
+            <li ><b><a href = '/worker/seepost' >आपके कौशल से मेल खाने वाले पोस्ट देखें--&#9654</a></b></li>
+            </h4>
             <h4 >
-          <a href = '/confirm_work'><u>सभी चयनित कार्य देखें :--&#9654;</u></a>
+          <li><b><a href = '/confirm_work'>उन सभी पोस्ट को देखें जिनके लिए आपका चयन किया गया है--&#9654;</a></b></li>
           </h4>
-          <h4><b><a href='/hpay'><u> भुगतान :  --&#9654;</u></a></b></h4>
-            <h3>
-            <li ><a href = '/allpost' >सभी उपलब्ध पोस्ट देखें</a></li>
-            </h3>
-            <h3>
-            <li ><a href = '/worker/edit' >अपना विवरण बदलें</a></li>
-            </h3>
-            <h3>
-            <li ><a href = '/worker/seepost' >आपके कौशल से मेल खाने वाले पोस्ट देखें</a></li>
-            </h3>
+        </b>
+        <br>
 
-<h3><li>आपका विवरण:</li></h3>
-            <div class="card" style="background-color:#F7EAEB">
-	
-  <h3><button class = "but"><a href = '/profile'>{{user.first_name}}</a></button></h3>
-  <p class="title">{{user.profile.street}}, {{user.profile.address}}</p>
-  <br>
-  <font color = 'black' size = 5>
-उपलब्धता की अवधि:<br>
-</font>
-<font color = 'blue' size = 4>
-{{user.profile.start_date|date:"d/m/20y"}}  -  {{user.profile.end_date|date:"d/m/20y"}}
-</font>
-<br><br>
- <font color = 'black' size = 5 >
- 	कौशल और क्षमताएं:<br>
- </font>
- <font color = 'blue' size = 4>
- 	{{user.profile.skill1}}<br>
- 	{{user.profile.skill2}}<br>
- 	{{user.profile.skill3}}<br>
 
- </font>
- <br>
-{% if user.profile.description %}
- <font color = 'black' size = 5 >
- 	अन्य विवरण:<br>
- </font>
- <font color = 'blue' size = 4>
- 	{{user.profile.description}}<br>
- </font>
-{%endif%}
- <p><button class = "but">मोबाइल नंबर: {{user.profile.s_contact}}</button></p>
- 
-</div>
-	<br>
-  <h4>
-<li ><a href = '/payment_detail'>भुगतान विवरण बदलें</a></li></h4>
-<br>
+          <h3>आपके द्वारा किए गए कार्य के लिए सही भुगतान प्राप्त करें</h3>
+          <b>
+            <h4> <b><li ><a href = '/payment_detail'>भुगतान विवरण बदलें--&#9654</a></li></b></h4>
+          <li><h4><b><a href='/hpay'> आपको प्राप्त हुए सभी भुगतान देखें --&#9654;</a></b></h4></li>
+            </b>
+            <br>
+
+            <h3 >
+              अपने काम के बारे में उचित प्रतिक्रिया भी प्राप्त करें और अपने आप में सुधार करें
+            </h3>
+            <b>
+            <h4>
+            <li ><b><a href = "/feedback?username={{request.user.username}}">आपको प्राप्त सभी फ़ीडबैक देखें--&#9654</a></b></li>
+            </h4
+            </b>
+            <br>
     		{% else %}
     			<h3>
     			<li ><a href = '/worker/edit'>अपना विवरण दर्ज करें</a></li>

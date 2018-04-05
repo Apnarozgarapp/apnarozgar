@@ -38,29 +38,29 @@ button:hover, a:hover {
 </style>
 <b><input type="button" value="&#9664;-- पीछे जाएँ" onclick="history.back(-1)" /></b>
 
-<div class="card">
+<div class="card" style="background-color:#F7EAEB">
 	<h4><font color="red">{{warn}}</font></h4>
-  <h1>{{data.user.first_name}}</h1>
+  <p><button class = "but">{{data.user.first_name}}</button></p>
   {% if data.rating %}
-   (rating= " {{data.rating}} ")
+   (आपकी रेटिंग = {{data.rating}})
    <br>
   {%endif%}
-  <font color = 'black' size = 5>
+  <font color = 'black' size = 3>
  पूरा पता:-:<br>
 </font>
   <p class="title"> {{data.street}} , {{data.address}}</p>
   <br>
-  <font color = 'black' size = 5>
+  <font color = 'black' size = 4>
 उपलब्धता की अवधि:<br>
 </font>
-<font color = 'blue' size = 4>
+<font color = 'blue' size = 3>
 {{data.start_date}}  -  {{data.end_date}}
 </font>
 <br><br>
- <font color = 'black' size = 5 >
+ <font color = 'black' size = 4 >
  	कौशल और क्षमताएं:<br>
  </font>
- <font color = 'blue' size = 4>
+ <font color = 'blue' size = 3>
  {% if data.skill1 %}
  1--&#9656;   <u>{{data.skill1}}</u><br>
  {% if data.description1 %}
@@ -87,53 +87,57 @@ button:hover, a:hover {
   {%endif%}
 </font>
  	 {% if data.ptype %}
-   <font color = 'black' size = 4 >
-  अपेक्षित वेतन भुगतान का तरीका::<br>
+   <font color = 'black' size = 3 >
+  भुगतान की अपेक्षित अंतराल<br>
  </font>
  {{data.ptype}}
  <br>
  {%endif%}
 <br>
 {% if data.description  %}
- <font color = 'black' size = 5 >
+ <font color = 'black' size = 4 >
  	अन्य विवरण:<br>
  </font>
- <font color = 'blue' size = 4>
+ <font color = 'blue' size = 3>
  	{{data.description}}<br>
  </font>
 {%endif%}
- <p><button class = "but">मोबाइल नंबर: {{data.s_contact}}</button></p>
+ 
  <br>
- <font color = 'black' size = 5 >
-  payment details:-
+ <font color = 'black' size = 4 >
+  अपेक्षित भुगतान का तरीका:
  </font>
  <br>
+ <font color = 'purple' size = 3.5>
  स्वीकार्य भुगतान मोड:-  <b>{{data.mode}}</b>
- <br>
+ <br><br>
 {% if data.acname %}
-  bank A/C holder name:- <b>{{data.acname}}</b>
+  खाता धारक का नाम: <b>{{data.acname}}</b>
   <br>
   {%endif%}
   {% if data.bank %}
-  bank:- <b>{{data.bank}}</b>
+  बैंक का नाम: <b>{{data.bank}}</b>
   <br>
   {%endif%}
   {% if data.ac %}
-  A/C:- <b>{{data.ac}}</b>
+  खाता संख्या: <b>{{data.ac}}</b>
   <br>
   {%endif%}
   {% if data.ifsc %}
-  IFSC:- <b>{{data.ifsc}}</b>
+  IFSC कोड: <b>{{data.ifsc}}</b>
+  <br>
   <br>
   {%endif%}
   {% if data.paytm %}
-  Paytm Number:- <b>{{data.paytm}}</b>
+  Paytm मोबाइल नंबर: <b>{{data.paytm}}</b>
   <br>
   {%endif%}
   {% if data.upi %}
-  UPI:- <b>{{data.upi}}</b>
+  UPI नंबर: <b>{{data.upi}}</b>
   <br>
   {%endif%}
+</font>
+  <p><button class = "but">मोबाइल नंबर: {{data.s_contact}}</button></p>
 </div>
 	<br>
   <h3 align="center">

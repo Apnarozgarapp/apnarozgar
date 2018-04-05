@@ -35,6 +35,7 @@ button:hover, a:hover {
   opacity: 0.7;
 }
 </style>
+{% if request.user %}
 <h4 align='center'>
           <a href = '/view'><u>&#9664;-- अपना विवरण देखें </u></a>
           </h4>
@@ -79,6 +80,10 @@ button:hover, a:hover {
     </span>
 </div>
   </b>
+  {% else %}
+        <h4><b><li><a href='/login'>लॉग इन करें</a></li></b></h4><br>
+  {% endif %}
 </div>
+
 {% endblock %}
 

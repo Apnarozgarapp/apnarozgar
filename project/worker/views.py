@@ -62,12 +62,13 @@ def confirm_work(request):
     page=request.POST.get('page')
     pq=Status.objects.filter(post_id=post_id,user_id=user_id)
     if len(pq)!=0:
-      if 'cwchire' in request.POST:
-        for pqr in pq:
-          pqr.delete()
-      else:
-        pqr.done='b'
-        pqr.save()
+      for pqr in pq:
+        if 'cwchire' in request.POST:
+          for pqr in pq:
+            pqr.delete()
+        else:
+          pqr.done='b'
+          pqr.save()
     selected=Status.objects.filter(userworker=request.user.username,confirm='a')
     warn=""
     if len(selected)==0:

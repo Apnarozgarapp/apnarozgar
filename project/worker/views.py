@@ -38,13 +38,41 @@ def payment_detail(request):
   else:
     return render(request,"worker/payment.html")
 def payments(request):
-  dataa=Feedback.objects.filter(userworker=request.user.username)
-  if len(dataa)==0:
-    warn=" कोई भुगतान नहीं"
-    return render(request,'worker/payments.html',{'warn':warn})
+  if request.method=="POST" and 'confirm' in request.POST:
+    post_id=request.POST.get('post_id')
+    page=request.POST.get('page')
+    pq=Status.objects.filter(post_id=post_id,userworker=request.user.username)
+    if len(pq)!=0:
+      for pqr in pq:
+          pqr.done='b'
+          pqr.save()
+          dataaa=Feedback.objects.get(post_id=post_id,userworker=request.user.username)
+          dataaa.done='b'
+          dataaa.save()
+
+    dataa=Feedback.objects.filter(userworker=request.user.username)
+    if len(dataa)==0:
+      warn=" कोई भुगतान नहीं"
+      return render(request,'worker/payments.html',{'warn':warn})
+    else:
+      warn=""
+      pag = Paginator(dataa,5)
+      p = pag.page(int(page))
+      return render(request,'worker/payments.html',{'warn':warn,'selected':p})
   else:
-    warn=""
-    return render(request,'worker/payments.html',{'warn':warn,'selected':dataa})
+
+    dataa=Feedback.objects.filter(userworker=request.user.username)
+    if len(dataa)==0:
+      warn=" कोई भुगतान नहीं"
+      return render(request,'worker/payments.html',{'warn':warn})
+    else:
+      warn=""
+      pag = Paginator(dataa,5)
+      page = request.GET.get('page',None)
+      if not page:
+        page='1'
+      p = pag.page(int(page))
+      return render(request,'worker/payments.html',{'warn':warn,'selected':p})
 
 def feedback(request):
   username = request.GET.get('username',None)
@@ -68,6 +96,9 @@ def confirm_work(request):
         else:
           pqr.done='b'
           pqr.save()
+          dataaa=Feedback.objects.get(post_id=post_id,userworker=request.user.username)
+          dataaa.done='b'
+          dataaa.save()
     selected=Status.objects.filter(userworker=request.user.username,confirm='a')
     warn=""
     if len(selected)==0:

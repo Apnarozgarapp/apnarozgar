@@ -76,8 +76,46 @@ button:hover, a:hover {
       <br>
      <h4> भुगतान विवरण:- {{data1.description}}</h4>
       <br>
-     {% endfor %}
+
+      <form method="POST" action="/hpay">
+     {% csrf_token %}
+     <input name ="post_id" type="number" value={{data1.post_id}} hidden></input>
+     <input name ="page" type="number" value={{selected.number}} hidden></input>
+     <font size = 3.5>
      
+      {% if "a" in data1.done %}
+    <b><button type="submit" name = 'confirm' >भुगतान की पुष्टि करें--&#9654;</button>
+      
+      </b>
+   {%endif%}
+    {% if "b" in data1.done %}
+    <b>
+      भुगतान की पुष्टि है
+   </b>
+   {%endif%}
+   </font>
+  </form>
+     {% endfor %}
+     <b>
+  <div class="pagination">
+    <span class="step-links">
+        {% if selected.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ selected.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ selected.number }} of {{ selected.paginator.num_pages }}.
+        </span>
+
+        {% if selected.has_next %}
+            <a href="?page={{ selected.next_page_number }}">next</a>
+            <a href="?page={{ selected.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+  <b>
 </div>
 {% endblock %}
 

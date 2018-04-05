@@ -63,19 +63,19 @@ button:hover, a:hover {
 <h4><b><a href='/confirm_work'><u>&#9664;-- सभी चयनित कार्य देखें  :</u></a></b></h4> 
 
    
-    <h4><u><b>चयनित कार्य पोस्ट :--&#9654;</b></u></h4>
+    <h4><u><b>भुगतान :--&#9654;</b></u></h4>
   <h4><font color="red"> {{ warn }}</font></h4>
      {% for data1 in selected %}
 
       <h3><li>{{data1.userhirer}} और आपके बीच <a href="/detailpost/?data={{data1.post_id}}">यहां वर्णित </a>पोस्ट के लिए काम का भुगतान  किया गया है।</li></h3>
       <h4> भुगतान तारीख:- {{data1.pdate|date:"d/m/20y"}}</h4>
-      <br>
+      
       <h4> भुगतान तरीका:- {{data1.pmode}}</h4>
-      <br>
+      
       <h4> भुगतान तरीका:- {{data1.pmode}}</h4>
-      <br>
+      
      <h4> भुगतान विवरण:- {{data1.description}}</h4>
-      <br>
+      
 
       <form method="POST" action="/hpay">
      {% csrf_token %}

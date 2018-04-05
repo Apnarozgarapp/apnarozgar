@@ -37,6 +37,14 @@ def payment_detail(request):
     return render(request,"worker/viewedit.html",{'warn':warn})
   else:
     return render(request,"worker/payment.html")
+def payments(request):
+  dataa=Feedback.objects.filter(userworker=request.user.username)
+  if len(dataa)==0:
+    warn=" कोई भुगतान नहीं"
+    return render(request,'worker/payments.html',{'warn':warn})
+  else:
+    warn=""
+    return render(request,'worker/payments.html',{'warn':warn,'selected':dataa})
 
 def feedback(request):
   username = request.GET.get('username',None)
@@ -48,14 +56,18 @@ def feedback(request):
     warn=""
     return render(request,'worker/feedback.html',{'warn':warn,'dataa':dataa})
 def confirm_work(request):
-  if request.method=="POST" and 'cwchire' in request.POST:
+  if request.method=="POST" and 'cwchire' in request.POST and 'confirm' in request.POST:
     post_id=request.POST.get('post_id')
     user_id=request.POST.get('user_id')
     page=request.POST.get('page')
     pq=Status.objects.filter(post_id=post_id,user_id=user_id)
     if len(pq)!=0:
-       for pqr in pq:
+      if 'cwchire' in request.POST:
+        for pqr in pq:
           pqr.delete()
+      else:
+        pqr.done='b'
+        pqr.save()
     selected=Status.objects.filter(userworker=request.user.username,confirm='a')
     warn=""
     if len(selected)==0:

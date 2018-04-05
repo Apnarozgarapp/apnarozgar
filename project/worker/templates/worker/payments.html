@@ -68,13 +68,28 @@ button:hover, a:hover {
      {% for data1 in selected %}
 
       <h3><li>{{data1.userhirer}} और आपके बीच <a href="/detailpost/?data={{data1.post_id}}">यहां वर्णित </a>पोस्ट के लिए काम का भुगतान  किया गया है।</li></h3>
-      <h4> भुगतान तारीख:- {{data1.pdate|date:"d/m/20y"}}</h4>
-      
-      <h4> भुगतान तरीका:- {{data1.pmode}}</h4>
-      
-      <h4> भुगतान तरीका:- {{data1.pmode}}</h4>
-      
+      {% if data1.pdate %}
+    <b>
+     <h4> भुगतान तारीख:- {{data1.pdate|date:"d/m/20y"}}</h4>
+   </b>
+   {%endif%}
+   {% if data1.pdate %}
+    <b>
+     <h4> भुगतान तरीका:- {{data1.pmode}}</h4>
+   {%endif%}
+   
+   {% if data1.description %}
+    <b>
      <h4> भुगतान विवरण:- {{data1.description}}</h4>
+   </b>
+   {%endif%}
+      
+      
+      
+      
+      
+      
+     
       
 
       <form method="POST" action="/hpay">
@@ -90,7 +105,7 @@ button:hover, a:hover {
    {%endif%}
     {% if "b" in data1.done %}
     <b>
-      भुगतान की पुष्टि है
+     <h4> भुगतान की पुष्टि है</h4>
    </b>
    {%endif%}
    </font>

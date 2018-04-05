@@ -6,6 +6,7 @@ from django.db import transaction
 from django.contrib.auth.models import User
 from .models import Profile,location
 from search.models import Posts,Status
+from login.models import Feedback
 import login
 import re
 import urllib.request
@@ -15,9 +16,37 @@ import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 @login_required
 @transaction.atomic
+def payment_detail(request):
+  if request.method=="POST":
+    mode=request.POST.getlist('mode',None)
+    bank=request.POST.get('bank',None)
+    acname=request.POST.get('acname',None)
+    ac=request.POST.get('ac',None)
+    ifsc=request.POST.get('ifsc',None)
+    paytm=request.POST.get('paytm',None)
+    upi=request.POST.get('upi',None)
+    request.user.profile.mode=mode
+    request.user.profile.bank=bank
+    request.user.profile.acname=acname
+    request.user.profile.ac=ac
+    request.user.profile.ifsc=ifsc
+    request.user.profile.paytm=paytm
+    request.user.profile.upi=upi
+    request.user.profile.save()
+    warn="भुगतान विवरण सफलतापूर्वक सबमिट किया गया"
+    return render(request,"worker/viewedit.html",{'warn':warn})
+  else:
+    return render(request,"worker/payment.html")
 
 def feedback(request):
-  return HttpResponse("hey")
+  username = request.GET.get('username',None)
+  dataa=Feedback.objects.filter(userworker=username)
+  if len(dataa)==0:
+    warn=" कोई प्रतिक्रिया नहीं"
+    return render(request,'worker/feedback.html',{'warn':warn})
+  else:
+    warn=""
+    return render(request,'worker/feedback.html',{'warn':warn,'dataa':dataa})
 def confirm_work(request):
   if request.method=="POST" and 'cwchire' in request.POST:
     post_id=request.POST.get('post_id')

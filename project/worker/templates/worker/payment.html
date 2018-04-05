@@ -1,0 +1,59 @@
+{% extends "login/header.html" %}
+
+{% block content %}
+<div class ='col-sm-6 col-sm-offset-3'>
+<b><input type="button" value="&#9664;-- पीछे जाएँ" onclick="history.back(-1)" /></b>
+{% if request.user.username%}
+
+<h3><u>कृपया नीचे दिए गए फ़ील्ड भरें:-</u></h3><br>
+<h4> <font color="red">{{warn}}</font></h4>
+<form method="POST" action="">
+   {% csrf_token %}
+	<div class="form-group">
+	<h3>वेतन भुगतान के तरीके के बारे में जानकारी दें</h3>
+	<label for="mode">वेतन भुगतान का प्रकार: </label>
+	<select name="mode" class="form-control" id="multiselectio" multiple required>
+	<option value="नकद भुगतान (CASH)">नकद भुगतान (CASH)</option>
+	<option value="PAYTM">PAYTM</option>
+	<option value="श्रमिक बैंक खाते में सीधे अंतरण">श्रमिक बैंक खाते में सीधे अंतरण</option>
+	<option value="UPI">UPI</option>
+	<option value="अन्य (Other)">अन्य (Other)</option>
+	</select>
+	</div>
+		
+		<div class="form-group">
+	    <label for="bank">bank name</label>
+	    <input type="text" name = 'bank' class="form-control" placeholder="optional"></input>
+	</div>
+
+<div class="form-group">
+	    <label for="acname">account holder name</label>
+	    <input type="text" name = 'acname' class="form-control" placeholder="optional"></input>
+	</div>
+	<div class="form-group">
+	    <label for="ac">account number</label>
+	    <input type="text" name = 'ac' class="form-control" placeholder="optional" ></input>
+	</div>
+
+	<div class="form-group">
+	    <label for="ifsc">ifsc</label>
+	    <input type="text" name = 'ifsc' class="form-control" placeholder="optional"></input>
+	</div>
+	<div class="form-group">
+	    <label for="paytm">paytm number</label>
+	    <input type="text" name = "paytm" class="form-control" placeholder="optional"></input>
+	</div>
+	<div class="form-group">
+	    <label for="upi">upi</label>
+	    <input type="text" name = 'upi' class="form-control" placeholder="optional"></input>
+	</div>
+
+	<button type="submit" name = 'payment' >submit payment details</button>
+</form>
+{% else %}
+   <h4><b><li><a href='/login'>लॉग इन करें</a></li></b></h4>
+   {%endif%}
+
+</div>
+{% endblock %}
+

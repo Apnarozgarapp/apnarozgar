@@ -42,7 +42,8 @@ button:hover, a:hover {
 	<h4><font color="red">{{warn}}</font></h4>
   <h1>{{data.user.first_name}}</h1>
   {% if data.rating %}
-   (rating= "{{data.rating}}")
+   (rating= " {{data.rating}} ")
+   <br>
   {%endif%}
   <font color = 'black' size = 5>
  पूरा पता:-:<br>
@@ -102,11 +103,41 @@ button:hover, a:hover {
  </font>
 {%endif%}
  <p><button class = "but">मोबाइल नंबर: {{data.s_contact}}</button></p>
- 
+ <br>
+ <font color = 'black' size = 5 >
+  payment details:-
+ </font>
+ <br>
+ स्वीकार्य भुगतान मोड:-  <b>{{data.mode}}</b>
+ <br>
+{% if data.acname %}
+  bank A/C holder name:- <b>{{data.acname}}</b>
+  <br>
+  {%endif%}
+  {% if data.bank %}
+  bank:- <b>{{data.bank}}</b>
+  <br>
+  {%endif%}
+  {% if data.ac %}
+  A/C:- <b>{{data.ac}}</b>
+  <br>
+  {%endif%}
+  {% if data.ifsc %}
+  IFSC:- <b>{{data.ifsc}}</b>
+  <br>
+  {%endif%}
+  {% if data.paytm %}
+  Paytm Number:- <b>{{data.paytm}}</b>
+  <br>
+  {%endif%}
+  {% if data.upi %}
+  UPI:- <b>{{data.upi}}</b>
+  <br>
+  {%endif%}
 </div>
 	<br>
   <h3 align="center">
-            <li ><a href = '/feedback'>फीडबैक</a></li>
+            <li ><a href = "/feedback?username={{data}}">फीडबैक</a></li>
             </h3>
 		
 </div>

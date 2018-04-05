@@ -63,21 +63,74 @@ button:hover, a:hover {
 <h4><b><a href='/confirm_work'><u>&#9664;-- सभी चयनित कार्य देखें  :</u></a></b></h4> 
 
    
-    <h4><u><b>चयनित कार्य पोस्ट :--&#9654;</b></u></h4>
+    <h4><u><b>भुगतान :--&#9654;</b></u></h4>
   <h4><font color="red"> {{ warn }}</font></h4>
      {% for data1 in selected %}
 
       <h3><li>{{data1.userhirer}} और आपके बीच <a href="/detailpost/?data={{data1.post_id}}">यहां वर्णित </a>पोस्ट के लिए काम का भुगतान  किया गया है।</li></h3>
-      <h4> भुगतान तारीख:- {{data1.pdate|date:"d/m/20y"}}</h4>
-      <br>
-      <h4> भुगतान तरीका:- {{data1.pmode}}</h4>
-      <br>
-      <h4> भुगतान तरीका:- {{data1.pmode}}</h4>
-      <br>
+      {% if data1.pdate %}
+    <b>
+     <h4> भुगतान तारीख:- {{data1.pdate|date:"d/m/20y"}}</h4>
+   </b>
+   {%endif%}
+   {% if data1.pdate %}
+    <b>
+     <h4> भुगतान तरीका:- {{data1.pmode}}</h4>
+   {%endif%}
+   
+   {% if data1.description %}
+    <b>
      <h4> भुगतान विवरण:- {{data1.description}}</h4>
-      <br>
-     {% endfor %}
+   </b>
+   {%endif%}
+      
+      
+      
+      
+      
+      
      
+      
+
+      <form method="POST" action="/hpay">
+     {% csrf_token %}
+     <input name ="post_id" type="number" value={{data1.post_id}} hidden></input>
+     <input name ="page" type="number" value={{selected.number}} hidden></input>
+     <font size = 3.5>
+     
+      {% if "a" in data1.done %}
+    <b><button type="submit" name = 'confirm' >भुगतान की पुष्टि करें--&#9654;</button>
+      
+      </b>
+   {%endif%}
+    {% if "b" in data1.done %}
+    <b>
+     <h4> भुगतान की पुष्टि है</h4>
+   </b>
+   {%endif%}
+   </font>
+  </form>
+     {% endfor %}
+     <b>
+  <div class="pagination">
+    <span class="step-links">
+        {% if selected.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ selected.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ selected.number }} of {{ selected.paginator.num_pages }}.
+        </span>
+
+        {% if selected.has_next %}
+            <a href="?page={{ selected.next_page_number }}">next</a>
+            <a href="?page={{ selected.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+  <b>
 </div>
 {% endblock %}
 

@@ -36,11 +36,12 @@ def done(request):
       wuser.rating=(wuser.rating*wuser.nhirer+float(rating))/(wuser.nhirer+1)
       wuser.nhirer=wuser.nhirer+1
     wuser.save()
-    data1=Feedback(userhirer=request.user.username,userworker=wuser,post_id=post_id,feedback1=feedback1,feedback2=feedback2,feedback3=feedback3,pmode=pmode,pdate=pdate,description=description)
+    data1=Feedback(userhirer=request.user.username,userworker=wuser,post_id=post_id,feedback1=feedback1,feedback2=feedback2,feedback3=feedback3,pmode=pmode,pdate=pdate,description=description,done='a')
     data1.save()
     data=Posts.objects.get(post_id=post_id)
     data2=Status.objects.get(post_id=post_id,user_id=user_id)
     data2.done='a'
+
     data2.save()
     selected=Status.objects.filter(post_id=post_id,confirm='a')
     warn=" प्रतिक्रिया (Feedback) और भुगतान विवरण सफलतापूर्वक सबमिट किया गया "

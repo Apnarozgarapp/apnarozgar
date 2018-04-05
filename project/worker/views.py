@@ -56,7 +56,7 @@ def feedback(request):
     warn=""
     return render(request,'worker/feedback.html',{'warn':warn,'dataa':dataa})
 def confirm_work(request):
-  if request.method=="POST" and 'cwchire' in request.POST and 'confirm' in request.POST:
+  if request.method=="POST" and ('cwchire' in request.POST or 'confirm' in request.POST):
     post_id=request.POST.get('post_id')
     user_id=request.POST.get('user_id')
     page=request.POST.get('page')
@@ -64,7 +64,6 @@ def confirm_work(request):
     if len(pq)!=0:
       for pqr in pq:
         if 'cwchire' in request.POST:
-          for pqr in pq:
             pqr.delete()
         else:
           pqr.done='b'

@@ -40,6 +40,8 @@ def login_view(request):
 		login(request,user)
 		request.user.is_authenticated()
 		data=LoginAs(username=username,loginas=loginas1)
+		request.user.profile.loginas=loginas1
+		request.user.profile.save()
 		data.save()
 		if loginas1=="worker":
 			return render(request,'worker/viewedit.html')
@@ -47,7 +49,7 @@ def login_view(request):
 			return render(request,'search/hirer.html')
 	elif request.user.username:
 		value=LoginAs.objects.get(username=request.user.username)
-		if value.loginas=="worker":        
+		if request.user.profile.loginas=="worker":        
 			return render(request,'worker/viewedit.html')
 		else:
 			return render(request,'search/hirer.html')
@@ -126,11 +128,11 @@ def logout_view(request):
 	return render(request,'login/logout.html')
 
 def profile_view(request):
-	value=LoginAs.objects.get(username=request.user.username)
-	if value.loginas=="worker":        
-		return render(request,'worker/viewedit.html')
-	else:
-		return render(request,'search/hirer.html')
+	if request.user.username:
+		if request.user.profile.loginas=="worker":        
+			return render(request,'worker/viewedit.html')
+		elif request.user.profile.loginas=="hirer":
+			return render(request,'search/hirer.html')
 
 def forgot_password_view(request):
 	if request.method == 'POST' and 'btn' in request.POST:

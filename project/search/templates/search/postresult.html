@@ -77,7 +77,7 @@ button:hover, a:hover {
    <p>अन्य विवरण: {{data.description}}</p>
     {%endif%}
   <p><button class = "but">आपका मोबाइल नंबर (<b>{{data.name}}</b>) :- {{data.s_contact}}</button></p>
-  <form method="POST" action="/see_work_post">
+  <form method="GET" action="/see_work_post">
      {% csrf_token %}
      <div class = "btn-group"><font size = 4>
      <input name ="post_id" type="number" value={{data.post_id}} hidden></input>
@@ -106,8 +106,7 @@ button:hover, a:hover {
   <div class="pagination">
     <span class="step-links">
         {% if pos.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ pos.previous_page_number }}">previous</a>
+            <a href="?page={{ pos.previous_page_number }}">&#9664;-- पिछला&nbsp;&nbsp;</a>
         {% endif %}
 
         <span class="current">
@@ -115,8 +114,7 @@ button:hover, a:hover {
         </span>
 
         {% if pos.has_next %}
-            <a href="?page={{ pos.next_page_number }}">next</a>
-            <a href="?page={{ pos.paginator.num_pages }}">last &raquo;</a>
+            <a href="?page={{ pos.next_page_number }}">&nbsp;&nbsp;अगला --&#9654;</a>
         {% endif %}
     </span>
 </div>

@@ -37,10 +37,12 @@ button:hover, a:hover {
 }
 </style>
 <b><input type="button" value="&#9664;-- पीछे जाएँ" onclick="history.back(-1)" /></b>
-
+<h4><font color="red">{{warn}}</font></h4>
 <div class="card" style="background-color:#F7EAEB">
-	<h4><font color="red">{{warn}}</font></h4>
+	
+   {% if data.user.first_name %}
   <p><button class = "but">{{data.user.first_name}}</button></p>
+
   {% if data.rating %}
    (आपकी रेटिंग = {{data.rating}})
    <br>
@@ -143,6 +145,8 @@ button:hover, a:hover {
   <h3 align="center">
             <li ><a href = "/feedback?username={{data}}">फीडबैक</a></li>
             </h3>
+      
+            {%endif%}
 		
 </div>
 

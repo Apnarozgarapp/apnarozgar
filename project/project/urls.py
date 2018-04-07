@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from login.views import (login_view, register_view, logout_view,profile_view,forgot_password_view,change_password_view,smss, aboutus,workrequest)
-from search.views import (work_post,see_work_post,update,view_worker,done)
+from search.views import (work_post,see_work_post,update,view_worker,done,search_result)
 from worker.views import (detail_post,all_post,confirm_work,profile,feedback,payment_detail,payments)
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^login',login_view,name = 'login'),
     url(r'^profile',profile,name = 'profile'),
     url(r'^feedback',feedback,name = 'feedback'),
-    url(r'^search',include('search.urls')),
+    url(r'^search',search_result,name='search_result'),
     url(r'^work_post',work_post,name = 'work_post'),
     url(r'^done',done,name = 'done'),
     url(r'^payment_detail',payment_detail,name = 'payment_detail'),

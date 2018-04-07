@@ -7,7 +7,7 @@
 	<h4><font color="red"> {{ warn }}</font></h4>
 	<h4><b><a href='/login'>&#9664;-- <u>अपना विवरण देखें :</u></a></b></h4>
 <h3><u>कृपया नीचे दिए गए फ़ील्ड भरें:</u></h3><br>
-<form method="POST" action="search">
+<form method="GET" action="/search">
    {% csrf_token %}
 	<div class="form-group">
 	<label for="skill">&#9679; कौशल और क्षमताएं </label>
@@ -42,6 +42,7 @@
 	</div> 
       <input name ="lat" id="latdata" type="number" step="any" value=0 hidden></input>
       <input name ="lng" id="lngdata" type="number" step="any" value=0 hidden></input>
+       <input name ="page" type="number"  value="1" hidden></input>
 
 	<button type="submit" name = 'btn' onclick="latlngcal()" > <b>कर्मचारी ढूंढे --</b>&#9654;</button>
 </form>

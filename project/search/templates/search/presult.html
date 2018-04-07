@@ -37,9 +37,10 @@ button:hover, a:hover {
 }
 </style>
 
-<form method="POST" action="/see_work_post">
+<form method="GET" action="/see_work_post">
      {% csrf_token %}
      <input name ="post_id" type="number" value={{dat.post_id}} hidden></input>
+     <input name ="page" type="number" value={{page}} hidden></input>
      <font size = 3.5 color = "purple"><b><button type="submit" name = 'gotopost'>पोस्ट पर वापस जाएं</button></b></font>
      <br><br><br>
  </form>
@@ -53,7 +54,7 @@ button:hover, a:hover {
   <p>आपसे श्रमिक की दूरी: {{data.age}} km</p>
   <p><button class = "but">मोबाइल नंबर: {{data.s_contact}}</button></p>
   
-    <form method="POST" action="/see_work_post">
+    <form method="GET" action="/see_work_post">
      {% csrf_token %}
      <input name ="post_id" type="number" value={{dat.post_id}} hidden></input>
      <input name ="user_id" type="number" value={{data.user_id}} hidden></input>
@@ -63,6 +64,8 @@ button:hover, a:hover {
      <input name ="userhirer" type="text" value={{dat.username}} hidden></input>
      <input type="date" name ='end_date' value={{dat.end_date|date:"20y-m-d"}} hidden></input>
      <input type="date" name ='start_date' value={{dat.start_date|date:"20y-m-d"}} hidden></input>
+     <input name ="page" type="number" value={{page}} hidden></input>
+     <input name ="rpage" type="number" value={{users.number}} hidden></input>
     <font size = 3.5>
       {%if "e" in data.joinrequest %}
      <font color = "green"><p><b>श्रमिक इस तिथि पर उपलब्ध नहीं है।</b></p></font>
@@ -90,8 +93,27 @@ button:hover, a:hover {
 
   </div>
       <br>
-    <br>
 {% endfor %}
+
+<b>
+  <div class="pagination">
+    <span class="step-links">
+        {% if users.has_previous %}
+            <a href="?rpage={{ users.previous_page_number }}&page={{page}}&post_id={{dat.post_id}}">&#9664;-- पिछला&nbsp;&nbsp; </a>
+        {% endif %}
+
+        <span class="current">
+             page {{ users.number }} of {{ users.paginator.num_pages }}
+        </span>
+
+        {% if users.has_next %}
+             <a href="?rpage={{users.next_page_number}}&page={{page}}&post_id={{dat.post_id}}">&nbsp;&nbsp;अगला --&#9654;  </a>
+        {% endif %}
+    </span>
+</div>
+
+  </b>
+
 </div>
 {% endblock %}
 

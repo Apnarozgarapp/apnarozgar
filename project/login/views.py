@@ -260,117 +260,29 @@ def change_password_view(request):
 		return render(request,'login/forgot.html',{"warn":warn})
 
 def workrequest(request):
-	if request.method=="POST" and ('hhire' in request.POST or 'hchire' in request.POST ):
-		post_id=request.POST.get('post_id')
-		user_id=request.POST.get('user_id')
-		start_date=request.POST.get('start_date')
-		end_date=request.POST.get('end_date')
-		page=request.POST.get('page')
-		pq=Status.objects.filter(post_id=post_id,user_id=user_id)
-		warn=""
-		if len(pq)!=0:
-			for pqr in pq:
-				
-				if 'hhire' in request.POST :
-					r=Status.objects.filter(user_id=user_id,confirm='a')
-					p=r.filter(Q(start_date__lte=end_date,start_date__gte=start_date)|Q(end_date__lte=end_date,end_date__gte=start_date))
-					if len(p)==0:
-						pqr.hirer_status=user_id
-						pqr.confirm='a'
-						pqr.save()
-					else:
-						warn="अब मजदूर इस तिथि पर उपलब्ध नहीं है।"
-				if 'hchire' in request.POST :
-					pqr.delete()
-		data=Status.objects.filter(userhirer=request.user.username)
-		for select in data:
-			if select.worker_status==select.post_id and select.hirer_status==select.user_id:
-				select.temp='a'
-				select.save()
-			elif select.worker_status==select.post_id:
-				select.temp='c'
-				select.save()
-			elif select.hirer_status==select.user_id:
-				select.temp='b'
-				select.save()
-			else:
-				select.temp='d'
-				select.save()        
-		if len(data)==0:
-			warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
-		pag = Paginator(data,3)
-		p = pag.page(int(page))
-		return render(request,'search/workrequest.html',{'data':p,'warn':warn})
-	elif request.method=="POST" and ('whire' in request.POST or 'wchire' in request.POST ):
-		post_id=request.POST.get('post_id')
-		user_id=request.POST.get('user_id')
-		start_date=request.POST.get('start_date')
-		end_date=request.POST.get('end_date')
-		pq=Status.objects.filter(post_id=post_id,user_id=user_id)
-		page=request.POST.get('page')
-		warn=""
-		if len(pq)!=0:
-			for pqr in pq:
-				if 'whire' in request.POST :
-					r=Status.objects.filter(user_id=user_id,confirm='a')
-					p=r.filter(Q(start_date__lte=end_date,start_date__gte=start_date)|Q(end_date__lte=end_date,end_date__gte=start_date))
-					if len(p)==0:
-						pqr.worker_status=post_id
-						pqr.confirm='a'
-						pqr.save()
-					else:
-						warn="आप इस तिथि पर उपलब्ध नहीं हैं।"
-				if 'wchire' in request.POST:
-					pqr.delete()
-		data=Status.objects.filter(userworker=request.user.username)
-		for select in data:
-			if select.worker_status==select.post_id and select.hirer_status==select.user_id:
-				select.temp='a'
-				select.save()
-			elif select.worker_status==select.post_id:
-				select.temp='b'
-				select.save()
-			elif select.hirer_status==select.user_id:
-				select.temp='c'
-				select.save()
-			else:
-				select.temp='d'
-				select.save()        
-		
-		if len(data)==0:
-			warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
-		pag = Paginator(data,3)
-		p = pag.page(int(page))
-		return render(request,'worker/workrequest.html',{'data':p,'warn':warn})
-	else: 	
-		value=LoginAs.objects.get(username=request.user.username)
-		if value.loginas=="worker":
-			data=Status.objects.filter(userworker=request.user.username)        
-			for select in data:
-				if select.worker_status==select.post_id and select.hirer_status==select.user_id:
-					select.temp='a'
-					select.save()
-				elif select.worker_status==select.post_id:
-					select.temp='b'
-					select.save()
-				elif select.hirer_status==select.user_id:
-					select.temp='c'
-					select.save()
-				else:
-					select.temp='d'
-					select.save()        
+	if request.user.username:
+		if request.method=="POST" and ('hhire' in request.POST or 'hchire' in request.POST ):
+			post_id=request.POST.get('post_id')
+			user_id=request.POST.get('user_id')
+			start_date=request.POST.get('start_date')
+			end_date=request.POST.get('end_date')
+			page=request.POST.get('page')
+			pq=Status.objects.filter(post_id=post_id,user_id=user_id)
 			warn=""
-			if len(data)==0:
-				warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
-			pag = Paginator(data,3)
-			page = request.GET.get('page',None)
-			if not page:
-				page='1'
-			p = pag.page(int(page))
-			return render(request,'worker/workrequest.html',{'data':p,'warn':warn})
-
-		
-		else:
+			if len(pq)!=0:
+				for pqr in pq:
+					
+					if 'hhire' in request.POST :
+						r=Status.objects.filter(user_id=user_id,confirm='a')
+						p=r.filter(Q(start_date__lte=end_date,start_date__gte=start_date)|Q(end_date__lte=end_date,end_date__gte=start_date))
+						if len(p)==0:
+							pqr.hirer_status=user_id
+							pqr.confirm='a'
+							pqr.save()
+						else:
+							warn="अब मजदूर इस तिथि पर उपलब्ध नहीं है।"
+					if 'hchire' in request.POST :
+						pqr.delete()
 			data=Status.objects.filter(userhirer=request.user.username)
 			for select in data:
 				if select.worker_status==select.post_id and select.hirer_status==select.user_id:
@@ -385,13 +297,108 @@ def workrequest(request):
 				else:
 					select.temp='d'
 					select.save()        
-			warn=""
 			if len(data)==0:
 				warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
 			pag = Paginator(data,3)
-			page = request.GET.get('page',None)
-			if not page:
-				page='1'
+			if pag.num_pages < int(page):
+				page=int(page)-1
 			p = pag.page(int(page))
 			return render(request,'search/workrequest.html',{'data':p,'warn':warn})
+		elif request.method=="POST" and ('whire' in request.POST or 'wchire' in request.POST ):
+			post_id=request.POST.get('post_id')
+			user_id=request.POST.get('user_id')
+			start_date=request.POST.get('start_date')
+			end_date=request.POST.get('end_date')
+			pq=Status.objects.filter(post_id=post_id,user_id=user_id)
+			page=request.POST.get('page')
+			warn=""
+			if len(pq)!=0:
+				for pqr in pq:
+					if 'whire' in request.POST :
+						r=Status.objects.filter(user_id=user_id,confirm='a')
+						p=r.filter(Q(start_date__lte=end_date,start_date__gte=start_date)|Q(end_date__lte=end_date,end_date__gte=start_date))
+						if len(p)==0:
+							pqr.worker_status=post_id
+							pqr.confirm='a'
+							pqr.save()
+						else:
+							warn="आप इस तिथि पर उपलब्ध नहीं हैं।"
+					if 'wchire' in request.POST:
+						pqr.delete()
+			data=Status.objects.filter(userworker=request.user.username)
+			for select in data:
+				if select.worker_status==select.post_id and select.hirer_status==select.user_id:
+					select.temp='a'
+					select.save()
+				elif select.worker_status==select.post_id:
+					select.temp='b'
+					select.save()
+				elif select.hirer_status==select.user_id:
+					select.temp='c'
+					select.save()
+				else:
+					select.temp='d'
+					select.save()        
+			
+			if len(data)==0:
+				warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
+			pag = Paginator(data,3)
+			if pag.num_pages < int(page):
+				page=int(page)-1
+			p = pag.page(int(page))
+			return render(request,'worker/workrequest.html',{'data':p,'warn':warn})
+		else: 	
+			if request.user.profile.loginas=="worker":
+				data=Status.objects.filter(userworker=request.user.username)        
+				for select in data:
+					if select.worker_status==select.post_id and select.hirer_status==select.user_id:
+						select.temp='a'
+						select.save()
+					elif select.worker_status==select.post_id:
+						select.temp='b'
+						select.save()
+					elif select.hirer_status==select.user_id:
+						select.temp='c'
+						select.save()
+					else:
+						select.temp='d'
+						select.save()        
+				warn=""
+				if len(data)==0:
+					warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
+				pag = Paginator(data,3)
+				page = request.GET.get('page',None)
+				if not page:
+					page='1'
+				p = pag.page(int(page))
+				return render(request,'worker/workrequest.html',{'data':p,'warn':warn})
+
+			
+			elif request.user.profile.loginas=="hirer":
+				data=Status.objects.filter(userhirer=request.user.username)
+				for select in data:
+					if select.worker_status==select.post_id and select.hirer_status==select.user_id:
+						select.temp='a'
+						select.save()
+					elif select.worker_status==select.post_id:
+						select.temp='c'
+						select.save()
+					elif select.hirer_status==select.user_id:
+						select.temp='b'
+						select.save()
+					else:
+						select.temp='d'
+						select.save()        
+				warn=""
+				if len(data)==0:
+					warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
+				pag = Paginator(data,3)
+				page = request.GET.get('page',None)
+				if not page:
+					page='1'
+				p = pag.page(int(page))
+				return render(request,'search/workrequest.html',{'data':p,'warn':warn})
+	else:
+		warn="कृपया पहले  लॉगिन करें"
+		return render(request,'login/form.html',{'warn':warn})
 

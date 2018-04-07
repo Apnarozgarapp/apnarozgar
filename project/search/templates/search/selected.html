@@ -104,7 +104,7 @@ button:hover, a:hover {
      {% csrf_token %}
      <input name ="post_id" type="number" value={{data1.post_id}} hidden></input>
      <input name ="user_id" type="number" value={{data1.user_id}} hidden></input>
-      <input name ="page" type="hidden" value={{page}} hidden></input>
+      <input name ="page" type="number" value={{page}} hidden></input>
      <font size = 3.5>
      <font color = "green"><p><b>कर्मचारी ने इस पोस्ट के लिए काम करने की पुष्टि दी है (Confirmed)</b></p></font>
      <b><button type="submit" name = 'schire' >कार्य अनुरोध (request) रद्द करें</button> 
@@ -122,7 +122,7 @@ button:hover, a:hover {
 
      <input name ="post_id" type="number" value={{data1.post_id}} hidden></input>
      <input name ="user_id" type="number" value={{data1.user_id}} hidden></input>
-      <input name ="page" type="hidden" value={{page}} hidden></input>
+      <input name ="page" type="number" value={{page}} hidden></input>
      <b><button type="submit" name = 'done' > प्रतिक्रिया (Feedback) और भुगतान विवरण दें</button> 
    </b>
  </font>

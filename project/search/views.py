@@ -64,20 +64,25 @@ def done(request):
 							return render(request,"search/selected.html",{'data':data,'page':page,'selected':selected,'warn':warn})
 				else:
 					pos=Posts.objects.filter(username=request.user.username)
+					
 					warn=""
 					if len(pos)==0:
 						warn="कोई पोस्ट नहीं मिला।"
-					pag = Paginator(pos,2)
+					if len(pos)!=0:
+						pos=pos.order_by('-post_id')
+					pag = Paginator(pos,4)
 					if page:
 						page=1
 					p = pag.page(int(page))
 					return render(request,'search/postresult.html',{'pos':p,'warn':warn})
 			else:
 				pos=Posts.objects.filter(username=request.user.username)
+				if len(pos)!=0:
+						pos=pos.order_by('-post_id')
 				warn=""
 				if len(pos)==0:
 					warn="कोई पोस्ट नहीं मिला।"
-				pag = Paginator(pos,2)
+				pag = Paginator(pos,4)
 				page=request.POST.get('page')
 				if page:
 					page=1
@@ -114,7 +119,7 @@ def search_result(request):
 					warn = ""
 					if len(user1) == 0:
 						warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
-					pag=Paginator(user1,5)
+					pag=Paginator(user1,10)
 					p = pag.page(int(page))
 					return render(request,'search/result.html',{'users' : p, 'warn' : warn,'address':address,'lat':lat1,'lng':lng1,'skill':skill})
 				except :
@@ -184,7 +189,8 @@ def work_post(request):
 					dat.save()
 					dataa=Posts.objects.get(post_id=dat.post_id)
 					warn="कार्यकर्ता के लिए आपकी पोस्ट"
-					return render(request,'search/update.html',{'warn' : warn,'data':dataa})
+					page=1
+					return render(request,'search/update.html',{'warn' : warn,'page':page,'data':dataa})
 				except:
 					warn="कृपया पुन: प्रयास करें"
 					return render(request,'search/pwork.html',{'warn':warn})
@@ -210,11 +216,15 @@ def see_work_post(request):
       for dataa in data:
         dataa.delete()
     else:
-    	warn="पोस्ट आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
+       warn="पोस्ट आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
     pos=Posts.objects.filter(username=request.user.username)
+    if len(pos)!=0:
+      pos=pos.order_by('-post_id')
     if len(pos)==0:
       warn="कोई पोस्ट नहीं मिला।"
-    pag = Paginator(pos,2)
+    pag = Paginator(pos,4)
+    if pag.num_pages < int(page):
+           page=int(page)-1
     if not page:
               page='1'
     p = pag.page(int(page))
@@ -236,7 +246,10 @@ def see_work_post(request):
     else:
       warn="पोस्ट आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
     pos=Posts.objects.filter(username=request.user.username)
-    pag = Paginator(pos,2)
+    if len(pos)!=0:
+      pos=pos.order_by('-post_id')
+    pag = Paginator(pos,4)
+
     if not page:
               page='1'
     p = pag.page(int(page))
@@ -257,7 +270,9 @@ def see_work_post(request):
     else:
       warn="पोस्ट आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
       pos=Posts.objects.filter(username=request.user.username)
-      pag = Paginator(pos,2)
+      if len(pos)!=0:
+        pos=pos.order_by('-post_id')
+      pag = Paginator(pos,4)
       if not page:
               page='1'
       p = pag.page(int(page))
@@ -277,7 +292,9 @@ def see_work_post(request):
             if len(user1) == 0:
               warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
               pos=Posts.objects.filter(username=request.user.username)
-              pag = Paginator(pos,2)
+              if len(pos)!=0:
+                 pos=pos.order_by('-post_id')
+              pag = Paginator(pos,4)
               if not page:
                 page='1'
               p = pag.page(int(page))
@@ -308,7 +325,7 @@ def see_work_post(request):
                 dat.save()
             user1=user1.order_by('age')
             warn = " "
-            pag = Paginator(user1,2)
+            pag = Paginator(user1,6)
             rpage = request.GET.get('rpage',None)
             if not rpage:
               rpage='1'
@@ -317,7 +334,9 @@ def see_work_post(request):
           except Profile.DoesNotExist:
             warn="आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
             pos=Posts.objects.filter(username=request.user.username)
-            pag = Paginator(pos,2)
+            if len(pos)!=0:
+               pos=pos.order_by('-post_id')
+            pag = Paginator(pos,4)
             if not page:
               page='1'
             p = pag.page(int(page))
@@ -325,7 +344,9 @@ def see_work_post(request):
     else:
       warn="पोस्ट आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
       pos=Posts.objects.filter(username=request.user.username)
-      pag = Paginator(pos,2)
+      if len(pos)!=0:
+        pos=pos.order_by('-post_id')
+      pag = Paginator(pos,4)
       if not page:
               page='1'
       p = pag.page(int(page))
@@ -342,7 +363,9 @@ def see_work_post(request):
     else:
       warn="पोस्ट आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
       pos=Posts.objects.filter(username=request.user.username)
-      pag = Paginator(pos,2)
+      if len(pos)!=0:
+        pos=pos.order_by('-post_id')
+      pag = Paginator(pos,4)
       if not page:
               page='1'
       p = pag.page(int(page))
@@ -350,15 +373,18 @@ def see_work_post(request):
 
 
    elif request.method=="GET" and 'gotopost' in request.GET:
-    post_id=request.POST.get('post_id')
+    post_id=request.GET.get('post_id')
     page = request.GET.get('page',None)
-    data=Posts.objects.filter(post_id=post_id,username=request.user.username)
-    if len(data)==1:
+    dataa=Posts.objects.filter(post_id=post_id,username=request.user.username)
+    if len(dataa)==1:
+     for data in dataa:
       return render(request,'search/update.html',{'data':data,'page':page})
     else:
       warn="पोस्ट आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
       pos=Posts.objects.filter(username=request.user.username)
-      pag = Paginator(pos,2)
+      if len(pos)!=0:
+        pos=pos.order_by('-post_id')
+      pag = Paginator(pos,4)
       if not page:
               page='1'
       p = pag.page(int(page))
@@ -422,7 +448,7 @@ def see_work_post(request):
           dat.save()
         user1=user1.order_by('age')
         warn = " "
-        pag = Paginator(user1,2)
+        pag = Paginator(user1,6)
         if not rpage:
           rpage='1'
         p = pag.page(int(rpage))
@@ -433,7 +459,9 @@ def see_work_post(request):
     else:
       warn="पोस्ट आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
       pos=Posts.objects.filter(username=request.user.username)
-      pag = Paginator(pos,2)
+      if len(pos)!=0:
+        pos=pos.order_by('-post_id')
+      pag = Paginator(pos,4)
       if not page:
               page='1'
       p = pag.page(int(page))
@@ -459,7 +487,9 @@ def see_work_post(request):
     else:
       warn="पोस्ट आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
       pos=Posts.objects.filter(username=request.user.username)
-      pag = Paginator(pos,2)
+      if len(pos)!=0:
+        pos=pos.order_by('-post_id')
+      pag = Paginator(pos,4)
       if not page:
               page='1'
       p = pag.page(int(page))
@@ -467,10 +497,12 @@ def see_work_post(request):
 
    else:
     pos=Posts.objects.filter(username=request.user.username)
+    if len(pos)!=0:
+        pos=pos.order_by('-post_id')
     warn=""
     if len(pos)==0:
       warn="कोई पोस्ट नहीं मिला।"
-    pag = Paginator(pos,2)
+    pag = Paginator(pos,4)
     page = request.GET.get('page',None)
     if not page:
       page='1'
@@ -517,7 +549,9 @@ def update(request):
     else:
       warn="पोस्ट आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
       pos=Posts.objects.filter(username=request.user.username)
-      pag = Paginator(pos,2)
+      if len(pos)!=0:
+        pos=pos.order_by('-post_id')
+      pag = Paginator(pos,4)
       if not page:
               page='1'
       p = pag.page(int(page))
@@ -525,10 +559,12 @@ def update(request):
 
    else:
     pos=Posts.objects.filter(username=request.user.username)
+    if len(pos)!=0:
+        pos=pos.order_by('-post_id')
     warn=""
     if len(pos)==0:
       warn="कोई पोस्ट नहीं मिला।"
-    pag = Paginator(pos,2)
+    pag = Paginator(pos,4)
     if not page:
               page='1'
     p = pag.page(int(page))

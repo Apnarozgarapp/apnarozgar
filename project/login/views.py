@@ -19,6 +19,14 @@ import string
 from django.db.models import Q
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import urllib.request
+import urllib.parse
+
+def sendSMS(apikey, numbers, sender, message):
+	params = {'apikey': apikey, 'numbers': numbers, 'message' : message, 'sender': sender}
+	f = urllib.request.urlopen('https://api.textlocal.in/send/?'+ urllib.parse.urlencode(params))
+	return (f.read(), f.code)
+
 def smss(request):
 	#futuresms(phno=phno,passwd=password,set_time='17:47',set_date='15/12/2017',receivernum=receiver mobile num,message='helloworld!!')
 	sms(phno='8601867011',passwd='Ram2003',message='hey',receivernum='9005285986')
@@ -26,6 +34,7 @@ def smss(request):
 
 def aboutus(request):
 	return render(request,'login/aboutus.html')
+
 	
 def login_view(request):
 	form = UserLoginForm(request.POST or None)
@@ -39,20 +48,22 @@ def login_view(request):
 			return render(request,'login/form.html',{"form":form,"warn":warn})
 		login(request,user)
 		request.user.is_authenticated()
-		data=LoginAs(username=username,loginas=loginas1)
 		request.user.profile.loginas=loginas1
 		request.user.profile.save()
-		data.save()
-		if loginas1=="worker":
+		if loginas1=="worker" or loginas1=="contractor":
 			return render(request,'worker/viewedit.html')
-		else:
+		elif loginas1=="hirer":
 			return render(request,'search/hirer.html')
+		else:
+			return render(request,'login/form.html',{"form":form})
 	elif request.user.username:
 		value=LoginAs.objects.get(username=request.user.username)
-		if request.user.profile.loginas=="worker":        
+		if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":        
 			return render(request,'worker/viewedit.html')
-		else:
+		elif request.user.profile.loginas=="hirer":
 			return render(request,'search/hirer.html')
+		else:
+			return render(request,'login/form.html',{"form":form})
 	else:
 		return render(request,'login/form.html',{"form":form})
 
@@ -72,16 +83,17 @@ def register_view(request):
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				try:
-					aaa=sms(phno='8601867011',passwd='Ram2003',message=str(otp),receivernum=username)
-					if aaa=="yes":
-						otpdata=""
-						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+					resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS','91'+username,'TXTLCL','From Apna Rozgar OTP:  '+str(otp))
+					res=resp.decode('utf-8')
+					abcd=re.search('success',res)
+					if abcd:
+						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है| कृपया प्रतीक्षा करें"
 					else:
-						otpdata=str(otp)
 						warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
+						return render(request,'login/register.html',{"warn":warn})
 				except:
-					otpdata=str(otp)
 					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
+					return render(request,'login/register.html',{"warn":warn})
 
 			else:
 				warn="मोबाइल नंबर गलत है।| (Mobile number is incorrect.)"
@@ -91,15 +103,14 @@ def register_view(request):
 			try:
 				email=EmailMessage('अपना रोज़ागर से ओटीपी (OTP From Apna Rozgar):', 'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP): '+str(otp), to=[username])
 				email.send()
-				otpdata=""
-				warn="ओटीपी आपके ईमेल पर भेज दिया गया है|(OTP has been sent to your Email-id.)"
+				warn="ओटीपी आपके ईमेल पर भेज दिया गया है| कृपया प्रतीक्षा करें"
 			except:
-				otpdata=str(otp)
 				warn="आपका ईमेल गलत है या ईमेल भेजना विफल हो गया है|"
+				return render(request,'login/register.html',{"warn":warn})
 
 		data=Registration_otp(username=username,aadhar=aadhar,otp=str(otp))
 		data.save()			
-		return render(request,'login/register1.html',{"mobile":username,"aadhar":aadhar,"warn":warn,"otp":otpdata})
+		return render(request,'login/register1.html',{"mobile":username,"aadhar":aadhar,"warn":warn})
 
 	elif request.method == 'POST' and 'btn1' in request.POST:
 		mobile=request.POST.get('username')
@@ -129,10 +140,17 @@ def logout_view(request):
 
 def profile_view(request):
 	if request.user.username:
-		if request.user.profile.loginas=="worker":        
+		if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":        
 			return render(request,'worker/viewedit.html')
 		elif request.user.profile.loginas=="hirer":
 			return render(request,'search/hirer.html')
+		else:
+			warn="कृपया पहले  लॉगिन करें"
+			return render(request,'login/form.html',{'warn':warn})
+	else:
+		warn="कृपया पहले  लॉगिन करें"
+		return render(request,'login/form.html',{'warn':warn})
+
 
 def forgot_password_view(request):
 	if request.method == 'POST' and 'btn' in request.POST:
@@ -146,16 +164,17 @@ def forgot_password_view(request):
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				try:
-					aaa=sms(phno='8601867011',passwd='Ram2003',message=str(otp),receivernum=username)
-					if aaa=="yes":
-						otpdata=""
-						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+					resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS','91'+username,'TXTLCL','From Apna Rozgar OTP:  '+str(otp))
+					res=resp.decode('utf-8')
+					abcd=re.search('success',res)
+					if abcd:
+						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है| कृपया प्रतीक्षा करें"
 					else:
-						otpdata=str(otp)
 						warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
+						return render(request,'login/forgot.html',{"warn":warn})
 				except:
-					otpdata=str(otp)
 					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
+					return render(request,'login/forgot.html',{"warn":warn})
 
 			else:
 				warn="मोबाइल नंबर गलत है।| (Mobile number is incorrect.)"
@@ -166,14 +185,14 @@ def forgot_password_view(request):
 				email=EmailMessage('अपना रोज़ागर से ओटीपी (OTP From Apna Rozgar):', 'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP): '+str(otp), to=[username])
 				email.send()
 				otpdata=""
-				warn="ओटीपी आपके ईमेल पर भेज दिया गया है|(OTP has been sent to your Email-id.)"
+				warn="ओटीपी आपके ईमेल पर भेज दिया गया है| कृपया प्रतीक्षा करें"
 			except:
-				otpdata=str(otp)
 				warn="आपका ईमेल गलत है या ईमेल भेजना विफल हो गया है|"
+				return render(request,'login/forgot.html',{"warn":warn})
 
 		data=Registration_otp(username=username,otp=str(otp))
 		data.save()			
-		return render(request,'login/forgot1.html',{"mobile":username,"warn":warn,"otp":otpdata})
+		return render(request,'login/forgot1.html',{"mobile":username,"warn":warn})
 
 	elif request.method == 'POST' and 'btn1' in request.POST:
 		mobile=request.POST.get('username')
@@ -209,16 +228,17 @@ def change_password_view(request):
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				try:
-					aaa=sms(phno='8601867011',passwd='Ram2003',message='From Apna Rozgar, your OTP is: '+str(otp),receivernum=username)
-					if aaa=="yes":
-						otpdata=""
-						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है|(OTP has been sent to your Mobile number.)"
+					resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS','91'+username,'TXTLCL','From Apna Rozgar OTP:  '+str(otp))
+					res=resp.decode('utf-8')
+					abcd=re.search('success',res)
+					if abcd:
+						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है| कृपया प्रतीक्षा करें"
 					else:
-						otpdata=str(otp)
 						warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
+						return render(request,'login/forgot.html',{"warn":warn})
 				except:
-					otpdata=str(otp)
 					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
+					return render(request,'login/forgot.html',{"warn":warn})
 
 			else:
 				warn="मोबाइल नंबर गलत है।| (Mobile number is incorrect.)"
@@ -229,14 +249,14 @@ def change_password_view(request):
 				email=EmailMessage('अपना रोज़ागर से ओटीपी (OTP From Apna Rozgar):', 'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP): '+str(otp), to=[username])
 				email.send()
 				otpdata=""
-				warn="ओटीपी आपके ईमेल पर भेज दिया गया है|(OTP has been sent to your Email-id.)"
+				warn="ओटीपी आपके ईमेल पर भेज दिया गया है| कृपया प्रतीक्षा करें"
 			except:
-				otpdata=str(otp)
 				warn="आपका ईमेल गलत है या ईमेल भेजना विफल हो गया है|"
+				return render(request,'login/forgot.html',{"warn":warn})
 
 		data=Registration_otp(username=username,otp=str(otp))
 		data.save()			
-		return render(request,'login/forgot1.html',{"mobile":username,"warn":warn,"otp":otpdata})
+		return render(request,'login/forgot1.html',{"mobile":username,"warn":warn})
 
 	elif request.method == 'POST' and 'btn1' in request.POST:
 		mobile=request.POST.get('username')
@@ -348,7 +368,7 @@ def workrequest(request):
 			p = pag.page(int(page))
 			return render(request,'worker/workrequest.html',{'data':p,'warn':warn})
 		else: 	
-			if request.user.profile.loginas=="worker":
+			if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":
 				data=Status.objects.filter(userworker=request.user.username)        
 				for select in data:
 					if select.worker_status==select.post_id and select.hirer_status==select.user_id:

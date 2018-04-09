@@ -49,9 +49,9 @@ button:hover, a:hover {
 
             {% if request.user.profile.skill1 %}
             
-              <h4><li><b><a href = '/profile'>अपना विवरण देखें--&#9654</a></b></li></h4>
+              <h4><li><b><a href = '/profile'>अपना विवरण देखें--&#9654;</a></b></li></h4>
              <h4>
-            <li ><b><a href = '/worker/edit' >अपना विवरण बदलें--&#9654</a></b></li>
+            <li ><b><a href = '/worker/edit' >अपना विवरण बदलें--&#9654;</a></b></li>
             </h4>
             <br>
          
@@ -59,10 +59,10 @@ button:hover, a:hover {
 
               <h3>आपके लिए सही रोजगार यहां है</h3>
               <h4>
-            <li ><b><a href = '/allpost' >सभी उपलब्ध पोस्ट देखें--&#9654</a></b></li>
+            <li ><b><a href = '/allpost' >सभी उपलब्ध पोस्ट देखें--&#9654;</a></b></li>
             </h4>
             <h4>
-            <li ><b><a href = '/worker/seepost' >आपके कौशल से मेल खाने वाले पोस्ट देखें--&#9654</a></b></li>
+            <li ><b><a href = '/worker/seepost' >आपके कौशल से मेल खाने वाले पोस्ट देखें--&#9654;</a></b></li>
             </h4>
             <h4 >
           <li><b><a href = '/confirm_work'>उन सभी पोस्ट को देखें जिनके लिए आपका चयन किया गया है--&#9654;</a></b></li>
@@ -73,7 +73,7 @@ button:hover, a:hover {
 
           <h3>आपके द्वारा किए गए कार्य के लिए सही भुगतान पाएँ</h3>
           <b>
-            <h4> <b><li ><a href = '/payment_detail'>अपेक्षित भुगतान के तरीका का विवरण दें/बदलें--&#9654</a></li></b></h4>
+            <h4> <b><li ><a href = '/payment_detail'>अपेक्षित भुगतान के तरीका का विवरण दें/बदलें--&#9654;</a></li></b></h4>
           <li><h4><b><a href='/hpay'> आपको मिले सभी भुगतान देखें --&#9654;</a></b></h4></li>
             </b>
             <br>
@@ -83,10 +83,21 @@ button:hover, a:hover {
             </h3>
             <b>
             <h4>
-            <li ><b><a href = "/feedback?username={{request.user.username}}">आपको मिले सभी फ़ीडबैक देखें--&#9654</a></b></li>
+            <li ><b><a href = "/feedback?username={{request.user.username}}">आपको मिले सभी फ़ीडबैक देखें--&#9654;</a></b></li>
             </h4
             </b>
             <br>
+              <form id="cur_location" method="post" action="/view" >
+                {% csrf_token %}
+                <input type="text" name="address" id="address11" value="N"  hidden />
+                <input type="text" name="sms" id="sms11" value="स्थान रिकॉर्ड नहीं हुआ" hidden />
+                <input type="number" name="lat" id="lat11" value=0 hidden  />
+                <input type="number" name="lng" id="lng11" value=0 hidden/>
+                <input type="text" name="time" id="time11" value="N" hidden />
+                <button type="button" onclick="getLocation()">अपने वर्तमान स्थान को साझा करें</button>
+                </form>
+            </b></h4>
+
     		{% else %}
     			<h3>
     			<li ><a href = '/worker/edit'>अपना विवरण दर्ज करें</a></li>

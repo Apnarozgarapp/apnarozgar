@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.contrib.auth.models import User
-from .models import Profile,location
+from .models import Profile,location,Current_location
 from search.models import Posts,Status
 from login.models import Feedback
 import login
@@ -175,9 +175,18 @@ def update_profile(request):
        return render(request,'worker/worker1.html')
 
 def profile(request):
-  if request.user:
-    data=Profile.objects.get(user=request.user)
-    return render(request,'worker/view.html',{'data':data})
+  if request.user.username:
+    if request.user.profile.loginas=="worker":
+        data=Profile.objects.get(user=request.user)
+        current_address2=Current_location.objects.filter(username=request.user.username)
+        if len(current_address2)==1:
+          for current_address1 in current_address2:
+            return render(request,'worker/view.html',{'data':data,'current_address':current_address1})
+        else:
+          return render(request,'worker/view.html',{'data':data})
+    else:
+      warn="कृपया पहले श्रमिक के रूप में लॉगिन करें"
+      return render(request,'login/form.html',{'warn':warn})
   else:
     warn="कृपया लॉगिन करें"
     return render(request,'worker/view.html',{'warn':warn})

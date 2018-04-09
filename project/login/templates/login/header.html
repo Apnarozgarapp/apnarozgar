@@ -36,8 +36,9 @@
 				  <center>
 					
 					{% if request.user.username %}
-				  	<p><b> {{request.user.first_name}}</b> ने लॉगिन किया है</p>
+				  	<p><b> {{request.user.first_name}}</b> ने <b>{{request.user.profile.loginas}}</b> के रूप में लॉगिन किया है</p>
 					{% endif %}
+                    <p id="currenttime"></p> 
 				  </center>
 
 			  </div>
@@ -45,6 +46,20 @@
 				 
 				  <center>
 				  <h2><b><u><a href="/about">अपना रोज़गार</a></b></u></h2>
+                  <br>
+                  {% if request.user.username %}
+                  <h4><b>
+                <form method="post" action="/change_role">
+                {% csrf_token %}
+                <select name='loginas' onchange='if(this.value != 0) { this.form.submit(); }'>
+                <option value='0'>Change Role</option>
+                <option value='worker'>worker</option>
+                <option value='hirer'>hirer</option>
+                <option value='contractor'>contractor</option>
+                </select>
+                </form>
+            </b></h4>
+            {%endif%}
 				  </center>
 			    </div>
 		</div>
@@ -59,7 +74,8 @@
 			  <ul class="nav nav-pills nav-stacked">
 			  	{% if request.user.username %}
 			  	<h4><b><li><a href = '/view'>अपना विवरण देखें</a></li></b></h4><br>
-			  	<h4><b><li><a href = '/workrequest'>कार्य अनुरोध (request) देखें</a></li></b></h4><br>
+			  	
+                <h4><b><li><a href = '/workrequest'>कार्य अनुरोध (request) देखें</a></li></b></h4><br>
 			  	<h4><b><li><a href='/logout'>लॉगआउट</a></li></b></h4><br>
 			  	
                 <h4><b> <li><a href = '/change_password'>पासवर्ड बदलें</a></li></b></h4>
@@ -96,14 +112,81 @@
   
 
    <script>
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError,{timeout:60000});
+    } else { 
+        document.getElementById("sms11").value = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+   document.getElementById("lat11").value = position.coords.latitude ; 
+    document.getElementById("lng11").value=position.coords.longitude;
+    document.getElementById("time11").value=new Date(position.timestamp);
+    initMap(position.coords.latitude,position.coords.longitude);
+}
+
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            document.getElementById("sms11").value = "User denied the request for Geolocation."
+            break;
+        case error.POSITION_UNAVAILABLE:
+            document.getElementById("sms11").value = "Location information is unavailable."
+            break;
+        case error.TIMEOUT:
+            document.getElementById("sms11").value = "The request to get user location timed out."
+            break;
+        case error.UNKNOWN_ERROR:
+            document.getElementById("sms11").value = "An unknown error occurred."
+            break;
+    }
+}
+
+
+ function initMap(aa,bb) {
       
+        var latlng = new google.maps.LatLng( aa,  bb);
+
+        var geocoder=new google.maps.Geocoder();
+        geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === 'OK') {
+            if (results[0]) {
+             document.getElementById("address11").value=results[0].formatted_address;
+             document.getElementById("cur_location").submit();
+            } else {
+              document.getElementById("sms11").value= 'No address results found';
+               document.getElementById("cur_location").submit();
+            }
+          } else {
+            document.getElementById("sms11").value= 'Geocoder failed due to: ' + status;
+             document.getElementById("cur_location").submit();
+          }
+        });
+      }
+
+
+
+ </script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-23FmUgOL2z0hWKMTdvV_qv7TZxVIBWs">
+    </script>
+
+<script >
+     var currenttime = new Date();
+     document.getElementById("currenttime").innerHTML = "वर्तमान समय: " +currenttime;
+
+
    var placeSearch, autocomplete;
     function initAutocomplete() {
          autocomplete = new google.maps.places.Autocomplete(
             (document.getElementById('autocomplete')),{types: ['geocode']});
       }
 
-      
+     
+
      function latlngcal()
      {
       	    var place=autocomplete.getPlace();
@@ -111,6 +194,7 @@
       	    document.getElementById("lngdata").value=place.geometry.location.lng();
       } 
    </script>
+   
    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKR0DcCevS0bMUmCfjLCSi6DzKsTZfcbc&libraries=places&callback=initAutocomplete"
         async defer></script>
 

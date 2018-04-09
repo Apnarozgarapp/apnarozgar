@@ -13,6 +13,7 @@ import random
 from .forms import UserLoginForm, UserRegisterForm
 from .models import LoginAs,Registration_otp
 from search.models import Status
+from worker.models import Current_location
 from django.core.mail import EmailMessage
 import re
 import string
@@ -21,6 +22,9 @@ import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import urllib.request
 import urllib.parse
+
+
+#print(datetime.datetime.utcnow().strftime("%A, %d. %B %Y %I:%M%p"))
 
 def sendSMS(apikey, numbers, sender, message):
 	params = {'apikey': apikey, 'numbers': numbers, 'message' : message, 'sender': sender}
@@ -35,7 +39,29 @@ def smss(request):
 def aboutus(request):
 	return render(request,'login/aboutus.html')
 
-	
+def change_role(request):
+	if request.user.username:
+		if request.method=="POST":
+			loginas1=request.POST.get('loginas')
+			request.user.profile.loginas=loginas1
+			request.user.profile.save()
+			if loginas1=="worker" or loginas1=="contractor":
+				return render(request,'worker/viewedit.html')
+			elif loginas1=="hirer":
+				return render(request,'search/hirer.html')
+			else:
+				return render(request,'login/form.html',{"form":form})
+		else:
+			if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":        
+				return render(request,'worker/viewedit.html')
+			elif request.user.profile.loginas=="hirer":
+				return render(request,'search/hirer.html')
+			else:
+				warn="कृपया पहले  लॉगिन करें"
+				return render(request,'login/form.html',{'warn':warn})
+	else:
+		warn="कृपया पहले  लॉगिन करें"
+		return render(request,'login/form.html',{'warn':warn})	
 def login_view(request):
 	form = UserLoginForm(request.POST or None)
 	if form.is_valid():
@@ -57,7 +83,7 @@ def login_view(request):
 		else:
 			return render(request,'login/form.html',{"form":form})
 	elif request.user.username:
-		value=LoginAs.objects.get(username=request.user.username)
+
 		if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":        
 			return render(request,'worker/viewedit.html')
 		elif request.user.profile.loginas=="hirer":
@@ -140,13 +166,26 @@ def logout_view(request):
 
 def profile_view(request):
 	if request.user.username:
-		if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":        
-			return render(request,'worker/viewedit.html')
-		elif request.user.profile.loginas=="hirer":
-			return render(request,'search/hirer.html')
+		if request.method=="POST" and (request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor"):
+			address=request.POST.get('address',None)
+			lat=request.POST.get('lat',None)
+			lng=request.POST.get('lng',None)
+			time=request.POST.get('time',None)
+			sms=request.POST.get('sms',None)
+			if address!="N":
+				data=Current_location(username=request.user.username,address=address,lat=lat,lng=lng,time=time)
+				data.save()
+				sms="वर्तमान स्थान को सफलतापूर्वक रिकॉर्ड किया गया"+address
+			return render(request,'worker/viewedit.html',{'warn':sms})
+
 		else:
-			warn="कृपया पहले  लॉगिन करें"
-			return render(request,'login/form.html',{'warn':warn})
+			if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":        
+				return render(request,'worker/viewedit.html')
+			elif request.user.profile.loginas=="hirer":
+				return render(request,'search/hirer.html')
+			else:
+				warn="कृपया पहले  लॉगिन करें"
+				return render(request,'login/form.html',{'warn':warn})
 	else:
 		warn="कृपया पहले  लॉगिन करें"
 		return render(request,'login/form.html',{'warn':warn})

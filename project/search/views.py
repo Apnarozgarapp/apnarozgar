@@ -48,7 +48,11 @@ def done(request):
 				selected=Status.objects.filter(post_id=post_id,confirm='a')
 				warn=" प्रतिक्रिया (Feedback) और भुगतान विवरण सफलतापूर्वक सबमिट किया गया "
 				return render(request,"search/selected.html",{'data':data,'page':page,'selected':selected,'warn':warn})
+<<<<<<< HEAD
 			elif request.method == 'GET' and 'done' in request.GET:
+=======
+			elif request.method == 'GET' and 'done' in request.GET :
+>>>>>>> d8609366db7729f51ca755f7219909a42aa8843b
 				post_id=request.GET.get('post_id')
 				user_id=request.GET.get('user_id')
 				page=request.GET.get('page')

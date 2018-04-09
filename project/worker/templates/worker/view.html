@@ -47,6 +47,14 @@ button:hover, a:hover {
    (आपकी रेटिंग = {{data.rating}})
    <br>
   {%endif%}
+{% if current_address %}
+<font color = 'black' size = 3>
+ current address:-:<br>
+</font>
+  <p class="title"> {{current_address.address}}</p>
+  <p> time of recorded= {{current_address.time}}</p> 
+  <br>
+{%endif%}
   <font color = 'black' size = 3>
  पूरा पता:-:<br>
 </font>

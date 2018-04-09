@@ -48,10 +48,10 @@ def done(request):
 				selected=Status.objects.filter(post_id=post_id,confirm='a')
 				warn=" प्रतिक्रिया (Feedback) और भुगतान विवरण सफलतापूर्वक सबमिट किया गया "
 				return render(request,"search/selected.html",{'data':data,'page':page,'selected':selected,'warn':warn})
-			elif request.method == 'GET' and 'done' in request.POST:
-				post_id=request.POST.get('post_id')
-				user_id=request.POST.get('user_id')
-				page=request.POST.get('page')
+			elif request.method == 'GET' and 'done' in request.GET:
+				post_id=request.GET.get('post_id')
+				user_id=request.GET.get('user_id')
+				page=request.GET.get('page')
 				data22=Status.objects.filter(post_id=post_id,user_id=user_id)
 				if len(data22)==1:
 					for data2 in data22:
@@ -64,14 +64,14 @@ def done(request):
 							return render(request,"search/selected.html",{'data':data,'page':page,'selected':selected,'warn':warn})
 				else:
 					pos=Posts.objects.filter(username=request.user.username)
-					
+					page=request.POST.get('page')
 					warn=""
 					if len(pos)==0:
 						warn="कोई पोस्ट नहीं मिला।"
 					if len(pos)!=0:
 						pos=pos.order_by('-post_id')
 					pag = Paginator(pos,4)
-					if page:
+					if not page:
 						page=1
 					p = pag.page(int(page))
 					return render(request,'search/postresult.html',{'pos':p,'warn':warn})
@@ -84,7 +84,7 @@ def done(request):
 					warn="कोई पोस्ट नहीं मिला।"
 				pag = Paginator(pos,4)
 				page=request.POST.get('page')
-				if page:
+				if not page:
 					page=1
 				p = pag.page(int(page))
 				return render(request,'search/postresult.html',{'pos':p,'warn':warn})
@@ -468,10 +468,10 @@ def see_work_post(request):
       return render(request,'search/postresult.html',{'pos':p,'warn':warn})
 
 
-   elif request.method=="GET" and 'schire' in request.GET:
-    post_id=request.GET.get('post_id')
-    user_id=request.GET.get('user_id')
-    page=request.GET.get('page')
+   elif request.method=="POST" and 'schire' in request.POST:
+    post_id=request.POST.get('post_id')
+    user_id=request.POST.get('user_id')
+    page=request.POST.get('page')
     dataa=Posts.objects.filter(post_id=post_id,username=request.user.username)
     if len(dataa)==1:
       pqr=Status.objects.filter(post_id=post_id,user_id=user_id)

@@ -175,7 +175,7 @@ def profile_view(request):
 			if address!="N":
 				data=Current_location(username=request.user.username,address=address,lat=lat,lng=lng,time=time)
 				data.save()
-				sms="वर्तमान स्थान को सफलतापूर्वक रिकॉर्ड किया गया"+address
+				sms="वर्तमान स्थान को सफलतापूर्वक रिकॉर्ड किया गया:- "+address
 			return render(request,'worker/viewedit.html',{'warn':sms})
 
 		else:

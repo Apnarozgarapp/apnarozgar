@@ -333,7 +333,7 @@ def workrequest(request):
 					
 					if 'hhire' in request.POST :
 						r=Status.objects.filter(user_id=user_id,confirm='a')
-						p=r.filter(Q(start_date__lte=end_date,start_date__gte=start_date)|Q(end_date__lte=end_date,end_date__gte=start_date))
+						p=r.filter(Q(start_date__lte=start_date,end_date__gte=start_date)|Q(start_date__lte=end_date,end_date__gte=end_date)|Q(start_date__lte=start_date,end_date__gte=end_date)|Q(start_date__gte=start_date,end_date__lte=end_date))
 						if len(p)==0:
 							pqr.hirer_status=user_id
 							pqr.confirm='a'
@@ -375,7 +375,7 @@ def workrequest(request):
 				for pqr in pq:
 					if 'whire' in request.POST :
 						r=Status.objects.filter(user_id=user_id,confirm='a')
-						p=r.filter(Q(start_date__lte=end_date,start_date__gte=start_date)|Q(end_date__lte=end_date,end_date__gte=start_date))
+						p=r.filter(Q(start_date__lte=start_date,end_date__gte=start_date)|Q(start_date__lte=end_date,end_date__gte=end_date)|Q(start_date__lte=start_date,end_date__gte=end_date)|Q(start_date__gte=start_date,end_date__lte=end_date))
 						if len(p)==0:
 							pqr.worker_status=post_id
 							pqr.confirm='a'

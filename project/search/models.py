@@ -32,9 +32,9 @@ class Status(models.Model):
 	userworker = models.CharField(max_length = 100,blank = True, null = True)
 	hirer_status = models.IntegerField(blank = True, null = True)
 	worker_status = models.IntegerField(blank = True, null = True)
-	confirm=models.CharField(max_length = 2,blank = True, null = True)
+	confirm=models.CharField(max_length = 2,blank = True, null = True) #for confirmation of worker and hirer
 	temp=models.CharField(max_length = 2,blank = True, null = True)
 	start_date = models.DateField(blank = True, null = True)
 	end_date = models.DateField(blank = True, null = True)
-	done=models.CharField(max_length = 2,blank = True, null = True)
+	done=models.CharField(max_length = 2,blank = True, null = True)# for payment and review
 

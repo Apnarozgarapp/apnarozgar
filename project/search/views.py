@@ -33,14 +33,17 @@ def done(request):
 				page=request.POST.get('page')
 				wuser=Profile.objects.get(user_id=user_id)
 				if not wuser.rating:
-					wuser.rating=float(rating)
-					wuser.nhirer=1
-				else:
-					wuser.rating=(wuser.rating*wuser.nhirer+float(rating))/(wuser.nhirer+1)
-					wuser.nhirer=wuser.nhirer+1
+						wuser.rating=5
+						wuser.nhirer=1
+
+				wuser.rating=(wuser.rating*wuser.nhirer+float(rating))/(wuser.nhirer+1)
+				wuser.nhirer=wuser.nhirer+1
+				if feedback2!="नहीं आया":
+					wuser.rating=wuser.rating*.80
+				
+					data1=Feedback(userhirer=request.user.username,userworker=wuser,post_id=post_id,feedback1=feedback1,feedback2=feedback2,feedback3=feedback3,pmode=pmode,pdate=pdate,description=description,done='a')
+					data1.save()
 				wuser.save()
-				data1=Feedback(userhirer=request.user.username,userworker=wuser,post_id=post_id,feedback1=feedback1,feedback2=feedback2,feedback3=feedback3,pmode=pmode,pdate=pdate,description=description,done='a')
-				data1.save()
 				data=Posts.objects.get(post_id=post_id)
 				data2=Status.objects.get(post_id=post_id,user_id=user_id)
 				data2.done='a'
@@ -211,12 +214,17 @@ def see_work_post(request):
     post_id=request.GET.get('post_id')
     page=request.GET.get('page')
     data=Posts.objects.filter(post_id=post_id,username=request.user.username)
+
     warn=""
     if len(data)==1:
       for dataa in data:
-        dataa.delete()
+        data3=Status.objects.filter(post_id=dataa.post_id,confirm='a')
+        if len(data3)>0:
+          warn="आप काम को नहीं हटा सकते क्योंकि कुछ श्रमिक चयनित होता है। अगर आप हटाना चाहते हैं, तो पहले श्रमिक को अचयनित करें "
+        else:
+          dataa.delete()
     else:
-       warn="पोस्ट आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
+       warn="कार्य आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
     pos=Posts.objects.filter(username=request.user.username)
     if len(pos)!=0:
       pos=pos.order_by('-post_id')
@@ -309,7 +317,9 @@ def see_work_post(request):
                 dat.joinrequest='e'
                 for pp in p:
                   if pp.post_id==data.post_id:
-                    dat.joinrequest='a'
+                   
+                      dat.joinrequest='a'
+                    
               else:
                 f=sta.filter(user_id=dat.user_id)
                 if len(f)==0:
@@ -322,7 +332,8 @@ def see_work_post(request):
                       dat.joinrequest='b'
                     elif ff.post_id ==ff.worker_status:
                       dat.joinrequest='c'
-                dat.save()
+                    
+              dat.save()
             user1=user1.order_by('age')
             warn = " "
             pag = Paginator(user1,6)
@@ -359,17 +370,21 @@ def see_work_post(request):
     dataa=Posts.objects.filter(post_id=post_id,username=request.user.username)
     if len(dataa)==1:
       for data in dataa:
-        return render(request,'search/pwork1.html',{'page':page,'data':data})
+          data3=Status.objects.filter(post_id=data.post_id,confirm='a')
+          if len(data3)>0:
+            warn="आप काम को नहीं बदल सकते क्योंकि कुछ श्रमिक चयनित होता है। अगर आप बदलना चाहते हैं, तो पहले श्रमिक को अचयनित करें "
+          else:
+            return render(request,'search/pwork1.html',{'page':page,'data':data})
     else:
       warn="पोस्ट आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
-      pos=Posts.objects.filter(username=request.user.username)
-      if len(pos)!=0:
-        pos=pos.order_by('-post_id')
-      pag = Paginator(pos,4)
-      if not page:
-              page='1'
-      p = pag.page(int(page))
-      return render(request,'search/postresult.html',{'pos':p,'warn':warn})
+    pos=Posts.objects.filter(username=request.user.username)
+    if len(pos)!=0:
+      pos=pos.order_by('-post_id')
+    pag = Paginator(pos,4)
+    if not page:
+            page='1'
+    p = pag.page(int(page))
+    return render(request,'search/postresult.html',{'pos':p,'warn':warn})
 
 
    elif request.method=="GET" and 'gotopost' in request.GET:
@@ -390,30 +405,38 @@ def see_work_post(request):
       p = pag.page(int(page))
       return render(request,'search/postresult.html',{'pos':p,'warn':warn})
 
-   elif request.method=="GET" and ('hire' in request.GET or 'chire' in request.GET ):
-    post_id=request.GET.get('post_id')
-    user_id=request.GET.get('user_id')
-    worker=request.GET.get('worker')
-    hirer=request.GET.get('hirer')
-    userworker=request.GET.get('userworker')
-    userhirer=request.GET.get('userhirer')
-    start_date=request.GET.get('start_date')
-    end_date=request.GET.get('end_date')
-    page = request.GET.get('page',None)
-    rpage = request.GET.get('rpage',None)
+   elif request.method=="POST" and ('hire' in request.POST or 'chire' in request.POST ):
+    post_id=request.POST.get('post_id')
+    user_id=request.POST.get('user_id')
+    worker=request.POST.get('worker')
+    hirer=request.POST.get('hirer')
+    userworker=request.POST.get('userworker')
+    userhirer=request.POST.get('userhirer')
+    start_date=request.POST.get('start_date')
+    end_date=request.POST.get('end_date')
+    page = request.POST.get('page',None)
+    rpage = request.POST.get('rpage',None)
     dataa=Posts.objects.filter(post_id=post_id,username=request.user.username)
     if len(dataa)==1:
       abc=Status.objects.filter(post_id=post_id,user_id=user_id)
-      if len(abc)==0 and 'hire' in request.GET:
-        cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,hirer_status=user_id,userworker=userworker,userhirer=userhirer,start_date=start_date,end_date=end_date)
-        cba.save()
-      else:
-        for pqr in abc:
-          pqr.hirer_status=user_id
-          pqr.confirm='a'
-          pqr.save()
-          if 'chire' in request.GET:
+      rr=Status.objects.filter(user_id=user_id,confirm='a')
+      pp=rr.filter(Q(start_date__lte=start_date,end_date__gte=start_date)|Q(start_date__lte=end_date,end_date__gte=end_date)|Q(start_date__lte=start_date,end_date__gte=end_date)|Q(start_date__gte=start_date,end_date__lte=end_date))
+      if len(pp)==0:
+        if len(abc)==0 and 'hire' in request.POST:
+          cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,hirer_status=user_id,userworker=userworker,userhirer=userhirer,start_date=start_date,end_date=end_date)
+          cba.save()
+        else:
+          for pqr in abc:
+            if 'hire' in request.POST:
+              pqr.hirer_status=user_id
+              pqr.confirm='a'
+              pqr.save()
+          if 'chire' in request.POST and pqr.confirm !='a':
             pqr.delete()
+          else:
+            pqr.hirer_status=0
+            pqr.save()
+
       sta=Status.objects.filter(post_id=post_id)
       data=Posts.objects.get(post_id=post_id)
       try :
@@ -432,7 +455,8 @@ def see_work_post(request):
             dat.joinrequest='e'
             for pp in p:
               if pp.post_id==data.post_id:
-                dat.joinrequest='a'
+                  dat.joinrequest='a'
+               
           else:
             f=sta.filter(user_id=dat.user_id)
             if len(f)==0:
@@ -445,6 +469,7 @@ def see_work_post(request):
                   dat.joinrequest='b'
                 elif ff.post_id ==ff.worker_status:
                   dat.joinrequest='c'
+                
           dat.save()
         user1=user1.order_by('age')
         warn = " "
@@ -468,7 +493,7 @@ def see_work_post(request):
       return render(request,'search/postresult.html',{'pos':p,'warn':warn})
 
 
-   elif request.method=="POST" and 'schire' in request.POST:
+   elif request.method=="POST" and ('schire' in request.POST or 'shire' in request.POST):
     post_id=request.POST.get('post_id')
     user_id=request.POST.get('user_id')
     page=request.POST.get('page')
@@ -477,7 +502,14 @@ def see_work_post(request):
       pqr=Status.objects.filter(post_id=post_id,user_id=user_id)
       if len(pqr)==1:
         for pq in pqr:
-         pq.delete()
+          if 'shire' in request.POST:
+            pq.hirer_status=user_id
+            pq.save()
+          elif 'schire' in request.POST and pq.worker_status!=pq.post_id:
+            pq.delete()
+          elif 'schire' in request.POST and pq.worker_status== pq.post_id:
+            pq.hirer_status=0
+            pq.save()
       for data in dataa:
         selected=Status.objects.filter(post_id=post_id,confirm='a')
         warn=""

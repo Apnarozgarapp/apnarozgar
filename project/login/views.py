@@ -117,6 +117,7 @@ def register_view(request):
 					else:
 						warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 						return render(request,'login/register.html',{"warn":warn})
+					#print(str(otp))
 				except:
 					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 					return render(request,'login/register.html',{"warn":warn})

@@ -6,7 +6,7 @@ from worker.views import (detail_post,all_post,confirm_work,profile,feedback,pay
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login',login_view,name = 'login'),
-     url(r'^change_role',change_role,name = 'change_role'),
+    url(r'^change_role',change_role,name = 'change_role'),
     url(r'^$',aboutus,name = 'about'),
     url(r'^logout',logout_view,name = 'logout'),
     url(r'^workrequest',workrequest,name = 'workrequest'),

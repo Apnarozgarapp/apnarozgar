@@ -14,7 +14,7 @@
 	<div class="form-group">
 	<h3>वेतन भुगतान के तरीके के बारे में जानकारी दें</h3>
 	<label for="pmode">वेतन भुगतान का प्रकार: </label>
-	<select name="pmode" class="form-control" id="pmode" required>
+	<select name="pmode" class="form-control" id="pmode" >
 	<option value="नकद भुगतान (CASH)">नकद भुगतान (CASH)</option>
 	<option value="PAYTM">PAYTM</option>
 	<option value="श्रमिक बैंक खाते में सीधे अंतरण">श्रमिक बैंक खाते में सीधे अंतरण</option>
@@ -24,7 +24,7 @@
 	</div>
 		<div class="form-group">
 	    <label for="pdate">भुगतान की तिथि</label>
-	    <input type="date" name = 'pdate' class="form-control" id="date" required="True"></input>
+	    <input type="date" name = 'pdate' class="form-control" id="date" required></input>
 	</div>
 	<div class="form-group">
 	    <label for="description">भुगतान के बारे में विवरण (अपना मोबाइल नंबर या खाता संख्या दर्ज करें)</label>
@@ -39,11 +39,11 @@
 	<div class="form-group">
 	<label for="rating">रेटिंग (Rating): </label>
 	<select name="rating" class="form-control" id="rating" required>
-	<option value="1">1</option>
-	<option value="2">2</option>
-	<option value="3">3</option>
-	<option value="4">4</option>
 	<option value="5">5</option>
+	<option value="4">4</option>
+	<option value="3">3</option>
+	<option value="2">2</option>
+	<option value="1">1</option>
 	</select>
 	</div>
 
@@ -66,6 +66,7 @@
 	<select name="feedback2"   class="form-control" id="feedback2" required>
 	<option value="हाँ">हाँ</option>
 	<option value="नहीं">नहीं</option>
+    <option value="नहीं आया">नहीं आया</option>
 	</select>
 	</div>
     

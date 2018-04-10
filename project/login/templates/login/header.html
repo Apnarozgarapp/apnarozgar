@@ -135,6 +135,7 @@ function getLocation() {
         navigator.geolocation.getCurrentPosition(showPosition, showError,{timeout:60000});
     } else { 
         document.getElementById("sms11").value = "Geolocation is not supported by this browser.";
+        document.getElementById("cur_location").submit();
     }
 }
 
@@ -149,15 +150,19 @@ function showError(error) {
     switch(error.code) {
         case error.PERMISSION_DENIED:
             document.getElementById("sms11").value = "User denied the request for Geolocation."
+            document.getElementById("cur_location").submit();
             break;
         case error.POSITION_UNAVAILABLE:
             document.getElementById("sms11").value = "Location information is unavailable."
+            document.getElementById("cur_location").submit();
             break;
         case error.TIMEOUT:
             document.getElementById("sms11").value = "The request to get user location timed out."
+            document.getElementById("cur_location").submit();
             break;
         case error.UNKNOWN_ERROR:
             document.getElementById("sms11").value = "An unknown error occurred."
+            document.getElementById("cur_location").submit();
             break;
     }
 }

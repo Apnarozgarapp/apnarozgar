@@ -33,6 +33,9 @@ class Profile(models.Model):
     acname = models.CharField(max_length=100,blank = True, null = True)
     bank = models.CharField(max_length=100,blank = True, null = True)
     mode = models.CharField(max_length=100,blank = True, null = True)
+    contractor=models.PositiveSmallIntegerField(blank = True, null = True,default=0)
+
+    
     def __str__(self):
     	return self.user.username
 
@@ -53,6 +56,7 @@ class location(models.Model):
     lng = models.CharField(max_length = 50, blank = True, null= True)
     def __str__(self):
         return self.username
+
 class Current_location(models.Model):
     username = models.CharField(max_length = 50, primary_key = True)
     address = models.CharField(max_length=250,blank = True, null = True)
@@ -61,4 +65,17 @@ class Current_location(models.Model):
     time = models.CharField(max_length = 50, blank = True, null= True)
     def __str__(self):
         return self.username
+    
+class Contractor(models.Model):
+    cid=models.AutoField(primary_key=True)
+    username=models.IntegerField(blank = True, null = True)
+    skill= models.CharField(max_length=100,blank = True,null = True)
+    nofworker = models.IntegerField(blank = True, null = True)
+    nameof_worker = models.CharField(max_length=1024,blank = True, null = True)
+    equipment = models.CharField(max_length=250,blank = True, null = True)
+    start_date = models.DateField(blank = True, null = True)
+    end_date = models.DateField(blank = True, null = True)
+    experience = models.CharField(max_length = 250, blank = True, null= True)
+    description1 = models.TextField(max_length = 250,blank = True, null = True)
+    description2 = models.TextField(max_length = 100,blank = True, null = True)
     

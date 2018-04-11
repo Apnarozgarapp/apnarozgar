@@ -9,6 +9,13 @@
 <h4> <font color="red">{{warn}}</font></h4>
 <form method="POST" action="">
    {% csrf_token %}
+<div class="form-group">
+    <label for="target">target</label><br>
+    <input type="radio" name="target" value="a"  checked>worker</input><br>
+  <input type="radio" name="target" value="b" >contractor</input>
+</div>
+
+
 
 	<div class="form-group">
 	<label for="rskill">कर्मचारी में आवश्यक कौशल </label>

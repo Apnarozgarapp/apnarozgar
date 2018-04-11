@@ -92,6 +92,19 @@ button:hover, a:hover {
      <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें</button>
      
      {%endif%}
+
+
+     {%if "e" in data1.temp %}
+     <font color = "green" ><p><b>कर्मचारी ने इस पोस्ट के लिए काम करने की पुष्टि दी है लेकिन आपने रद्दीकरण अनुरोध भेजा है</b></p></font>
+     <b><button type="submit" name = 'whire' >कार्य अनुरोध (request) करें--&#9654;</button>
+     
+     {%endif%}
+
+     {%if "f" in data1.temp %}
+     <font color = "green" ><p><b>कर्मचारी ने इस पोस्ट के लिए काम करने की पुष्टि दी है लेकिन नियोक्ता ने रद्दीकरण अनुरोध भेजा है</b></p></font>
+     <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें--&#9654;</button>
+     
+     {%endif%}
      {%if "b" in data1.temp %}
      <font color = "red"><p><b>आपके इस पोस्ट के लिए काम करने की पुष्टि नहीं हुई है (Not Confirmed)</b></p></font>
      <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें</button>
@@ -112,8 +125,8 @@ button:hover, a:hover {
   <div class="pagination">
     <span class="step-links">
         {% if data.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ data.previous_page_number }}">previous</a>
+            <a href="?page=1">&laquo; पहला</a>
+            <a href="?page={{ data.previous_page_number }}">पिछला</a>
         {% endif %}
 
         <span class="current">
@@ -121,8 +134,8 @@ button:hover, a:hover {
         </span>
 
         {% if data.has_next %}
-            <a href="?page={{ data.next_page_number }}">next</a>
-            <a href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
+            <a href="?page={{ data.next_page_number }}">अगला</a>
+            <a href="?page={{ data.paginator.num_pages }}">अंतिम &raquo;</a>
         {% endif %}
     </span>
 </div>

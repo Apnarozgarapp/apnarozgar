@@ -19,7 +19,7 @@ class Posts(models.Model):
 	status = models.CharField(max_length = 50,blank = True, null = True)
 	distance = models.FloatField(blank = True, null = True)
 	temp=models.CharField(max_length = 2,blank = True, null = True)
-	temp1=models.CharField(max_length = 2,blank = True, null = True)
+	target=models.CharField(max_length = 2,blank = True, null = True)
 	def __str__(self):
 		return self.username
 class Status(models.Model):
@@ -37,4 +37,5 @@ class Status(models.Model):
 	start_date = models.DateField(blank = True, null = True)
 	end_date = models.DateField(blank = True, null = True)
 	done=models.CharField(max_length = 2,blank = True, null = True)# for payment and review
+	target=models.CharField(max_length = 2,blank = True, null = True)
 

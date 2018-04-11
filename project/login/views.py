@@ -45,15 +45,19 @@ def change_role(request):
 			loginas1=request.POST.get('loginas')
 			request.user.profile.loginas=loginas1
 			request.user.profile.save()
-			if loginas1=="worker" or loginas1=="contractor":
+			if loginas1=="worker" :
 				return render(request,'worker/viewedit.html')
+			elif loginas1=="contractor":
+				return render(request,'worker/profilecontractor.html')
 			elif loginas1=="hirer":
 				return render(request,'search/hirer.html')
 			else:
 				return render(request,'login/form.html',{"form":form})
 		else:
-			if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":        
+			if request.user.profile.loginas=="worker":        
 				return render(request,'worker/viewedit.html')
+			elif  request.user.profile.loginas=="contractor":
+				return render(request,'worker/profilecontractor.html')
 			elif request.user.profile.loginas=="hirer":
 				return render(request,'search/hirer.html')
 			else:
@@ -76,16 +80,20 @@ def login_view(request):
 		request.user.is_authenticated()
 		request.user.profile.loginas=loginas1
 		request.user.profile.save()
-		if loginas1=="worker" or loginas1=="contractor":
+		if loginas1=="worker" :
 			return render(request,'worker/viewedit.html')
+		elif loginas1=="contractor":
+			return render(request,'worker/profilecontractor.html')
 		elif loginas1=="hirer":
 			return render(request,'search/hirer.html')
 		else:
 			return render(request,'login/form.html',{"form":form})
 	elif request.user.username:
 
-		if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":        
+		if request.user.profile.loginas=="worker":        
 			return render(request,'worker/viewedit.html')
+		elif request.user.profile.loginas=="contractor":
+			return render(request,'worker/profilecontractor.html')
 		elif request.user.profile.loginas=="hirer":
 			return render(request,'search/hirer.html')
 		else:
@@ -180,8 +188,10 @@ def profile_view(request):
 			return render(request,'worker/viewedit.html',{'warn':sms})
 
 		else:
-			if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":        
+			if request.user.profile.loginas=="worker" :        
 				return render(request,'worker/viewedit.html')
+			elif request.user.profile.loginas=="contractor":
+				return render(request,'worker/profilecontractor.html')
 			elif request.user.profile.loginas=="hirer":
 				return render(request,'search/hirer.html')
 			else:
@@ -339,14 +349,28 @@ def workrequest(request):
 							pqr.hirer_status=user_id
 							pqr.confirm='a'
 							pqr.save()
+						elif pqr.confirm=='a':
+							pqr.hirer_status=user_id
+							pqr.save()
+
 						else:
 							warn="अब मजदूर इस तिथि पर उपलब्ध नहीं है।"
-					if 'hchire' in request.POST :
-						pqr.delete()
+					if 'hchire' in request.POST:
+						if pqr.worker_status!=pqr.post_id:
+							pqr.delete()
+						else:
+							pqr.hirer_status=0
+							pqr.save()
 			data=Status.objects.filter(userhirer=request.user.username)
 			for select in data:
 				if select.worker_status==select.post_id and select.hirer_status==select.user_id:
 					select.temp='a'
+					select.save()
+				elif select.worker_status!=select.post_id and select.confirm=='a':
+					select.temp='f'
+					select.save()
+				elif select.hirer_status!=select.user_id and select.confirm=='a':
+					select.temp='e'
 					select.save()
 				elif select.worker_status==select.post_id:
 					select.temp='c'
@@ -354,6 +378,7 @@ def workrequest(request):
 				elif select.hirer_status==select.user_id:
 					select.temp='b'
 					select.save()
+				
 				else:
 					select.temp='d'
 					select.save()        
@@ -381,14 +406,27 @@ def workrequest(request):
 							pqr.worker_status=post_id
 							pqr.confirm='a'
 							pqr.save()
+						elif pqr.confirm=='a':
+							pqr.worker_status=post_id
+							pqr.save()
 						else:
 							warn="आप इस तिथि पर उपलब्ध नहीं हैं।"
 					if 'wchire' in request.POST:
-						pqr.delete()
+						if pqr.hirer_status!= pqr.post_id:
+							pqr.delete()
+						else:
+							pqr.worker_status=0
+							pqr.save()
 			data=Status.objects.filter(userworker=request.user.username)
 			for select in data:
 				if select.worker_status==select.post_id and select.hirer_status==select.user_id:
 					select.temp='a'
+					select.save()
+				elif select.worker_status!=select.post_id and select.confirm=='a':
+					select.temp='e'
+					select.save()
+				elif select.hirer_status!=select.user_id and select.confirm=='a':
+					select.temp='f'
 					select.save()
 				elif select.worker_status==select.post_id:
 					select.temp='b'
@@ -396,6 +434,7 @@ def workrequest(request):
 				elif select.hirer_status==select.user_id:
 					select.temp='c'
 					select.save()
+				
 				else:
 					select.temp='d'
 					select.save()        
@@ -409,10 +448,20 @@ def workrequest(request):
 			return render(request,'worker/workrequest.html',{'data':p,'warn':warn})
 		else: 	
 			if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":
-				data=Status.objects.filter(userworker=request.user.username)        
+				if request.user.profile.loginas=="contractor":
+					username=request.user.profile.contractor_username
+				else:
+					username=request.user.username
+				data=Status.objects.filter(userworker=username)        
 				for select in data:
 					if select.worker_status==select.post_id and select.hirer_status==select.user_id:
 						select.temp='a'
+						select.save()
+					elif select.worker_status!=select.post_id and select.confirm=='a':
+						select.temp='e'
+						select.save()
+					elif select.hirer_status!=select.user_id and select.confirm=='a':
+						select.temp='f'
 						select.save()
 					elif select.worker_status==select.post_id:
 						select.temp='b'
@@ -420,6 +469,7 @@ def workrequest(request):
 					elif select.hirer_status==select.user_id:
 						select.temp='c'
 						select.save()
+					
 					else:
 						select.temp='d'
 						select.save()        
@@ -440,12 +490,19 @@ def workrequest(request):
 					if select.worker_status==select.post_id and select.hirer_status==select.user_id:
 						select.temp='a'
 						select.save()
+					elif select.worker_status!=select.post_id and select.confirm=='a':
+						select.temp='f'
+						select.save()
+					elif select.hirer_status!=select.user_id and select.confirm=='a':
+						select.temp='e'
+						select.save()
 					elif select.worker_status==select.post_id:
 						select.temp='c'
 						select.save()
 					elif select.hirer_status==select.user_id:
 						select.temp='b'
 						select.save()
+					
 					else:
 						select.temp='d'
 						select.save()        

@@ -1,0 +1,92 @@
+{% extends "login/header.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class ='col-sm-6 col-sm-offset-3'>
+<h3>यहां अपना योग्यता(Skills) दर्ज करें</h3><br>
+<p><font color = "red">{{warn}}</font></p>
+
+        <!--<meta http-equiv="Content-Type" content="text/html;" /> -->
+        
+
+
+<form method="POST" action="">
+{% csrf_token %}
+
+<div class="form-group">
+<label for="skill">कौशल  (अनिवार्य)</label>
+<select name="skill" class="form-control" id="skill" onchange="dynamicdropdown(this.options[this.selectedIndex].value);"  required>
+<option value="" selected>इन विकल्पों से कौशल चुनें</option>
+<option value="निर्माण मजदूर(Construction worker)">निर्माण मजदूर(Construction worker)</option>
+  <option value="बिजली कारीगर(Electrician)">बिजली कारीगर(Electrician)</option>
+  <option value="बढ़ई(Carpenter)">बढ़ई(Carpenter)</option>
+  <option value="पेंटर(Painter)">पेंटर(Painter)</option>
+  <option value="वेल्डर(Welder)">वेल्डर(Welder)</option>
+  <option value="पलंबर(Plumber)">पलंबर(Plumber)</option>
+  <option value="सफाई कर्मचारी(Cleanliness worker)">सफाई कर्मचारी(Cleanliness worker)</option>
+  <option value="दूध वितरक(Milk Supplier)">दूध वितरक(Milk Supplier)</option>
+  <option value="राजमिस्री(Mason)">राजमिस्री(Mason)</option>
+  <option value="हलवाई(Confectioner)">हलवाई(Confectioner)</option>
+  <option value="रसोइया(Cook)">रसोइया(Cook)</option>
+  <option value="काँचकर्मी(Glazier)">काँचकर्मी(Glazier)</option>
+  <option value="बेकर(baker)">बेकर(baker)</option>
+  <option value="सुरक्षा कर्मी(Security guard)">सुरक्षा कर्मी(Security guard)</option>
+  <option value="वाहन मिस्त्री(Vehicle Mechanic)">वाहन मिस्त्री(Vehicle Mechanic)</option>
+  <option value="फोटोग्राफर(Photographer)">फोटोग्राफर(Photographer)</option>
+  <option value="माली(Gardener)">माली(Gardener)</option>
+  <option value="नौकरानी(Maid)">नौकरानी(Maid)</option>
+</select>
+</div>
+
+<div class="form-group">
+  <label for="description1">कौशल #1 का विवरण 1:</label>
+      <script type="text/javascript" language="JavaScript">
+                document.write('<select name ="description1" class="form-control" id="multiselection" size="3" multiple ><option value="">इन विकल्पों से चुनें</option></select>')
+        </script>
+        <noscript>
+          
+      <select name ="description1" class="form-control" id="multiselection" size="3" multiple>
+        <option value="">इन विकल्पों से चुनें</option>
+      </select>
+      </noscript>
+</div> 
+
+<div class="form-group">
+<label for="nofworker">nofworker</label>
+<input type="number" name="nofworker"   class="form-control" id="nofworker"  value=0> </input>
+</div>
+
+
+<div class="form-group">
+  <label for="description2">कौशल #1 का विवरण 2:</label>
+      <input type="text" name ="description2" id="descrition2" placeholder="ऐच्छिक(optional)" class="form-control" Optional></input>
+    </div>
+
+
+
+
+<div class="form-group">
+  <label for="nameof_worker">name of_worker:</label>
+      <input type="text" name ="nameof_worker" id="nameof_worker" placeholder="ऐच्छिक(optional)" class="form-control" Optional></input>
+    </div>
+
+
+<div class="form-group">
+<label for="experience">Experiences</label>
+<input type="text" name="experience"   class="form-control" id="experience"  optional> </input>
+</div>
+
+<div class="form-group">
+<label for="equipment">equipment</label>
+<input type="text" name="equipment"   class="form-control" id="equipment"  optional> </input>
+</div>
+
+
+
+
+<button type="submit" name = 'save_changes2'>परिवर्तनों को सुरक्षित करें</button>
+<button type="submit" name = 'addskill'>Add another skill</button>
+</form>
+</div>
+{% endblock %}

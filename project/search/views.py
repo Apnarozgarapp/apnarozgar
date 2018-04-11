@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.contrib.auth.models import User
-from worker.models import Profile,location
+from worker.models import Profile,location,Contractor,Current_location
 from login.models import Feedback
 from .models import Posts,Status
 from django.template import RequestContext
@@ -157,10 +157,30 @@ def discal(a,b,c,d):
 
 def view_worker(request):
 	if request.user.username:
+		dat = request.GET['data']
+		target=request.GET['target']
 		try:
-			dat = request.GET['data']
-			data= Profile.objects.get(user_id= dat)
-			return render(request,'worker/view.html',{'data': data})  
+			if target =='worker':
+				data= Profile.objects.get(user_id = dat)
+				current_address2=Current_location.objects.filter(username=request.user.username)
+				if len(current_address2)==1:
+					for current_address1 in current_address2:
+						return render(request,'worker/view.html',{'data':data,'current_address':current_address1})	
+
+				else:
+					return render(request,'worker/view.html',{'data':data})
+			elif target =='contractor':
+				data= Profile.objects.get(user_id = dat)
+				current_address2=Current_location.objects.filter(username=request.user.username)
+				skilllist=Contractor.objects.filter(username=data.user_id)
+				if len(current_address2)==1:
+					for current_address1 in current_address2:
+						return render(request,'worker/hcview.html',{'data':data,'current_address':current_address1,'skilllist':skilllist})
+				else:
+					return render(request,'worker/hcview.html',{'data':data,'skilllist':skilllist})
+			else:
+				warn="कोई मजदूर नहीं है"
+				return render(request,'worker/view.html',{'warn': warn})
 		except:
 			warn="कोई मजदूर नहीं है"
 			return render(request,'worker/view.html',{'warn': warn})
@@ -186,11 +206,12 @@ def work_post(request):
 				Twork=request.POST.getlist('Twork',None)
 				description=request.POST.get('description',None)
 				status=request.POST.get('status',None)
+				target=request.POST.get('target',None)
 				if lat1=='0':
 					lat1='25.435801'
 					lng1='81.846311'
 				try:
-					dat=Posts(username=request.user.username,name=request.user.first_name, s_contact=s_contact,rskill=rskill,street=street,start_date=s_date,Nworker=Nworker,Twork=Twork,location=locatio,end_date=e_date,lat=lat1,lng=lng1,description=description,status=status)
+					dat=Posts(target=target,username=request.user.username,name=request.user.first_name, s_contact=s_contact,rskill=rskill,street=street,start_date=s_date,Nworker=Nworker,Twork=Twork,location=locatio,end_date=e_date,lat=lat1,lng=lng1,description=description,status=status)
 					dat.save()
 					dataa=Posts.objects.get(post_id=dat.post_id)
 					warn="कार्यकर्ता के लिए आपकी पोस्ट"
@@ -433,11 +454,12 @@ def see_work_post(request):
               pqr.hirer_status=user_id
               pqr.confirm='a'
               pqr.save()
-          if 'chire' in request.POST and pqr.confirm !='a':
-            pqr.delete()
-          else:
-            pqr.hirer_status=0
-            pqr.save()
+          if 'chire' in request.POST:
+            if pqr.confirm !='a':
+              pqr.delete()
+            else:
+              pqr.hirer_status=0
+              pqr.save()
 
       sta=Status.objects.filter(post_id=post_id)
       data=Posts.objects.get(post_id=post_id)

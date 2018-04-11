@@ -25,4 +25,5 @@ class Feedback(models.Model):
     pmode = models.CharField(max_length = 2,blank = True, null = True)
     pdate = models.DateField(blank = True, null = True)
     done=models.CharField(max_length = 2,blank = True, null = True)
+    target=models.CharField(max_length = 2,blank = True, null = True)
 

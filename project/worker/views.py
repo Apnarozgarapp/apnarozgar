@@ -304,7 +304,7 @@ def cprofile(request):
         current_address2=Current_location.objects.filter(username=request.user.username)
         skilllist=Contractor.objects.filter(user=request.user)
         if len(skilllist)==0:
-          warn="कौशल जोड़ें"
+          warn="अपना विवरण देखने के लिए कृपया पहले अपने कौशल को जोड़ें"
           return render(request,'worker/profilecontractor.html',{'warn':warn})
         if len(current_address2)==1:
           for current_address1 in current_address2:

@@ -3,8 +3,8 @@
 
 {% block content %}
 
-<div class ='col-sm-6 col-sm-offset-3'>
-<h3>यहां अपना योग्यता(Skills) दर्ज करें</h3><br>
+<div class ='col-sm-6 col-sm-offset-2'>
+<h3>अपनी योग्यता और विशेषज्ञता के बारे में बताएं</h3><br>
 <p><font color = "red">{{warn}}</font></p>
 
         <!--<meta http-equiv="Content-Type" content="text/html;" /> -->
@@ -15,7 +15,7 @@
 {% csrf_token %}
 
 <div class="form-group">
-<label for="skill">कौशल  (अनिवार्य)</label>
+<label for="skill">आपका कौशल (अनिवार्य)</label>
 <select name="skill" class="form-control" id="skill" onchange="dynamicdropdown(this.options[this.selectedIndex].value);"  required>
 <option value="" selected>इन विकल्पों से कौशल चुनें</option>
 <option value="निर्माण मजदूर(Construction worker)">निर्माण मजदूर(Construction worker)</option>
@@ -40,7 +40,7 @@
 </div>
 
 <div class="form-group">
-  <label for="description1">कौशल #1 का विवरण 1:</label>
+  <label for="description1">कौशल का विवरण 1:</label>
       <script type="text/javascript" language="JavaScript">
                 document.write('<select name ="description1" class="form-control" id="multiselection" size="3" multiple ><option value="">इन विकल्पों से चुनें</option></select>')
         </script>
@@ -52,41 +52,40 @@
       </noscript>
 </div> 
 
+
+
 <div class="form-group">
-<label for="nofworker">nofworker</label>
+  <label for="description2">उपर्युक्त कौशल में अपनी विशेषज्ञता के बारे में बताएं</label>
+      <input type="text" name ="description2" id="descrition2" placeholder="ऐच्छिक(optional)" class="form-control" Optional></input>
+    </div>
+
+<div class="form-group">
+<label for="nofworker">आपके पास उपलब्ध श्रमिकों की संख्या</label>
 <input type="number" name="nofworker"   class="form-control" id="nofworker"  value=0> </input>
 </div>
 
 
 <div class="form-group">
-  <label for="description2">कौशल #1 का विवरण 2:</label>
-      <input type="text" name ="description2" id="descrition2" placeholder="ऐच्छिक(optional)" class="form-control" Optional></input>
-    </div>
-
-
-
-
-<div class="form-group">
-  <label for="nameof_worker">name of_worker:</label>
-      <input type="text" name ="nameof_worker" id="nameof_worker" placeholder="ऐच्छिक(optional)" class="form-control" Optional></input>
+  <label for="nameof_worker">आपके पास उपलब्ध श्रमिकों के नाम (कृपया प्रत्येक नाम के बाद एक अल्पविराम दर्ज करें)</label>
+      <textarea type="text" name ="nameof_worker" id="nameof_worker" placeholder="ऐच्छिक(optional)" class="form-control" Optional></textarea>
     </div>
 
 
 <div class="form-group">
-<label for="experience">Experiences</label>
-<input type="text" name="experience"   class="form-control" id="experience"  optional> </input>
+<label for="experience">आपके काम करने के अनुभवों के बारे में बताएं</label>
+<textarea type="textarea" name="experience"   class="form-control" id="experience"  optional> </textarea>
 </div>
 
 <div class="form-group">
-<label for="equipment">equipment</label>
-<input type="text" name="equipment"   class="form-control" id="equipment"  optional> </input>
+<label for="equipment">सभी भारी मशीनरी और उपकरणों के बारे में स्पष्ट विवरण दें</label>
+<textarea type="text" name="equipment"   class="form-control" id="equipment"  optional> </textarea>
 </div>
 
 
 
 
 <button type="submit" name = 'save_changes2'>परिवर्तनों को सुरक्षित करें</button>
-<button type="submit" name = 'addskill'>Add another skill</button>
+<button type="submit" name = 'addskill'>इसे सबमिट करें और एक अन्य कौशल विवरण जोड़ें</button>
 </form>
 </div>
 {% endblock %}

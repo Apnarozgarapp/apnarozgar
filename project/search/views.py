@@ -254,9 +254,10 @@ def see_work_post(request):
       for dataa in data:
         data3=Status.objects.filter(post_id=dataa.post_id,confirm='a')
         if len(data3)>0:
-          warn="आप काम को नहीं हटा सकते क्योंकि कुछ श्रमिक चयनित होता है। अगर आप हटाना चाहते हैं, तो पहले श्रमिक को अचयनित करें "
+          warn="आप काम को नहीं हटा सकते क्योंकि कुछ श्रमिक चयनित है। अगर आप हटाना चाहते हैं, तो पहले श्रमिक को अचयनित करें "
         else:
           dataa.delete()
+          warn = "एक पोस्ट को हटा दिया गया है"
     else:
        warn="कार्य आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
     pos=Posts.objects.filter(username=request.user.username)
@@ -349,6 +350,7 @@ def see_work_post(request):
               if len(pos)!=0:
                  pos=pos.order_by('-post_id')
               pag = Paginator(pos,4)
+              p = ""
               if not page:
                 page='1'
                 p = pag.page(int(page))

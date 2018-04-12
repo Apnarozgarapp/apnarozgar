@@ -31,6 +31,7 @@ def done(request):
 				feedback2=request.POST.get('feedback2')
 				feedback3=request.POST.get('feedback3')
 				page=request.POST.get('page')
+				target=request.POST.get('target')
 				wuser=Profile.objects.get(user_id=user_id)
 				if not wuser.rating:
 						wuser.rating=5
@@ -41,7 +42,7 @@ def done(request):
 				if feedback2!="नहीं आया":
 					wuser.rating=wuser.rating*.80
 				
-					data1=Feedback(userhirer=request.user.username,userworker=wuser,post_id=post_id,feedback1=feedback1,feedback2=feedback2,feedback3=feedback3,pmode=pmode,pdate=pdate,description=description,done='a')
+					data1=Feedback(userhirer=request.user.username,target=target,userworker=wuser,post_id=post_id,feedback1=feedback1,feedback2=feedback2,feedback3=feedback3,pmode=pmode,pdate=pdate,description=description,done='a')
 					data1.save()
 				wuser.save()
 				data=Posts.objects.get(post_id=post_id)
@@ -61,7 +62,7 @@ def done(request):
 				if len(data22)==1:
 					for data2 in data22:
 						if data2.start_date<=datetime.datetime.today().date():
-							return render(request,"search/done.html",{'post_id':post_id,'page':page,'user_id':user_id}) 
+							return render(request,"search/done.html",{'post_id':post_id,'target':data2.target,'page':page,'user_id':user_id}) 
 						else:
 							data=Posts.objects.get(post_id=post_id)
 							selected=Status.objects.filter(post_id=post_id,confirm='a')
@@ -78,7 +79,10 @@ def done(request):
 					pag = Paginator(pos,4)
 					if not page:
 						page=1
-					p = pag.page(int(page))
+					try:
+						p = pag.page(int(page))
+					except:
+						p = pag.page(int(page))
 					return render(request,'search/postresult.html',{'pos':p,'warn':warn})
 			else:
 				pos=Posts.objects.filter(username=request.user.username)
@@ -105,6 +109,7 @@ def search_result(request):
 	if request.user.username:
 		if request.user.profile.loginas=="hirer":
 			if request.method == 'GET':
+				target = request.GET.get('target',None)
 				skill = request.GET.get('skill',None)
 				address = request.GET.get('address',None)
 				lat1 = request.GET.get('lat',None)
@@ -114,19 +119,22 @@ def search_result(request):
 					lat1='25.435801'
 					lng1='81.846311'
 				try :
-					user1=Profile.objects.filter(Q(skill1=skill)|Q(skill2=skill)|Q(skill3=skill))    
+					if target=="a":
+						user1=Profile.objects.filter(Q(skill1=skill)|Q(skill2=skill)|Q(skill3=skill))
+					elif target=="b":
+						user1=Contractor.objects.filter(skill=skill)
 					for data in user1:
 						loc=location.objects.get(username=data.user.username)
 						dis=discal(float(lat1),float(lng1),float(loc.lat),float(loc.lng))
-						data.age=dis
+						data.dis=dis
 						data.save()
-					user1=user1.order_by('age')
+					user1=user1.order_by('dis')
 					warn = ""
 					if len(user1) == 0:
 						warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
 					pag=Paginator(user1,10)
 					p = pag.page(int(page))
-					return render(request,'search/result.html',{'users' : p, 'warn' : warn,'address':address,'lat':lat1,'lng':lng1,'skill':skill})
+					return render(request,'search/result.html',{'users' : p, 'warn' : warn,'address':address,'lat':lat1,'lng':lng1,'skill':skill,'target':target})
 				except :
 					return render(request,'search/search.html')  
 			else:
@@ -160,29 +168,29 @@ def view_worker(request):
 		dat = request.GET['data']
 		target=request.GET['target']
 		try:
-			if target =='worker':
+			if target =='a':
 				data= Profile.objects.get(user_id = dat)
-				current_address2=Current_location.objects.filter(username=request.user.username)
+				current_address2=Current_location.objects.filter(username=data)
 				if len(current_address2)==1:
 					for current_address1 in current_address2:
 						return render(request,'worker/view.html',{'data':data,'current_address':current_address1})	
 
 				else:
 					return render(request,'worker/view.html',{'data':data})
-			elif target =='contractor':
+			elif target =='b':
 				data= Profile.objects.get(user_id = dat)
-				current_address2=Current_location.objects.filter(username=request.user.username)
-				skilllist=Contractor.objects.filter(username=data.user_id)
+				current_address2=Current_location.objects.filter(username=data)
+				skilllist=Contractor.objects.filter(user=data.user)
 				if len(current_address2)==1:
 					for current_address1 in current_address2:
 						return render(request,'worker/hcview.html',{'data':data,'current_address':current_address1,'skilllist':skilllist})
 				else:
 					return render(request,'worker/hcview.html',{'data':data,'skilllist':skilllist})
 			else:
-				warn="कोई मजदूर नहीं है"
+				warn="कोई मजदूर/ठेकेदार नहीं है"
 				return render(request,'worker/view.html',{'warn': warn})
 		except:
-			warn="कोई मजदूर नहीं है"
+			warn="कोई मजदूर/ठेकेदार नहीं है"
 			return render(request,'worker/view.html',{'warn': warn})
 	else:
 		warn="कृपया पहले  लॉगिन करें"
@@ -214,7 +222,10 @@ def work_post(request):
 					dat=Posts(target=target,username=request.user.username,name=request.user.first_name, s_contact=s_contact,rskill=rskill,street=street,start_date=s_date,Nworker=Nworker,Twork=Twork,location=locatio,end_date=e_date,lat=lat1,lng=lng1,description=description,status=status)
 					dat.save()
 					dataa=Posts.objects.get(post_id=dat.post_id)
-					warn="कार्यकर्ता के लिए आपकी पोस्ट"
+					if target=='a':
+						warn="कार्यकर्ता के लिए आपकी पोस्ट"
+					else:
+						warn="ठेकेदार के लिए आपकी पोस्ट"
 					page=1
 					return render(request,'search/update.html',{'warn' : warn,'page':page,'data':dataa})
 				except:
@@ -258,7 +269,10 @@ def see_work_post(request):
            page=int(page)-1
     if not page:
               page='1'
-    p = pag.page(int(page))
+    try:
+       p = pag.page(int(page))
+    except:
+       p = pag.page(1)
     return render(request,'search/postresult.html',{'pos':p,'warn':warn})
 
 
@@ -283,7 +297,10 @@ def see_work_post(request):
 
     if not page:
               page='1'
-    p = pag.page(int(page))
+    try:
+        p = pag.page(int(page))
+    except:
+        p=pag.page(1)
     return render(request,'search/postresult.html',{'pos':p,'warn':warn})
 
 
@@ -306,7 +323,10 @@ def see_work_post(request):
       pag = Paginator(pos,4)
       if not page:
               page='1'
-      p = pag.page(int(page))
+      try:
+        p = pag.page(int(page))
+      except:
+        p = pag.page(1)
       return render(request,'search/postresult.html',{'pos':p,'warn':warn})  
 
 
@@ -316,10 +336,13 @@ def see_work_post(request):
     dataa=Posts.objects.filter(post_id=post_id,username=request.user.username)
     if len(dataa)==1:
         for data in dataa:
-          sta=Status.objects.filter(post_id=post_id)
+          sta=Status.objects.filter(post_id=post_id,target=data.target)
           try :
-            user1=Profile.objects.filter(Q(skill1=data.rskill)|Q(skill2=data.rskill)|Q(skill3=data.rskill))    
-            user1 = user1.filter(start_date__lte=data.start_date,end_date__gte=data.end_date)
+            if data.target=='a':
+                user1=Profile.objects.filter(Q(skill1=data.rskill)|Q(skill2=data.rskill)|Q(skill3=data.rskill))    
+                user1 = user1.filter(start_date__lte=data.start_date,end_date__gte=data.end_date)
+            elif data.target=='b':
+                user1=Contractor.objects.filter(skill=data.rskill,start_date__lte=data.start_date,end_date__gte=data.end_date)
             if len(user1) == 0:
               warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
               pos=Posts.objects.filter(username=request.user.username)
@@ -328,14 +351,14 @@ def see_work_post(request):
               pag = Paginator(pos,4)
               if not page:
                 page='1'
-              p = pag.page(int(page))
+                p = pag.page(int(page))
               return render(request,'search/postresult.html',{'pos':p,'warn':warn})
             for dat in user1:
-              r=Status.objects.filter(user_id=dat.user_id,confirm='a')
+              r=Status.objects.filter(user_id=dat.user_id,confirm='a',target=data.target)
               p=r.filter(Q(start_date__lte=data.start_date,end_date__gte=data.start_date)|Q(start_date__lte=data.end_date,end_date__gte=data.end_date)|Q(start_date__lte=data.start_date,end_date__gte=data.end_date)|Q(start_date__gte=data.start_date,end_date__lte=data.end_date))
               loc= location.objects.get(username=dat.user.username)
               dis=discal(float(data.lat),float(data.lng),float(loc.lat),float(loc.lng))
-              dat.age=dis
+              dat.dis=dis
               if len(p)!=0:
                 dat.joinrequest='e'
                 for pp in p:
@@ -357,7 +380,7 @@ def see_work_post(request):
                       dat.joinrequest='c'
                     
               dat.save()
-            user1=user1.order_by('age')
+            user1=user1.order_by('dis')
             warn = " "
             pag = Paginator(user1,6)
             rpage = request.GET.get('rpage',None)
@@ -373,7 +396,10 @@ def see_work_post(request):
             pag = Paginator(pos,4)
             if not page:
               page='1'
-            p = pag.page(int(page))
+            try:
+                p = pag.page(int(page))
+            except:
+                p = pag.page(1)
             return render(request,'search/postresult.html',{'pos':p,'warn':warn})
     else:
       warn="पोस्ट आईडी सही नहीं है, या आप सही उपयोगकर्ता नहीं हैं"
@@ -383,7 +409,10 @@ def see_work_post(request):
       pag = Paginator(pos,4)
       if not page:
               page='1'
-      p = pag.page(int(page))
+      try:
+        p = pag.page(int(page))
+      except:
+        p = pag.page(1)
       return render(request,'search/postresult.html',{'pos':p,'warn':warn})
 
 
@@ -406,7 +435,10 @@ def see_work_post(request):
     pag = Paginator(pos,4)
     if not page:
             page='1'
-    p = pag.page(int(page))
+    try:
+        p = pag.page(int(page))
+    except:
+        p = pag.page(1)
     return render(request,'search/postresult.html',{'pos':p,'warn':warn})
 
 
@@ -439,14 +471,15 @@ def see_work_post(request):
     end_date=request.POST.get('end_date')
     page = request.POST.get('page',None)
     rpage = request.POST.get('rpage',None)
+    target=request.POST.get('target',None)
     dataa=Posts.objects.filter(post_id=post_id,username=request.user.username)
     if len(dataa)==1:
       abc=Status.objects.filter(post_id=post_id,user_id=user_id)
-      rr=Status.objects.filter(user_id=user_id,confirm='a')
+      rr=Status.objects.filter(user_id=user_id,confirm='a',target=target)
       pp=rr.filter(Q(start_date__lte=start_date,end_date__gte=start_date)|Q(start_date__lte=end_date,end_date__gte=end_date)|Q(start_date__lte=start_date,end_date__gte=end_date)|Q(start_date__gte=start_date,end_date__lte=end_date))
       if len(pp)==0:
         if len(abc)==0 and 'hire' in request.POST:
-          cba=Status(post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,hirer_status=user_id,userworker=userworker,userhirer=userhirer,start_date=start_date,end_date=end_date)
+          cba=Status(target=target, post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,hirer_status=user_id,userworker=userworker,userhirer=userhirer,start_date=start_date,end_date=end_date)
           cba.save()
         else:
           for pqr in abc:
@@ -464,17 +497,20 @@ def see_work_post(request):
       sta=Status.objects.filter(post_id=post_id)
       data=Posts.objects.get(post_id=post_id)
       try :
-        user1=Profile.objects.filter(Q(skill1=data.rskill)|Q(skill2=data.rskill)|Q(skill3=data.rskill))    
-        user1 = user1.filter(start_date__lte=data.start_date,end_date__gte=data.end_date)
+        if data.target=='a':
+            user1=Profile.objects.filter(Q(skill1=data.rskill)|Q(skill2=data.rskill)|Q(skill3=data.rskill))    
+            user1 = user1.filter(start_date__lte=data.start_date,end_date__gte=data.end_date)
+        elif data.target=='b':
+            user1 = Contractor.objects.filter(skill=data.rskill,start_date__lte=data.start_date,end_date__gte=data.end_date)
         if len(user1) == 0:
           warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
           return render(request,'search/update.html',{'data':data,'warn':warn})
         for dat in user1:
-          r=Status.objects.filter(user_id=dat.user_id,confirm='a')
+          r=Status.objects.filter(user_id=dat.user_id,confirm='a',target=data.target)
           p=r.filter(Q(start_date__lte=data.start_date,end_date__gte=data.start_date)|Q(start_date__lte=data.end_date,end_date__gte=data.end_date)|Q(start_date__lte=data.start_date,end_date__gte=data.end_date)|Q(start_date__gte=data.start_date,end_date__lte=data.end_date))
           loc= location.objects.get(username=dat.user.username)
           dis=discal(float(data.lat),float(data.lng),float(loc.lat),float(loc.lng))
-          dat.age=dis
+          dat.dis=dis
           if len(p)!=0:
             dat.joinrequest='e'
             for pp in p:
@@ -495,7 +531,7 @@ def see_work_post(request):
                   dat.joinrequest='c'
                 
           dat.save()
-        user1=user1.order_by('age')
+        user1=user1.order_by('dis')
         warn = " "
         pag = Paginator(user1,6)
         if not rpage:
@@ -513,7 +549,10 @@ def see_work_post(request):
       pag = Paginator(pos,4)
       if not page:
               page='1'
-      p = pag.page(int(page))
+      try:
+        p = pag.page(int(page))
+      except:
+        p = pag.page(1)
       return render(request,'search/postresult.html',{'pos':p,'warn':warn})
 
 
@@ -610,7 +649,10 @@ def update(request):
       pag = Paginator(pos,4)
       if not page:
               page='1'
-      p = pag.page(int(page))
+      try:
+        p = pag.page(int(page))
+      except:
+        p = pag.page(1)
       return render(request,'search/postresult.html',{'pos':p,'warn':warn})
 
    else:
@@ -623,7 +665,10 @@ def update(request):
     pag = Paginator(pos,4)
     if not page:
               page='1'
-    p = pag.page(int(page))
+    try:
+        p = pag.page(int(page))
+    except:
+        p = pag.page(1)
     return render(request,'search/postresult.html',{'pos':pos,'warn':warn})
   else:
     warn="कृपया पहले नियोक्ता के रूप में लॉगिन करें"

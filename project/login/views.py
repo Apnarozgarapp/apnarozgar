@@ -343,7 +343,7 @@ def workrequest(request):
 				for pqr in pq:
 					
 					if 'hhire' in request.POST :
-						r=Status.objects.filter(user_id=user_id,confirm='a')
+						r=Status.objects.filter(user_id=user_id,confirm='a',target=pqr.target)
 						p=r.filter(Q(start_date__lte=start_date,end_date__gte=start_date)|Q(start_date__lte=end_date,end_date__gte=end_date)|Q(start_date__lte=start_date,end_date__gte=end_date)|Q(start_date__gte=start_date,end_date__lte=end_date))
 						if len(p)==0:
 							pqr.hirer_status=user_id
@@ -356,7 +356,7 @@ def workrequest(request):
 						else:
 							warn="अब मजदूर इस तिथि पर उपलब्ध नहीं है।"
 					if 'hchire' in request.POST:
-						if pqr.worker_status!=pqr.post_id:
+						if (pqr.worker_status!=pqr.post_id) or pqr.confirm!='a':
 							pqr.delete()
 						else:
 							pqr.hirer_status=0
@@ -384,6 +384,8 @@ def workrequest(request):
 					select.save()        
 			if len(data)==0:
 				warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
+			else:
+				data=data.order_by('-status_id')
 			pag = Paginator(data,3)
 			if pag.num_pages < int(page):
 				page=int(page)-1
@@ -400,7 +402,7 @@ def workrequest(request):
 			if len(pq)!=0:
 				for pqr in pq:
 					if 'whire' in request.POST :
-						r=Status.objects.filter(user_id=user_id,confirm='a')
+						r=Status.objects.filter(user_id=user_id,confirm='a',target=pqr.target)
 						p=r.filter(Q(start_date__lte=start_date,end_date__gte=start_date)|Q(start_date__lte=end_date,end_date__gte=end_date)|Q(start_date__lte=start_date,end_date__gte=end_date)|Q(start_date__gte=start_date,end_date__lte=end_date))
 						if len(p)==0:
 							pqr.worker_status=post_id
@@ -412,7 +414,7 @@ def workrequest(request):
 						else:
 							warn="आप इस तिथि पर उपलब्ध नहीं हैं।"
 					if 'wchire' in request.POST:
-						if pqr.hirer_status!= pqr.post_id:
+						if (pqr.hirer_status!= pqr.user_id) or pqr.confirm!='a':
 							pqr.delete()
 						else:
 							pqr.worker_status=0
@@ -441,6 +443,8 @@ def workrequest(request):
 			
 			if len(data)==0:
 				warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
+			else:
+				data=data.order_by('-status_id')
 			pag = Paginator(data,3)
 			if pag.num_pages < int(page):
 				page=int(page)-1
@@ -449,10 +453,10 @@ def workrequest(request):
 		else: 	
 			if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":
 				if request.user.profile.loginas=="contractor":
-					username=request.user.profile.contractor_username
+					target='b'
 				else:
-					username=request.user.username
-				data=Status.objects.filter(userworker=username)        
+					target='a'
+				data=Status.objects.filter(userworker=request.user.username,target=target)        
 				for select in data:
 					if select.worker_status==select.post_id and select.hirer_status==select.user_id:
 						select.temp='a'
@@ -476,6 +480,8 @@ def workrequest(request):
 				warn=""
 				if len(data)==0:
 					warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
+				else:
+					data=data.order_by('-status_id')
 				pag = Paginator(data,3)
 				page = request.GET.get('page',None)
 				if not page:
@@ -509,6 +515,8 @@ def workrequest(request):
 				warn=""
 				if len(data)==0:
 					warn="वर्तमान में आपके लिए कोई अनुरोध नहीं है।"
+				else:
+					data=data.order_by('-status_id')
 				pag = Paginator(data,3)
 				page = request.GET.get('page',None)
 				if not page:

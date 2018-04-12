@@ -62,10 +62,16 @@ button:hover, a:hover {
 </style>
 
  <h4><b><a href='/see_work_post?page={{page}}'><u>अब तक आपके द्वारा प्रकाशित की गईं पोस्ट देखें, संशोधित करें और तदनुसार कर्मचारी खोजें :-</u></a></b></h4>
+
+ 
    <h4><font color="red"> {{ warn }}</font></h4>
 
   <div class="card" style="background-color:#F7EAEB">
-  
+  {% if 'a' in data.target %}
+ <h3><u><font color="black">श्रमिक के लिए कार्य पोस्ट</font></u></h3>
+  {%else%}
+ <h3><u><font color="black">ठेकेदार के लिए कार्य पोस्ट </font></u></h3>
+  {%endif%}
   <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
   <p class="title">पोस्ट ID: {{data.post_id}}</p>
   <p class="title">काम की जगह का पता: <br>{{data.street}}, {{data.location}}</p>
@@ -87,9 +93,15 @@ button:hover, a:hover {
      {%else%}
      <button type="submit" name = 'status' >इसे निजी (private) पोस्ट बनाएं</button>
      {%endif%}
+     {% if 'a' in data.target %}
      <button type="submit" name = 'selected' >इस पोस्ट के लिए चयनित श्रमिक देखें</button>
      <button type="submit" name = 'edit' style = "width : 40% ">पोस्ट में बदलाव करे</button>
      <button type="submit" name = 'search' style = "width: 100%">कर्मचारी ढूंढे</button>
+  {%else%}
+ <button type="submit" name = 'selected' >इस पोस्ट के लिए चयनित ठेकेदार देखें</button>
+     <button type="submit" name = 'edit' style = "width : 40% ">पोस्ट में बदलाव करे</button>
+     <button type="submit" name = 'search' style = "width: 100%">ठेकेदार ढूंढे</button>
+  {%endif%}
      
    </b>
  </font>

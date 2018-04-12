@@ -48,6 +48,12 @@ button:hover, a:hover {
 {% for data in pos %}
  
   <div class="card" style="background-color:#F7EAEB">
+% if 'a' in data.target %}
+ <h3><u><font color="black">श्रमिक के लिए कार्य पोस्ट</font></u></h3>
+  {%else%}
+ <h3><u><font color="black">ठेकेदार के लिए कार्य पोस्ट </font></u></h3>
+  {%endif%}
+
   <p><button class = "but">&#9679; {{data.rskill}} के लिए प्रकाशित पोस्ट आईडी:- {{data.post_id}} </button></p>
   <p class="title">काम की जगह का पता: <br> {{data.street}}, {{data.location}} </p>
   <p><b>आप से दूरी: {{data.distance}} km</b></p>
@@ -79,7 +85,6 @@ button:hover, a:hover {
      {%endif%}
      {%if 'a' in data.temp %}
      <font color = "green"><p><b>--&#9654; आपने इस पोस्ट के लिए काम करने की पुष्टि दी है (Confirmed)</b></p></font>
-     <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें--&#9654;</button>
      
      {%endif%}
      {%if 'b' in data.temp %}

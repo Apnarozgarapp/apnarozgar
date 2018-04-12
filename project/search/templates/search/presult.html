@@ -36,7 +36,11 @@ button:hover, a:hover {
   opacity: 0.7;
 }
 </style>
-
+{% if 'a' in dat.target %}
+   <h3><u><font color="black">श्रमिकों की सूची :-</font></u></h3>
+   {%else%}
+   <h3><u><font color="black">ठेकेदारों की सूची :-</font></u></h3>
+   {%endif%}
 <form method="GET" action="/see_work_post">
      {% csrf_token %}
      <input name ="post_id" type="number" value={{dat.post_id}} hidden></input>
@@ -49,12 +53,12 @@ button:hover, a:hover {
 {% for data in users %}
   <div class="card">
   
-  <h2><a href="/seeworker/?data={{data.user_id}}">{{data.user.first_name}}</a></h2>
-  <p class="title">{{data.address}}</p>
-  <p>आपसे श्रमिक की दूरी: {{data.age}} km</p>
-  <p><button class = "but">मोबाइल नंबर: {{data.s_contact}}</button></p>
+  <h2><a href="/seeworker/?data={{data.user_id}}&target={{dat.target}}">{{data.user.first_name}}</a></h2>
+  <p class="title">{{data.user.profile.address}}</p>
+  <p>आपसे श्रमिक की दूरी: {{data.dis}} km</p>
+  <p><button class = "but">मोबाइल नंबर: {{data.user.profile.s_contact}}</button></p>
   
-    <form method="POST" action="/see_work_post">
+    <form method="POST" action="">
      {% csrf_token %}
      <input name ="post_id" type="number" value={{dat.post_id}} hidden></input>
      <input name ="user_id" type="number" value={{data.user_id}} hidden></input>
@@ -66,6 +70,7 @@ button:hover, a:hover {
      <input type="date" name ='start_date' value={{dat.start_date|date:"20y-m-d"}} hidden></input>
      <input name ="page" type="number" value={{page}} hidden></input>
      <input name ="rpage" type="number" value={{users.number}} hidden></input>
+     <input name ="target" type="text" value={{dat.target}} hidden></input>
     <font size = 3.5>
       {%if "e" in data.joinrequest %}
      <font color = "green"><p><b>श्रमिक इस तिथि पर उपलब्ध नहीं है।</b></p></font>

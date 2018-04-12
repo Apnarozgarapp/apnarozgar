@@ -60,14 +60,18 @@ button:hover, a:hover {
 }
 </style>
 <h4><b><a href='/view'>&#9664;-- <u>अपना विवरण देखें :-</u></a></b></h4>
-<h3><u>अब तक आपके द्वारा प्रकाशित की गईं पोस्ट: </u></h3>    <br>
+<h3><u>अब तक आपके द्वारा प्रकाशित की गईं कार्य पोस्ट: </u></h3>    <br>
    {% csrf_token %} 
    <h4><font color="red">{{ warn }}</font></h4><br>
 {% for data in pos %}
  
   <div class="card" style="background-color:#F7EAEB">
-  
-  <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
+  {% if 'a' in data.target %}
+ <h3><u><font color="black">श्रमिक के लिए कार्य पोस्ट</font></u></h3>
+  {%else%}
+ <h3><u><font color="black">ठेकेदार के लिए कार्य पोस्ट </font></u></h3>
+  {%endif%}
+  <p><button class = "but">{{data.rskill}} के लिए प्रकाशित कार्य पोस्ट </button></p>
   <p class="title">पोस्ट ID: {{data.post_id}}</p>
   <p class="title">काम की जगह का पता: <br>{{data.street}}, {{data.location}}</p>
   <p class="title">कार्य की अवधि: <br>{{data.start_date|date:"d/m/20y"}} - {{data.end_date|date:"d/m/20y"}}</p>
@@ -88,9 +92,16 @@ button:hover, a:hover {
      {%else%}
      <button type="submit" name = 'status' >इसे निजी (private) पोस्ट बनाएं</button>
      {%endif%}
+     
+     {% if 'a' in data.target %}
      <button type="submit" name = 'selected' >इस पोस्ट के लिए चयनित श्रमिक देखें</button>
      <button type="submit" name = 'edit' style = "width : 40% ">पोस्ट में बदलाव करे</button>
      <button type="submit" name = 'search' style = "width: 100%">कर्मचारी ढूंढे</button>
+  {%else%}
+ <button type="submit" name = 'selected' >इस पोस्ट के लिए चयनित ठेकेदार देखें</button>
+     <button type="submit" name = 'edit' style = "width : 40% ">पोस्ट में बदलाव करे</button>
+     <button type="submit" name = 'search' style = "width: 100%">ठेकेदार ढूंढे</button>
+  {%endif%}
      
    </b>
  </font>

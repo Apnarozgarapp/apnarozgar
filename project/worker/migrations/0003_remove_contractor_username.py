@@ -7,13 +7,12 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('worker', '0005_profile_temp'),
+        ('worker', '0002_contractor_key'),
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='profile',
-            name='nhirer',
-            field=models.IntegerField(null=True, blank=True),
+        migrations.RemoveField(
+            model_name='contractor',
+            name='username',
         ),
     ]

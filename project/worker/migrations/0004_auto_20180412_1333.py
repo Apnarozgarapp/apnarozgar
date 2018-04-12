@@ -7,18 +7,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('worker', '0007_auto_20180403_0344'),
+        ('worker', '0003_remove_contractor_username'),
     ]
 
     operations = [
         migrations.RenameField(
             model_name='profile',
-            old_name='Twork',
-            new_name='ptype',
+            old_name='age',
+            new_name='dis',
         ),
         migrations.AddField(
-            model_name='profile',
-            name='description11',
-            field=models.TextField(null=True, blank=True, max_length=500),
+            model_name='contractor',
+            name='dis',
+            field=models.FloatField(null=True, blank=True),
         ),
     ]

@@ -65,7 +65,11 @@ button:hover, a:hover {
    <h4><font color="red"> {{ warn }}</font></h4>
 
   <div class="card" style="background-color:#F7EAEB">
-  
+  {% if 'a' in data.target %}
+ <h3><u><font color="black">श्रमिक के लिए कार्य पोस्ट</font></u></h3>
+  {%else%}
+ <h3><u><font color="black">ठेकेदार के लिए कार्य पोस्ट </font></u></h3>
+  {%endif%}
   <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
   <p class="title">पोस्ट ID: {{data.post_id}}</p>
   <p class="title">काम की जगह का पता: <br>{{data.street}}, {{data.location}}</p>
@@ -87,9 +91,15 @@ button:hover, a:hover {
      {%else%}
      <button type="submit" name = 'status' >इसे निजी (private) पोस्ट बनाएं</button>
      {%endif%}
+     {% if 'a' in data.target %}
      <button type="submit" name = 'selected' >इस पोस्ट के लिए चयनित श्रमिक देखें</button>
      <button type="submit" name = 'edit' style = "width : 40% ">पोस्ट में बदलाव करे</button>
      <button type="submit" name = 'search' style = "width: 100%">कर्मचारी ढूंढे</button>
+  {%else%}
+ <button type="submit" name = 'selected' >इस पोस्ट के लिए चयनित ठेकेदार देखें</button>
+     <button type="submit" name = 'edit' style = "width : 40% ">पोस्ट में बदलाव करे</button>
+     <button type="submit" name = 'search' style = "width: 100%">ठेकेदार ढूंढे</button>
+  {%endif%}
    </b>
  </font>
 </div>
@@ -99,8 +109,8 @@ button:hover, a:hover {
 <br>
 <ol>
      {% for data1 in selected %}
-     <h3><li><a href="/search/?data={{data1.user_id}}">{{data1.worker}}</a> को इस पोस्ट के लिए उचित माना गया है।</li></h3>
-     <form method="POST" action="/see_work_post">
+     <h3><li><a href="/seeworker/?data={{data1.user_id}}&target={{data1.target}}">{{data1.worker}}</a> को इस पोस्ट के लिए उचित माना गया है।</li></h3>
+     <form method="POST" action="">
      {% csrf_token %}
      <input name ="post_id" type="number" value={{data1.post_id}} hidden></input>
      <input name ="user_id" type="number" value={{data1.user_id}} hidden></input>

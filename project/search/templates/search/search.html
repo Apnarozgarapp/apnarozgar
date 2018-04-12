@@ -9,6 +9,13 @@
 <h3><u>कृपया नीचे दिए गए फ़ील्ड भरें:</u></h3><br>
 <form method="GET" action="/search">
    {% csrf_token %}
+
+   <div class="form-group">
+    <label for="target">&#9679;target</label><br>
+    <input type="radio" name="target" value="a" checked>worker</input><br>
+  <input type="radio" name="target" value="b" >contractor</input>
+</div>
+
 	<div class="form-group">
 	<label for="skill">&#9679; कौशल और क्षमताएं </label>
 	<select name="skill"   class="form-control" id="skill">

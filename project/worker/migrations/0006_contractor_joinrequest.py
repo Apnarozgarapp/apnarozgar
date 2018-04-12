@@ -7,13 +7,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('worker', '0013_current_location'),
+        ('worker', '0005_auto_20180412_1338'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='profile',
-            name='contractor_username',
-            field=models.CharField(null=True, blank=True, max_length=50),
+            model_name='contractor',
+            name='joinrequest',
+            field=models.CharField(max_length=2, null=True, blank=True),
         ),
     ]

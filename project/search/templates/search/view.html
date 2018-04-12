@@ -65,7 +65,11 @@ button:hover, a:hover {
    <h4><font color="red"> {{ warn }}</font></h4>
 
   <div class="card" style="background-color:#F7EAEB">
-  
+  {% if 'a' in data.target %}
+ <h3><u><font color="black">श्रमिक के लिए कार्य पोस्ट</font></u></h3>
+  {%else%}
+ <h3><u><font color="black">ठेकेदार के लिए कार्य पोस्ट </font></u></h3>
+  {%endif%}
   <p><button class = "but">{{data.rskill}} के लिए प्रकाशित पोस्ट</button></p>
   <p class="title">पोस्ट ID: {{data.post_id}}</p>
   <p class="title">काम की जगह का पता: <br>{{data.street}}, {{data.location}}</p>

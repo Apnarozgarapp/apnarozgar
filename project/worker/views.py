@@ -191,7 +191,7 @@ def detail_post(request):
 def update_profile(request):
   if request.user.username:
     if request.user.profile.loginas=="worker":
-        if request.method == 'POST' and 'save_changes1' in request.POST:
+        if request.method == 'POST' and ('save_changes1' in request.POST or 'end' in request.POST):
             profile_form = ProfileForm1(request.POST, instance=request.user.profile)
             lat=request.POST.get('lat')
             lng=request.POST.get('lng')
@@ -208,6 +208,8 @@ def update_profile(request):
                     if len(da)==0:
                         da=location(username=request.user.username,lat='25.435801',lng='81.846311')
                         da.save()
+                if 'end' in request.POST:
+                  return render(request,'worker/success.html')
                 return render(request,'worker/worker2.html')
             else:
               warn ="कृपया विवरण को सही करें"
@@ -242,7 +244,7 @@ def update_profile(request):
 def contractor_profile(request):
   if request.user.username:
     if request.user.profile.loginas=="contractor":
-        if request.method == 'POST' and 'save_changes1' in request.POST:
+        if request.method == 'POST' and ('save_changes1' in request.POST or 'end' in request.POST):
             profile_form = ProfileForm1(request.POST, instance=request.user.profile)
             lat=request.POST.get('lat')
             lng=request.POST.get('lng')
@@ -259,6 +261,8 @@ def contractor_profile(request):
                     if len(da)==0:
                         da=location(username=request.user.username,lat='25.435801',lng='81.846311')
                         da.save()
+                if 'end' in request.POST:
+                  return render(request,'worker/success.html')
                 return render(request,'worker/contractor1.html')
             else:
               warn ="कृपया विवरण को सही करें"

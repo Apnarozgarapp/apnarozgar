@@ -108,7 +108,7 @@ def done(request):
 def search_result(request):
 	if request.user.username:
 		if request.user.profile.loginas=="hirer":
-			if request.method == 'GET':
+			if request.method == 'GET' and 'btn' in request.GET:
 				target = request.GET.get('target',None)
 				skill = request.GET.get('skill',None)
 				address = request.GET.get('address',None)
@@ -121,9 +121,10 @@ def search_result(request):
 				try :
 					if target=="a":
 						user1=Profile.objects.filter(Q(skill1=skill)|Q(skill2=skill)|Q(skill3=skill))
-					elif target=="b":
+					else:
 						user1=Contractor.objects.filter(skill=skill)
 					for data in user1:
+						print(user1)
 						loc=location.objects.get(username=data.user.username)
 						dis=discal(float(lat1),float(lng1),float(loc.lat),float(loc.lng))
 						data.dis=dis
@@ -133,10 +134,14 @@ def search_result(request):
 					if len(user1) == 0:
 						warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
 					pag=Paginator(user1,10)
-					p = pag.page(int(page))
+					try:
+					 p = pag.page(int(page))
+					except:
+						p = pag.page(1)
 					return render(request,'search/result.html',{'users' : p, 'warn' : warn,'address':address,'lat':lat1,'lng':lng1,'skill':skill,'target':target})
 				except :
-					return render(request,'search/search.html')  
+					warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
+					return render(request,'search/search.html',{'warn':warn})  
 			else:
 				return render(request,'search/search.html')
 		else:

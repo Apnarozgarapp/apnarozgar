@@ -25,6 +25,22 @@ import urllib.parse
 
 
 #print(datetime.datetime.utcnow().strftime("%A, %d. %B %Y %I:%M%p"))
+def query(request):
+	if request.user.username:
+		if request.method=="POST":
+			username=request.POST.get('username')
+			name=request.POST.get('name')
+			problem=request.POST.get('problem')
+			email=EmailMessage('Problem from user:-  '+name +'('+username+')', problem, to=['apnarozgarapp@gmail.com'])
+			email.send()
+			warn="आपकी तकनीकी समस्या सफलतापूर्वक हमारे डेवलपर टीम को भेजी गई"
+			return render(request,'login/aboutus.html',{'warn':warn})
+		else:
+			return render(request,'login/query.html')
+
+	else:
+		warn="कृपया पहले  लॉगिन करें"
+		return render(request,'login/form.html',{'warn':warn})
 
 def sendSMS(apikey, numbers, sender, message):
 	params = {'apikey': apikey, 'numbers': numbers, 'message' : message, 'sender': sender}

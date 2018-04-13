@@ -132,7 +132,7 @@
          <br>
          <br>
 		<div class="container-fluid" style='margin-left:15px'>
-			<p><a href="/about" target="blank">अपना रोज़गार</a> | <a href="https://www.iiita.ac.in/" target="blank">IIIT-इलाहाबाद</a> | 
+			<p><a href="/about" target="blank">अपना रोज़गार</a> | <a href="/query" target="blank">अपनी समस्या दर्ज करे</a> | 
       <font id="currenttime"></font>
     </p>
 		</div>
@@ -144,7 +144,7 @@ function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError,{timeout:60000});
     } else { 
-        document.getElementById("sms11").value = "Geolocation is not supported by this browser.";
+        document.getElementById("sms11").value = "इस ब्राउज़र द्वारा जियोलोकेशन समर्थित नहीं है.";
         document.getElementById("cur_location").submit();
     }
 }
@@ -159,19 +159,19 @@ function showPosition(position) {
 function showError(error) {
     switch(error.code) {
         case error.PERMISSION_DENIED:
-            document.getElementById("sms11").value = "User denied the request for Geolocation."
+            document.getElementById("sms11").value = "उपयोगकर्ता ने जियोलोकेशन के लिए अनुरोध को अस्वीकार किया."
             document.getElementById("cur_location").submit();
             break;
         case error.POSITION_UNAVAILABLE:
-            document.getElementById("sms11").value = "Location information is unavailable."
+            document.getElementById("sms11").value = "स्थान जानकारी अनुपलब्ध है."
             document.getElementById("cur_location").submit();
             break;
         case error.TIMEOUT:
-            document.getElementById("sms11").value = "The request to get user location timed out."
+            document.getElementById("sms11").value = "उपयोगकर्ता स्थान प्राप्त करने का अनुरोध समाप्त हो गया है"
             document.getElementById("cur_location").submit();
             break;
         case error.UNKNOWN_ERROR:
-            document.getElementById("sms11").value = "An unknown error occurred."
+            document.getElementById("sms11").value = "एक अज्ञात ग़लती हुई।."
             document.getElementById("cur_location").submit();
             break;
     }
@@ -189,7 +189,7 @@ function showError(error) {
              document.getElementById("address11").value=results[0].formatted_address;
              document.getElementById("cur_location").submit();
             } else {
-              document.getElementById("sms11").value= 'No address results found';
+              document.getElementById("sms11").value= 'कोई पता परिणाम नहीं मिला';
                document.getElementById("cur_location").submit();
             }
           } else {

@@ -13,10 +13,11 @@ from django.db.models import Q
 from math import sin, cos, sqrt, atan2, radians
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-@login_required
-@transaction.atomic
 import urllib.request
 import urllib.parse
+@login_required
+@transaction.atomic
+
 
 
 #print(datetime.datetime.utcnow().strftime("%A, %d. %B %Y %I:%M%p"))

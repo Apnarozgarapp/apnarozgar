@@ -11,16 +11,33 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Feedback',
+            fields=[
+                ('feedback_id', models.AutoField(serialize=False, primary_key=True)),
+                ('userhirer', models.CharField(null=True, blank=True, max_length=100)),
+                ('userworker', models.CharField(null=True, blank=True, max_length=100)),
+                ('post_id', models.IntegerField(null=True, blank=True)),
+                ('feedback1', models.TextField(null=True, blank=True, max_length=100)),
+                ('feedback2', models.TextField(null=True, blank=True, max_length=100)),
+                ('feedback3', models.TextField(null=True, blank=True, max_length=100)),
+                ('description', models.TextField(null=True, blank=True, max_length=200)),
+                ('pmode', models.CharField(null=True, blank=True, max_length=2)),
+                ('pdate', models.DateField(null=True, blank=True)),
+                ('done', models.CharField(null=True, blank=True, max_length=2)),
+                ('target', models.CharField(null=True, blank=True, max_length=2)),
+            ],
+        ),
+        migrations.CreateModel(
             name='LoginAs',
             fields=[
-                ('username', models.CharField(primary_key=True, serialize=False, max_length=100)),
+                ('username', models.CharField(serialize=False, primary_key=True, max_length=100)),
                 ('loginas', models.CharField(null=True, max_length=50)),
             ],
         ),
         migrations.CreateModel(
             name='Registration_otp',
             fields=[
-                ('username', models.CharField(primary_key=True, serialize=False, max_length=100)),
+                ('username', models.CharField(serialize=False, primary_key=True, max_length=100)),
                 ('aadhar', models.CharField(max_length=12)),
                 ('otp', models.CharField(max_length=5)),
             ],

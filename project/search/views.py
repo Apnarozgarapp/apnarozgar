@@ -121,7 +121,7 @@ def search_result(request):
 				try :
 					if target=="a":
 						user1=Profile.objects.filter(Q(skill1=skill)|Q(skill2=skill)|Q(skill3=skill))
-					elif target=="b":
+					elif target=='b':
 						user1=Contractor.objects.filter(skill=skill)
 					for data in user1:
 						loc=location.objects.get(username=data.user.username)

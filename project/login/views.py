@@ -398,11 +398,15 @@ def workrequest(request):
 			end_date=request.POST.get('end_date')
 			pq=Status.objects.filter(post_id=post_id,user_id=user_id)
 			page=request.POST.get('page')
+			if request.user.profile.loginas=="contractor":
+					target='b'
+			else:
+					target='a'
 			warn=""
 			if len(pq)!=0:
 				for pqr in pq:
 					if 'whire' in request.POST :
-						r=Status.objects.filter(user_id=user_id,confirm='a',target=pqr.target)
+						r=Status.objects.filter(user_id=user_id,confirm='a',target=target)
 						p=r.filter(Q(start_date__lte=start_date,end_date__gte=start_date)|Q(start_date__lte=end_date,end_date__gte=end_date)|Q(start_date__lte=start_date,end_date__gte=end_date)|Q(start_date__gte=start_date,end_date__lte=end_date))
 						if len(p)==0:
 							pqr.worker_status=post_id
@@ -419,7 +423,7 @@ def workrequest(request):
 						else:
 							pqr.worker_status=0
 							pqr.save()
-			data=Status.objects.filter(userworker=request.user.username)
+			data=Status.objects.filter(userworker=request.user.username,target=target)
 			for select in data:
 				if select.worker_status==select.post_id and select.hirer_status==select.user_id:
 					select.temp='a'

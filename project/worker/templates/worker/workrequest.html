@@ -95,18 +95,18 @@ button:hover, a:hover {
 
 
      {%if "e" in data1.temp %}
-     <font color = "green" ><p><b>कर्मचारी ने इस पोस्ट के लिए काम करने की पुष्टि दी है लेकिन आपने रद्दीकरण अनुरोध भेजा है</b></p></font>
+     <font color = "green" ><p><b>नियोक्ता ने इस पोस्ट के लिए काम करने की पुष्टि दी है लेकिन आपने रद्दीकरण अनुरोध भेजा है</b></p></font>
      <b><button type="submit" name = 'whire' >कार्य अनुरोध (request) करें--&#9654;</button>
      
      {%endif%}
 
      {%if "f" in data1.temp %}
-     <font color = "green" ><p><b>कर्मचारी ने इस पोस्ट के लिए काम करने की पुष्टि दी है लेकिन नियोक्ता ने रद्दीकरण अनुरोध भेजा है</b></p></font>
+     <font color = "green" ><p><b>आपने  इस पोस्ट के लिए काम करने की पुष्टि दी है लेकिन नियोक्ता ने रद्दीकरण अनुरोध भेजा है</b></p></font>
      <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें--&#9654;</button>
      
      {%endif%}
      {%if "b" in data1.temp %}
-     <font color = "red"><p><b>आपके इस पोस्ट के लिए काम करने की पुष्टि नहीं हुई है (Not Confirmed)</b></p></font>
+     <font color = "red"><p><b>पुष्टि के लिए प्रतीक्षा करें</b></p></font>
      <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें</button>
     {%endif%}
     {%if "c" in data1.temp %} 

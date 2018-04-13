@@ -44,12 +44,12 @@ button:hover, a:hover {
   <p><button class = "but">{{data.user.first_name}}</button></p>
 
   {% if data.rating %}
-   (आपकी रेटिंग = {{data.rating}})
+   (आपकी रेटिंग : {{data.rating}})
    <br>
   {%endif%}
 {% if current_address %}
 <font color = 'black' size = 3>
- current address:-:<br>
+ वर्तमान पता:<br>
 </font>
   <p class="title"> {{current_address.address}}</p>
   <p> स्थान सबमिट करने का समय: {{current_address.time}}</p> 
@@ -74,7 +74,10 @@ button:hover, a:hover {
  {% if data.skill1 %}
  1--&#9656;   <u>{{data.skill1}}</u><br>
  {% if data.description1 %}
-  कौशल #1 विवरण:<br>{{data.description1}}<br>{{data.description11}} 
+  {{data.description1 }}<br>
+  {%endif%}
+  {% if data.description11 %}
+  {{data.description11}} 
   <br>
   <br>
  	{%endif%}
@@ -82,15 +85,15 @@ button:hover, a:hover {
   {% if data.skill2 %}
  2--&#9656;  <u>{{data.skill2}}</u><br>
  {% if data.description2 %}
-  कौशल #2 विवरण:<br>{{data.description2}} 
+  {{data.description2}} 
   <br>
   <br>
   {%endif%}
   {%endif%}
   {% if data.skill3 %}
  3--&#9656;  <u>{{data.skill3}}</u><br>
- {% if data.description3 %}
-  कौशल #3 विवरण:<br>{{data.description3}}
+ {% if data.description3 != "None"%}
+  <br>{{data.description3}}
   <br>
   <br>
   {%endif%}

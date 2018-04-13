@@ -39,8 +39,18 @@
         <br>
 				  <center>
 					{% if request.user.username %}
-				  	<p><b> {{request.user.first_name}}</b> ने <b>{{request.user.profile.loginas}}</b> के रूप में लॉगिन किया है</p>
-					{% endif %}
+
+				  
+          	<p><b> {{request.user.first_name}}</b> ने
+
+            {% if request.user.profile.loginas == "worker" %} <b>कर्मचारी</b>
+            {% elif request.user.profile.loginas == "contractor" %}<b>ठेकेदार</b> 
+            {% else %}<b>नियोक्ता</b>
+            {% endif %}
+
+          के रूप में लॉगिन किया है</p>
+					
+          {% endif %}
           
                      
 				  </center>
@@ -239,7 +249,7 @@ function showError(error) {
                     case "बिजली कारीगर(Electrician)" :
                         document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
                         document.getElementById("multiselection").options[1]=new Option("घर के तारों में कुशल","घर के तारों में कुशल");
-                        document.getElementById("multiselection").options[2]=new Option("औद्योगिक वायरिंग स्थापित करने में कुशल (नीचे विवरण दें)","औद्योगिक वायरिंग स्थापित करने में कुशल (नीचे विवरण दें)");
+                        document.getElementById("multiselection").options[2]=new Option("औद्योगिक वायरिंग स्थापित करने में कुशल","औद्योगिक वायरिंग स्थापित करने में कुशल");
                         break;
                     case "बढ़ई(Carpenter)" :
                         document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
@@ -255,7 +265,7 @@ function showError(error) {
                     	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
                         document.getElementById("multiselection").options[1]=new Option("रसोई के बर्तन वेल्डिंग में कुशल","रसोई के बर्तन वेल्डिंग में कुशल");
                         document.getElementById("multiselection").options[2]=new Option("वाहन भागों की वेल्डिंग में कुशल","वाहन भागों की वेल्डिंग में कुशल");
-                        document.getElementById("multiselection").options[3]=new Option("स्टील उद्योगों पर वेल्डिंग में कुशल (नीचे विवरण दें)","स्टील उद्योगों पर वेल्डिंग में कुशल (नीचे विवरण दें)");
+                        document.getElementById("multiselection").options[3]=new Option("स्टील उद्योगों पर वेल्डिंग में कुशल","स्टील उद्योगों पर वेल्डिंग में कुशल");
                         break;
 
                     case "पलंबर(Plumber)":
@@ -349,7 +359,7 @@ function showError(error) {
                     case "बिजली कारीगर(Electrician)" :
                         document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
                         document.getElementById("multiselecti").options[1]=new Option("घर के तारों में कुशल","घर के तारों में कुशल");
-                        document.getElementById("multiselecti").options[2]=new Option("औद्योगिक वायरिंग स्थापित करने में कुशल (नीचे विवरण दें)","औद्योगिक वायरिंग स्थापित करने में कुशल (नीचे विवरण दें)");
+                        document.getElementById("multiselecti").options[2]=new Option("औद्योगिक वायरिंग स्थापित करने में कुशल","औद्योगिक वायरिंग स्थापित करने में कुशल");
                         break;
                     case "बढ़ई(Carpenter)" :
                         document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
@@ -365,7 +375,7 @@ function showError(error) {
                     	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
                         document.getElementById("multiselecti").options[1]=new Option("रसोई के बर्तन वेल्डिंग में कुशल","रसोई के बर्तन वेल्डिंग में कुशल");
                         document.getElementById("multiselecti").options[2]=new Option("वाहन भागों की वेल्डिंग में कुशल","वाहन भागों की वेल्डिंग में कुशल");
-                        document.getElementById("multiselecti").options[3]=new Option("स्टील उद्योगों पर वेल्डिंग में कुशल (नीचे विवरण दें)","स्टील उद्योगों पर वेल्डिंग में कुशल (नीचे विवरण दें)");
+                        document.getElementById("multiselecti").options[3]=new Option("स्टील उद्योगों पर वेल्डिंग में कुशल","स्टील उद्योगों पर वेल्डिंग में कुशल");
                         break;
 
                     case "पलंबर(Plumber)":

@@ -285,7 +285,7 @@ def contractor_profile(request):
           nofworker = request.POST.get('nofworker',None)
           nameof_worker = request.POST.get('nameof_worker',None)
           experience = request.POST.get('experience',None)
-          equipment= request.POST.get('equipment',None)
+          equipment= request.POST.getlist('equipment',None)
           data=Contractor(user=request.user,skill=skill,description1=description1,description2=description2,nofworker=nofworker,nameof_worker=nameof_worker,experience=experience,equipment=equipment,start_date=request.user.profile.start_date,end_date=request.user.profile.end_date)
           data.save()
           request.user.profile.contractor=request.user.profile.contractor+1

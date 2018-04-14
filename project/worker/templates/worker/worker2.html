@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class ='col-sm-6 col-sm-offset-3'>
-<h3>यहां अपना योग्यता(Skills) दर्ज करें</h3><br>
+<h3>यहां अपनी योग्यता (skills) दर्ज करें</h3><br>
 <p><font color = "red">{{warn}}</font></p>
 
         <!--<meta http-equiv="Content-Type" content="text/html;" /> -->
@@ -53,8 +53,18 @@
 </div> 
 
 <div class="form-group">
-  <label for="description11">कौशल #1 का विवरण 2:</label>
-      <input type="text" name ="description11" id="descrition11" placeholder="ऐच्छिक(optional)" class="form-control" value="{{user.profile.description11}}" Optional></input>
+  <label for="description11">उपरोक्त क्षेत्र में काम करने में आपका अनुभव कितना है?</label>
+
+
+      <select name="description11" class="form-control" id="description11">
+<option value="" selected>इन विकल्पों से चुनें</option>
+<option value="6 महीने से कम">6 महीने से कम</option>
+	<option value="6 महीने और 1 वर्ष के बीच">6 महीने और 1 वर्ष के बीच</option>
+	<option value="1 से 2 साल के बीच">1 से 2 साल के बीच</option>
+	<option value="2 साल से अधिक">2 साल से अधिक</option>
+</select>
+
+
     </div>
 
 

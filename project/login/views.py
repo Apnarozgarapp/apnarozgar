@@ -8,7 +8,6 @@ from django.contrib.auth import (
 	logout,
 	)
 from django.contrib.auth.models import User
-from .way2sms import sms,futuresms
 import random
 from .forms import UserLoginForm, UserRegisterForm
 from .models import LoginAs,Registration_otp

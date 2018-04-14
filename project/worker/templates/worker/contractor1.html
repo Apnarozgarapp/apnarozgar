@@ -40,7 +40,7 @@
 </div>
 
 <div class="form-group">
-  <label for="description1">कौशल का विवरण 1:</label>
+  <label for="description1">कौशल का विवरण</label>
       <script type="text/javascript" language="JavaScript">
                 document.write('<select name ="description1" class="form-control" id="multiselection" size="3" multiple ><option value="">इन विकल्पों से चुनें</option></select>')
         </script>
@@ -52,12 +52,21 @@
       </noscript>
 </div> 
 
-
-
 <div class="form-group">
-  <label for="description2">उपर्युक्त कौशल में अपनी विशेषज्ञता के बारे में बताएं</label>
-      <input type="text" name ="description2" id="descrition2" placeholder="ऐच्छिक(optional)" class="form-control" Optional></input>
-    </div>
+<label for="experience">उपरोक्त क्षेत्र में आपके काम करने के अनुभव के बारे में बताएं</label>
+
+<select name="experience" class="form-control" id="experience">
+<option value="" selected>इन विकल्पों से चुनें</option>
+<option value="6 महीने से कम">6 महीने से कम</option>
+  <option value="6 महीने और 1 वर्ष के बीच">6 महीने और 1 वर्ष के बीच</option>
+  <option value="1 से 2 साल के बीच">1 से 2 साल के बीच</option>
+  <option value="2 साल से अधिक">2 साल से अधिक</option>
+</select>
+
+</div>
+
+
+
 
 <div class="form-group">
 <label for="nofworker">आपके पास उपलब्ध श्रमिकों की संख्या</label>
@@ -71,17 +80,30 @@
     </div>
 
 
+
+
 <div class="form-group">
-<label for="experience">आपके काम करने के अनुभवों के बारे में बताएं</label>
-<textarea type="textarea" name="experience"   class="form-control" id="experience"  optional> </textarea>
+<label for="equipment">सभी भारी मशीनरी और उपकरणों के बारे में विवरण दें</label>
+<br>
+
+<select name="equipment" class="form-control" id="multiselectio" multiple required>
+<option value="" selected>इन विकल्पों से चुनें</option>
+<option value="ट्रैक्टर">ट्रैक्टर</option>
+  <option value="रोलर">रोलर</option>
+  <option value="JCB मशीन या खुदाई करने वाला यंत्र">JCB मशीन या खुदाई करने वाला यंत्र</option>
+  <option value="कंक्रीट मिश्रक">कंक्रीट मिश्रक</option>
+  <option value="पत्थर क्रशर">पत्थर क्रशर</option>
+  <option value="बार बेन्डिग मशीन">बार बेन्डिग मशीन</option>
+
+</select>
+
 </div>
 
 <div class="form-group">
-<label for="equipment">सभी भारी मशीनरी और उपकरणों के बारे में स्पष्ट विवरण दें</label>
-<textarea type="text" name="equipment"   class="form-control" id="equipment"  optional> </textarea>
-</div>
-
-
+  <label for="description2">उपर्युक्त कौशल में अपनी विशेषज्ञता के बारे में बताएं</label>
+      <input type="text" name ="description2" id="descrition2" placeholder="ऐच्छिक(optional)" class="form-control" Optional></input>
+    </div>
+    <br>
 
 
 <button type="submit" name = 'save_changes2'>परिवर्तनों को सुरक्षित करें</button>

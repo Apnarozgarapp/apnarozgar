@@ -128,15 +128,16 @@ def register_view(request):
 			return render(request,'login/register.html',{"warn":warn})
 		m=re.search('@',username)
 		otp=random.randint(1000,9999)
+		serial=random.randint(10,99)
 		warn = " "
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				try:
-					resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS','91'+username,'TXTLCL','From Apna Rozgar OTP:  '+str(otp))
+					resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS','91'+username,'TXTLCL','From Apna Rozgar OTP('+str(serial)+'): '+str(otp))
 					res=resp.decode('utf-8')
 					abcd=re.search('success',res)
 					if abcd:
-						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है| कृपया प्रतीक्षा करें"
+						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है| कृपया प्रतीक्षा करें, अगर आपको 2 मिनट के अंदर नहीं मिला तो ओटीपी को फिर से भेजें"
 					else:
 						warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 						return render(request,'login/register.html',{"warn":warn})
@@ -151,19 +152,20 @@ def register_view(request):
 
 		else:
 			try:
-				email=EmailMessage('अपना रोज़ागर से ओटीपी (OTP From Apna Rozgar):', 'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP): '+str(otp), to=[username])
+				email=EmailMessage('अपना रोज़ागर से ओटीपी (OTP From Apna Rozgar):', 'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP)('+str(serial)+'): '+str(otp), to=[username])
 				email.send()
-				warn="ओटीपी आपके ईमेल पर भेज दिया गया है| कृपया प्रतीक्षा करें"
+				warn="ओटीपी आपके ईमेल पर भेज दिया गया है| कृपया प्रतीक्षा करें अगर आपको 2 मिनट के अंदर नहीं मिला तो ओटीपी को फिर से भेजें"
 			except:
 				warn="आपका ईमेल गलत है या ईमेल भेजना विफल हो गया है|"
 				return render(request,'login/register.html',{"warn":warn})
 
 		data=Registration_otp(username=username,aadhar=aadhar,otp=str(otp))
 		data.save()			
-		return render(request,'login/register1.html',{"mobile":username,"aadhar":aadhar,"warn":warn})
+		return render(request,'login/register1.html',{"mobile":username,"aadhar":aadhar,"warn":warn,'otp':str(serial)})
 
 	elif request.method == 'POST' and 'btn1' in request.POST:
 		mobile=request.POST.get('username')
+		aadhar=request.POST.get('aadhar',None)
 		otp2=request.POST.get('otp')
 		otp1=Registration_otp.objects.get(username=mobile)
 		if otp2==otp1.otp:
@@ -173,6 +175,7 @@ def register_view(request):
 			user = form.save(commit = False)
 			password=request.POST.get('password',None)
 			user.set_password(password)
+			user.last_name=aadhar
 			user.save()
 			return render(request,'login/register2.html')
 		else:
@@ -225,15 +228,16 @@ def forgot_password_view(request):
 			return render(request,'login/forgot.html',{"warn":warn})
 		m=re.search('@',username)
 		otp=random.randint(1000,9999)
+		serial=random.randint(10,99)
 		warn = " "
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				try:
-					resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS','91'+username,'TXTLCL','From Apna Rozgar OTP:  '+str(otp))
+					resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS','91'+username,'TXTLCL','From Apna Rozgar OTP('+str(serial)+'):- '+str(otp))
 					res=resp.decode('utf-8')
 					abcd=re.search('success',res)
 					if abcd:
-						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है| कृपया प्रतीक्षा करें"
+						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है| कृपया प्रतीक्षा करें अगर आपको 2 मिनट के अंदर नहीं मिला तो ओटीपी को फिर से भेजें"
 					else:
 						warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 						return render(request,'login/forgot.html',{"warn":warn})
@@ -247,17 +251,18 @@ def forgot_password_view(request):
 
 		else:
 			try:
-				email=EmailMessage('अपना रोज़ागर से ओटीपी (OTP From Apna Rozgar):', 'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP): '+str(otp), to=[username])
+				email=EmailMessage('अपना रोज़ागर से ओटीपी (OTP From Apna Rozgar):', 'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP)('+str(serial)+'):- '
+					+str(otp), to=[username])
 				email.send()
 				otpdata=""
-				warn="ओटीपी आपके ईमेल पर भेज दिया गया है| कृपया प्रतीक्षा करें"
+				warn="ओटीपी आपके ईमेल पर भेज दिया गया है| कृपया प्रतीक्षा करें ,अगर आपको 2 मिनट के अंदर नहीं मिला तो ओटीपी को फिर से भेजें"
 			except:
 				warn="आपका ईमेल गलत है या ईमेल भेजना विफल हो गया है|"
 				return render(request,'login/forgot.html',{"warn":warn})
 
 		data=Registration_otp(username=username,otp=str(otp))
 		data.save()			
-		return render(request,'login/forgot1.html',{"mobile":username,"warn":warn})
+		return render(request,'login/forgot1.html',{"mobile":username,"warn":warn,'otp':str(serial)})
 
 	elif request.method == 'POST' and 'btn1' in request.POST:
 		mobile=request.POST.get('username')
@@ -289,15 +294,16 @@ def change_password_view(request):
 			return render(request,'login/forgot.html',{"warn":warn})
 		m=re.search('@',username)
 		otp=random.randint(1000,9999)
+		serial=random.randint(10,99)
 		warn = " "
 		if m is None:
 			if len(username) ==10 and username.isdigit():
 				try:
-					resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS','91'+username,'TXTLCL','From Apna Rozgar OTP:  '+str(otp))
+					resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS','91'+username,'TXTLCL','From Apna Rozgar OTP('+str(serial)+'):- '+str(otp))
 					res=resp.decode('utf-8')
 					abcd=re.search('success',res)
 					if abcd:
-						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है| कृपया प्रतीक्षा करें"
+						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है| कृपया प्रतीक्षा करें, अगर आपको 2 मिनट के अंदर नहीं मिला तो ओटीपी को फिर से भेजें"
 					else:
 						warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 						return render(request,'login/forgot.html',{"warn":warn})
@@ -311,17 +317,17 @@ def change_password_view(request):
 
 		else:
 			try:
-				email=EmailMessage('अपना रोज़ागर से ओटीपी (OTP From Apna Rozgar):', 'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP): '+str(otp), to=[username])
+				email=EmailMessage('अपना रोज़ागर से ओटीपी (OTP From Apna Rozgar):', 'अपना रोज़ागर (Apna Rozgar) में आपका स्वागत है| अपना रोज़ागर से ओटीपी ( OTP)('+str(serial)+'):- '+str(otp), to=[username])
 				email.send()
 				otpdata=""
-				warn="ओटीपी आपके ईमेल पर भेज दिया गया है| कृपया प्रतीक्षा करें"
+				warn="ओटीपी आपके ईमेल पर भेज दिया गया है| कृपया प्रतीक्षा करें, अगर आपको 2 मिनट के अंदर नहीं मिला तो ओटीपी को फिर से भेजें"
 			except:
 				warn="आपका ईमेल गलत है या ईमेल भेजना विफल हो गया है|"
 				return render(request,'login/forgot.html',{"warn":warn})
 
 		data=Registration_otp(username=username,otp=str(otp))
 		data.save()			
-		return render(request,'login/forgot1.html',{"mobile":username,"warn":warn})
+		return render(request,'login/forgot1.html',{"mobile":username,"warn":warn,'otp':str(serial)})
 
 	elif request.method == 'POST' and 'btn1' in request.POST:
 		mobile=request.POST.get('username')
@@ -366,10 +372,9 @@ def workrequest(request):
 							pqr.save()
 
 							#user=Profile.objects.get(user_id=user_id)
-							#try:
+							
 							#	resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Hirer '+pqr.hirer+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
-							#except:
-							#	warn='System is anable to send confirmation sms to Worker/contractor'
+							
 
 
 						elif pqr.confirm=='a':
@@ -437,10 +442,9 @@ def workrequest(request):
 							pqr.save()
 
 							#user=Posts.objects.get(post_id=post_id)
-							#try:
+							
 							#	resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Worker/contractor '+pqr.worker+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
-							#except:
-							#	warn='System is anable to send confirmation sms to Hirer'
+						
 
 						elif pqr.confirm=='a':
 							pqr.worker_status=post_id

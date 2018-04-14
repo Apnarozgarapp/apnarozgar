@@ -427,10 +427,9 @@ def viewpost(request):
             cba.save()
 
             #user=Posts.objects.get(post_id=post_id)
-            #try:
+            
              #  resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Worker/Contractor '+pqr.worker+' is send a work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
-            #except:
-             #  warn='System is anable to send confirmation sms to Hirer'
+           
 
           else:
             for pqr in abc:
@@ -440,10 +439,9 @@ def viewpost(request):
                 pqr.save()
 
                 #user=Posts.objects.get(post_id=post_id)
-                #try:
+                
                  #resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Worker/Contractor '+pqr.worker+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
-                #except:
-                 #warn='System is anable to send confirmation sms to Hirer'
+                
 
 
               elif 'wchire' in request.POST and (pqr.hirer_status!=pqr.post_id or pqr.confirm!='a'):

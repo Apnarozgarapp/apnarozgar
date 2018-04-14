@@ -10,13 +10,24 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django import forms
 import re
-import urllib.request
 from math import sin, cos, sqrt, atan2, radians
 from django.db.models import Q
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import urllib.request
+import urllib.parse
+
 @login_required
 @transaction.atomic
+
+
+#print(datetime.datetime.utcnow().strftime("%A, %d. %B %Y %I:%M%p"))
+
+def sendSMS(apikey, numbers, sender, message):
+	params = {'apikey': apikey, 'numbers': numbers, 'message' : message, 'sender': sender}
+	f = urllib.request.urlopen('https://api.textlocal.in/send/?'+ urllib.parse.urlencode(params))
+	return (f.read(), f.code)
+
 def done(request):
 	if request.user.username:
 		if request.user.profile.loginas=="hirer":
@@ -121,6 +132,7 @@ def search_result(request):
 				try :
 					if target=="a":
 						user1=Profile.objects.filter(Q(skill1=skill)|Q(skill2=skill)|Q(skill3=skill))
+
 					else:
 						user1=Contractor.objects.filter(skill=skill)
 					for data in user1:
@@ -488,12 +500,25 @@ def see_work_post(request):
         if len(abc)==0 and 'hire' in request.POST:
           cba=Status(target=target, post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,hirer_status=user_id,userworker=userworker,userhirer=userhirer,start_date=start_date,end_date=end_date)
           cba.save()
+
+          #user=Profile.objects.get(user_id=user_id)
+          #try:
+          #  resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Hirer '+pqr.hirer+' is send you a work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
+          #except:
+          #  warn='System is anable to send confirmation sms to Worker/contractor'
         else:
           for pqr in abc:
             if 'hire' in request.POST:
               pqr.hirer_status=user_id
               pqr.confirm='a'
               pqr.save()
+
+              #user=Profile.objects.get(user_id=user_id)
+              #try:
+               #resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Hirer '+pqr.hirer+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
+              #except:
+               #warn='System is anable to send confirmation sms to Worker/contractor'
+
           if 'chire' in request.POST:
             if pqr.confirm !='a':
               pqr.delete()

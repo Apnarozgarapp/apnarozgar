@@ -25,6 +25,22 @@ import urllib.parse
 
 
 #print(datetime.datetime.utcnow().strftime("%A, %d. %B %Y %I:%M%p"))
+def query(request):
+	if request.user.username:
+		if request.method=="POST":
+			username=request.POST.get('username')
+			name=request.POST.get('name')
+			problem=request.POST.get('problem')
+			email=EmailMessage('Problem from user:-  '+name +'('+username+')', problem, to=['apnarozgarapp@gmail.com'])
+			email.send()
+			warn="आपकी तकनीकी समस्या सफलतापूर्वक हमारे डेवलपर टीम को भेजी गई"
+			return render(request,'login/aboutus.html',{'warn':warn})
+		else:
+			return render(request,'login/query.html')
+
+	else:
+		warn="कृपया पहले  लॉगिन करें"
+		return render(request,'login/form.html',{'warn':warn})
 
 def sendSMS(apikey, numbers, sender, message):
 	params = {'apikey': apikey, 'numbers': numbers, 'message' : message, 'sender': sender}
@@ -349,6 +365,14 @@ def workrequest(request):
 							pqr.hirer_status=user_id
 							pqr.confirm='a'
 							pqr.save()
+
+							#user=Profile.objects.get(user_id=user_id)
+							#try:
+							#	resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Hirer '+pqr.hirer+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
+							#except:
+							#	warn='System is anable to send confirmation sms to Worker/contractor'
+
+
 						elif pqr.confirm=='a':
 							pqr.hirer_status=user_id
 							pqr.save()
@@ -412,6 +436,13 @@ def workrequest(request):
 							pqr.worker_status=post_id
 							pqr.confirm='a'
 							pqr.save()
+
+							#user=Posts.objects.get(post_id=post_id)
+							#try:
+							#	resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Worker/contractor '+pqr.worker+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
+							#except:
+							#	warn='System is anable to send confirmation sms to Hirer'
+
 						elif pqr.confirm=='a':
 							pqr.worker_status=post_id
 							pqr.save()

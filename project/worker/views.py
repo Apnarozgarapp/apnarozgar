@@ -9,13 +9,24 @@ from search.models import Posts,Status
 from login.models import Feedback
 import login
 import re
-import urllib.request
 from django.db.models import Q
 from math import sin, cos, sqrt, atan2, radians
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import urllib.request
+import urllib.parse
 @login_required
 @transaction.atomic
+
+
+
+#print(datetime.datetime.utcnow().strftime("%A, %d. %B %Y %I:%M%p"))
+
+def sendSMS(apikey, numbers, sender, message):
+  params = {'apikey': apikey, 'numbers': numbers, 'message' : message, 'sender': sender}
+  f = urllib.request.urlopen('https://api.textlocal.in/send/?'+ urllib.parse.urlencode(params))
+  return (f.read(), f.code)
+
 def payment_detail(request):
   if request.user.username:
     if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":
@@ -414,12 +425,27 @@ def viewpost(request):
           if len(abc)==0 and 'whire' in request.POST:
             cba=Status(target=target,post_id=post_id,user_id=user_id,worker=worker,hirer=hirer,worker_status=post_id,userworker=userworker,userhirer=userhirer,start_date=start_date,end_date=end_date)
             cba.save()
+
+            #user=Posts.objects.get(post_id=post_id)
+            #try:
+             #  resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Worker/Contractor '+pqr.worker+' is send a work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
+            #except:
+             #  warn='System is anable to send confirmation sms to Hirer'
+
           else:
             for pqr in abc:
               if 'whire' in request.POST:
                 pqr.worker_status=post_id
                 pqr.confirm='a'
                 pqr.save()
+
+                #user=Posts.objects.get(post_id=post_id)
+                #try:
+                 #resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Worker/Contractor '+pqr.worker+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
+                #except:
+                 #warn='System is anable to send confirmation sms to Hirer'
+
+
               elif 'wchire' in request.POST and (pqr.hirer_status!=pqr.post_id or pqr.confirm!='a'):
                 pqr.delete()
               elif 'wchire' in request.POST and pqr.hirer_status==pqr.post_id:

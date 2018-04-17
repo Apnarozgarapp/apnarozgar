@@ -15,11 +15,11 @@
 {% csrf_token %}
 
 <div class="form-group">
-<label for="skill">आपका कौशल (अनिवार्य)</label>
+<label for="skill">आप किस कौशल के लिए ठेकेदार हैं? (अनिवार्य)</label>
 <select name="skill" class="form-control" id="skill" onchange="dynamicdropdown(this.options[this.selectedIndex].value);"  required>
 <option value="" selected>इन विकल्पों से कौशल चुनें</option>
-<option value="निर्माण मजदूर(Construction worker)">निर्माण मजदूर(Construction worker)</option>
-  <option value="बिजली कारीगर(Electrician)">बिजली कारीगर(Electrician)</option>
+<option value="निर्माण मजदूर(Construction worker)">निर्माण ठेकेदार(Construction contractor)</option>
+  <option value="बिजली कारीगर(Electrician)">बिजली काम ठेकेदार(Electrician Contractor)</option>
   <option value="बढ़ई(Carpenter)">बढ़ई(Carpenter)</option>
   <option value="पेंटर(Painter)">पेंटर(Painter)</option>
   <option value="वेल्डर(Welder)">वेल्डर(Welder)</option>

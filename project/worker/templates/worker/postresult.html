@@ -67,7 +67,7 @@ button:hover, a:hover {
   <p><button class = "but">नियोक्ता का मोबाइल नंबर: {{data.s_contact}}</button></p>
   
   
-  <form method="POST" action="/worker/seepost">
+  <form method="POST" action="/pview">
      {% csrf_token %}
      <input name ="post_id" type="number" value={{data.post_id}} hidden></input>
      <input name ="user_id" type="number" value={{user1.user_id}} hidden></input>

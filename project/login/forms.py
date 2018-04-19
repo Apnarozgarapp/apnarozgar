@@ -9,11 +9,14 @@ from django.contrib.auth import (
 
 User = get_user_model()
 
+# Form for User login input
+
 class UserLoginForm(forms.Form):
 	username = forms.CharField()
 	password = forms.CharField(widget = forms.PasswordInput)
 	loginas = forms.CharField()
 	
+# Form for User Registration Input
 
 class UserRegisterForm(forms.ModelForm):
        class Meta:
@@ -21,7 +24,6 @@ class UserRegisterForm(forms.ModelForm):
 	       fields = [
 		   'username',
            'first_name',
-           'last_name',
 		   'email',  
 		   'password'
 		        ]

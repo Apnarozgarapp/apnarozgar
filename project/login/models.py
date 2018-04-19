@@ -1,17 +1,16 @@
 from django.db import models
 
 # Create your models here.
-<<<<<<< HEAD
+
 class LoginAs(models.Model):
     username = models.CharField(max_length=100,primary_key = True)
     loginas = models.CharField(max_length=50, null = True)
     def __str__(self):
     	return self.username
     	
-=======
+
 # Table to store otp and aadhar with username at the time of Registration, forgot Password and change Password
 
->>>>>>> 1a47308994fb52d4aef0ea000818be9186927de3
 class Registration_otp(models.Model):
     username = models.CharField(max_length=100,primary_key = True)
     aadhar = models.CharField(max_length=12)

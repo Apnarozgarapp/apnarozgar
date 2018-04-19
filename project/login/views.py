@@ -10,7 +10,7 @@ from django.contrib.auth import (
 from django.contrib.auth.models import User
 import random
 from .forms import UserLoginForm, UserRegisterForm
-from .models import LoginAs,Registration_otp
+from .models import Registration_otp
 from search.models import Status
 from worker.models import Current_location
 from django.core.mail import EmailMessage

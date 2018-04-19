@@ -240,7 +240,7 @@ def work_post(request):
 					dat.save()
 					dataa=Posts.objects.get(post_id=dat.post_id)
 					if target=='a':
-						warn="कार्यकर्ता के लिए आपकी पोस्ट"
+						warn="कर्मचारी के लिए आपकी पोस्ट"
 					else:
 						warn="ठेकेदार के लिए आपकी पोस्ट"
 					page=1

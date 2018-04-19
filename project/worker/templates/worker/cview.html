@@ -77,7 +77,10 @@ button:hover, a:hover {
  {% if skill1.skill %}
  --&#9656;   <u>{{skill1.skill}}</u><br>
  {% if skill1.description1 %}
-  {{skill1.description1}}<br>{{skill1.description2}} 
+  {{skill1.description1}}<br>
+  {% if skill1.description2 != "None" %}
+  {{skill1.description2}}
+  {% endif %}
   <br>
  	<br>
   {%endif%}
@@ -117,7 +120,9 @@ button:hover, a:hover {
  </font>
  <br>
  <font color = 'purple' size = 3.5>
+  {% if data.mode != "None" %}
  स्वीकार्य भुगतान मोड:-  <b>{{data.mode}}</b>
+ {% endif %}
  <br><br>
 {% if data.acname %}
   खाता धारक का नाम: <b>{{data.acname}}</b>
@@ -149,7 +154,7 @@ button:hover, a:hover {
 </div>
 	<br>
   <h3 align="center">
-            <li ><a href = "/feedback?username={{data}}&target='b'">फीडबैक</a></li>
+            <li ><a href = "/feedback?username={{data}}&target='b'">प्राप्त प्रतिक्रिया (फीडबैक)</a></li>
             </h3>
       
             {%endif%}

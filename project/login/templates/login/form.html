@@ -4,9 +4,8 @@
 
 
 <div class ='col-sm-6 col-sm-offset-2'>
-<h3><u>लॉग इन करें:</u></h3><br>
-<a href = "static/login/login1.pdf" target = "_blank" ><h4><u>लॉग इन के लिए निर्देश देखें</u></h4></a>
-<br>
+<h3><u>लॉग इन करें:</u></h3>
+<a href = "static/login/login1.pdf" target = "_blank" ><h4><u>लॉग इन के लिए निर्देश देखें</u></h4></a><br>
 <h4 > <font color="red"> {{warn}} </font></h4>
 <form method="POST" action="/login">
 {% csrf_token %}
@@ -25,9 +24,10 @@
 <br>
 <div class="form-group" style = " ">
 <input type="radio" name="loginas" value="worker"  style = "width :1.5em; height:1.5em;" checked><font size = 4.5> कर्मचारी (Worker)</font><br>
+<input type="radio" name="loginas" value="contractor" style = "width :1.5em; height:1.5em;"><font size = 4.5> ठेकेदार (Contractor)</font><br>
   <input type="radio" name="loginas" value="hirer" style = "width :1.5em; height:1.5em;"><font size = 4.5> नियोक्ता (Hirer)</font><br>
 
-<input type="radio" name="loginas" value="contractor" style = "width :1.5em; height:1.5em;"><font size = 4.5> ठेकेदार (Contractor)</font><br>
+
 </div>
 <button type="submit" name = 'btn1'><font size = 4>लॉग इन (Login) करें</font></button>
 </form>

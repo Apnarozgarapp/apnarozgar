@@ -16,7 +16,7 @@ class Registration_otp(models.Model):
     aadhar = models.CharField(max_length=12)
     otp = models.CharField(max_length=5)
     def __str__(self):
-    	return self.otp
+    	return self.username
 
 # Table to store Feedback details and Payment for Workers or Contractors
 

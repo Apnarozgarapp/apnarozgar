@@ -47,7 +47,7 @@ button:hover, a:hover {
          <h4><font color="red">{{warn}}</h4></font>
 
             {% if request.user.profile.contractor > 0 %}
-            <a href = "static/login/contractorwithprofile1.pdf" target = "_blank" ><h4><u>उपलब्ध सभी सुविधाओं के बारे में विस्तृत विवरण देखें</u></h4></a><br>
+            <a href = "/login/static/login/contractorwithprofile1.pdf" target = "_blank" ><h4><u>उपलब्ध सभी सुविधाओं के बारे में विस्तृत विवरण देखें</u></h4></a><br>
             <h3> आपके सभी विवरण हमारे साथ सुरक्षित हैं </h3>
             
               <h4><li><b><a href = '/cprofile'>अपना विवरण देखें--&#9654;</a></b></li></h4>
@@ -95,7 +95,7 @@ button:hover, a:hover {
             </b></h4>
 
     		{% else %}
-        <a href = "static/login/contractorwithoutprofile.pdf" target = "_blank" ><h4><u>उपलब्ध सभी सुविधाओं के बारे में विस्तृत विवरण देखें</u></h4></a><br>
+        <a href = "/login/static/login/contractorwithoutprofile.pdf" target = "_blank" ><h4><u>उपलब्ध सभी सुविधाओं के बारे में विस्तृत विवरण देखें</u></h4></a><br>
         <h3> आपके सभी विवरण हमारे साथ सुरक्षित हैं </h3>
     			<h3>
     			<li ><a href = '/contractor_profile'>अपना विवरण दर्ज करें</a></li>

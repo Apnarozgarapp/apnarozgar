@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key = True)
     s_contact = models.CharField(max_length=50,blank = True,null = True)
+    gender = models.CharField(max_length=10,blank = True,null = True)
     dis = models.FloatField(blank = True, null = True)
     street = models.CharField(max_length=250,blank = True, null = True)
     address = models.CharField(max_length=250,blank = True, null = True)

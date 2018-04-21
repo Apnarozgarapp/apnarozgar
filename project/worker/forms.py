@@ -9,7 +9,7 @@ class UserForm(forms.ModelForm):
 class ProfileForm1(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('s_contact','street','address', 'start_date','end_date')
+        fields = ('s_contact','street','address', 'start_date','end_date','gender')
 
 class ProfileForm2(forms.ModelForm):
     class Meta:

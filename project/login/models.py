@@ -2,11 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-class LoginAs(models.Model):
-    username = models.CharField(max_length=100,primary_key = True)
-    loginas = models.CharField(max_length=50, null = True)
-    def __str__(self):
-    	return self.username
     	
 
 # Table to store otp and aadhar with username at the time of Registration, forgot Password and change Password
@@ -31,6 +26,6 @@ class Feedback(models.Model):
     description=models.TextField(max_length = 200,blank = True, null = True)
     pmode = models.CharField(max_length = 50,blank = True, null = True)       #Mode of payment by Hirer to Worker
     pdate = models.DateField(blank = True, null = True)                      #Payment Date
-    done=models.CharField(max_length = 2,blank = True, null = True)          # variable for payment verification by worker or contractor
-    target=models.CharField(max_length = 2,blank = True, null = True)        # feedback data for worker or Contractor
+    done=models.CharField(max_length = 2,blank = True, null = True)          # variable to check status of payment verification ("a" if payment not verified by worker, "b" otherwise)
+    target=models.CharField(max_length = 2,blank = True, null = True)        # whether feedback data target is worker or Contractor
 

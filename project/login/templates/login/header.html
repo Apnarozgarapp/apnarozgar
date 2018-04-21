@@ -5,11 +5,11 @@
  
    <meta charset="utf-8" />
    {% load staticfiles %}
-   <link rel="stylesheet" href="static/login/css/bootstrap.min.css" type = "text/css"/>
-   <link rel="stylesheet" href="static/login/css/new.css" type = "text/css"/>
-   <script type="text/javascript" src="static/login/js/jq.js"></script>
-   <script type="text/javascript" src="static/login/js/new.js"></script>
-   <script type="text/javascript" src="static/login/js/bootstrap.min.js"></script>
+   <link rel="stylesheet" href="/login/static/login/css/bootstrap.min.css" type = "text/css"/>
+   <link rel="stylesheet" href="/login/static/login/css/new.css" type = "text/css"/>
+   <script type="text/javascript" src="/login/static/login/js/jq.js"></script>
+   <script type="text/javascript" src="/login/static/login/js/new.js"></script>
+   <script type="text/javascript" src="/login/static/login/js/bootstrap.min.js"></script>
    <meta name="viewport" content = "width=device-width, initial-scale=1.0">
 	
    <style type="text/css">
@@ -18,7 +18,7 @@
 	 height:100%
     }
     .body {
-      background-image: url("static/login/img/backn4.jpg");
+      background-image: url("/login/static/login/img/backn4.jpg");
     	position: absolute;
     	width: 100%;
     	z-index: 0;
@@ -99,7 +99,7 @@
 			  	{% if request.user.username %}
 			  	<h4><b><li><a href = '/view'>अपना विवरण देखें</a></li></b></h4><br>
 			  	
-                <h4><b><li><a href = '/workrequest'>कार्य अनुरोध (request) देखें</a></li></b></h4><br>
+                <h4><b><li><a href = '/workrequest'>कार्य अनुरोध देखें</a></li></b></h4><br>
 			  	<h4><b><li><a href='/logout'>लॉगआउट</a></li></b></h4><br>
 			  	
                 <h4><b> <li><a href = '/change_password'>पासवर्ड बदलें</a></li></b></h4>

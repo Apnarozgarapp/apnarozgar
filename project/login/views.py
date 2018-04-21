@@ -21,6 +21,7 @@ import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import urllib.request
 import urllib.parse
+import os
 
 
 #print(datetime.datetime.utcnow().strftime("%A, %d. %B %Y %I:%M%p"))
@@ -199,11 +200,13 @@ def profile_view(request):
 			lng=request.POST.get('lng',None)
 			time=request.POST.get('time',None)
 			sms=request.POST.get('sms',None)
+			warn1 = " "
 			if address!="N":
 				data=Current_location(username=request.user.username,address=address,lat=lat,lng=lng,time=time)
 				data.save()
-				sms="वर्तमान स्थान को सफलतापूर्वक रिकॉर्ड किया गया:- "+address
-			return render(request,'worker/viewedit.html',{'warn':sms})
+				sms="वर्तमान स्थान को सफलतापूर्वक रिकॉर्ड किया गया: "
+				warn1 = "" + address
+			return render(request,'worker/viewedit.html',{'warn':sms, 'warn1': warn1})
 
 		else:
 			if request.user.profile.loginas=="worker" :        

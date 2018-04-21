@@ -4,20 +4,20 @@
 <div class ='col-sm-6 col-sm-offset-2'>
 <h3><u>उपयोगकर्ता पंजीकरण (Registration):<u></h3>
 <br>
-<a href = "static/login/registration.pdf" target = "_blank" ><h4>पंजीकरण के लिए निर्देश देखें</h4></a>
+<a href = "/login/static/login/registration.pdf" target = "_blank" ><h4>पंजीकरण के लिए निर्देश देखें</h4></a>
 <br>
  <h4><font color = 'red'> {{warn}}</font> </h4>
  <form method="POST" action="">
  {% csrf_token %}
  <div class="form-group">
     <label for="username"><b>अपना मोबाइल नंबर (Mobile Number)/ईमेल(Email) दर्ज करें :</b></label><br>
-    <div style = "background: url(static/login/img/ph.png) no-repeat scroll 0px 5px; padding-left:40px; padding-top: 5px; padding-bottom: 10px; width: 100%; ">
+    <div style = "background: url(/login/static/login/img/ph.png) no-repeat scroll 0px 5px; padding-left:40px; padding-top: 5px; padding-bottom: 10px; width: 100%; ">
     <input type="text" name = 'username' class="form-control" id="username" placeholder="मोबाइल नंबर (Mobile Number)/ईमेल (Email)" required>
 	</div>
  </div>
  <div class="form-group">
     <label for="aadhar">आधार नंबर (Aadhar Number) :</label><br>
-    <div style = "background: url(static/login/img/aadhaar123.png) no-repeat scroll 0px 0px; padding-left:50px; width: 100%; padding-top: 5px ">
+    <div style = "background: url(/login/static/login/img/aadhaar123.png) no-repeat scroll 0px 0px; padding-left:50px; width: 100%; padding-top: 5px ">
     <input type="text" name = 'aadhar' class="form-control" id="aadhar"  placeholder="आधार नंबर (Aadhar Number)" required>
  	</div>
  </div>

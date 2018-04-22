@@ -67,6 +67,11 @@ button:hover, a:hover {
 <font color = 'blue' size = 2.5>
 {{data.start_date}}  -  {{data.end_date}}
 </font>
+<br>
+{% if data.gender %}
+   लिंग (Gender) : {{data.gender}}
+   <br>
+  {%endif%}
 <br><br>
 <font color = 'black' size = 4.5 >
   कौशल और क्षमताएं:<br>

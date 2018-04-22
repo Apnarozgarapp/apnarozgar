@@ -53,7 +53,7 @@ def done(request):
 				if feedback2!="नहीं आया":
 					wuser.rating=wuser.rating*.80
 				
-					data1=Feedback(userhirer=request.user.username,target=target,userworker=wuser,post_id=post_id,feedback1=feedback1,feedback2=feedback2,feedback3=feedback3,pmode=pmode,pdate=pdate,description=description,done='a')
+					data1=Feedback(userhirer=request.user.first_name,target=target,userworker=wuser,post_id=post_id,feedback1=feedback1,feedback2=feedback2,feedback3=feedback3,pmode=pmode,pdate=pdate,description=description,done='a')
 					data1.save()
 				wuser.save()
 				data=Posts.objects.get(post_id=post_id)

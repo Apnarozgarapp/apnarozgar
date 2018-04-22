@@ -1,0 +1,88 @@
+{% extends "login/header.html" %}
+
+{% block content %}
+<div class ='col-sm-6 col-sm-offset-3'>
+<b><input type="button" value="&#9664;-- पीछे जाएँ" onclick="history.back(-1)" /></b>
+{% if request.user.username%}
+
+<h3><u>कृपया नीचे दिए गए फ़ील्ड भरें:-</u></h3><br>
+<h4> <font color="red">{{warn}}</font></h4>
+<form method="POST" action="">
+   {% csrf_token %}
+    <input name ="post_id" type="number" value={{post_id}} hidden></input>
+    <input name ="user_id" type="number" value={{user_id}} hidden></input>
+	<div class="form-group">
+	<h3>वेतन भुगतान के तरीके के बारे में जानकारी दें</h3>
+	<label for="pmode">वेतन भुगतान का प्रकार: </label>
+	<select name="pmode" class="form-control" id="pmode" >
+	<option value="नकद भुगतान (CASH)">नकद भुगतान (CASH)</option>
+	<option value="PAYTM">PAYTM</option>
+	<option value="श्रमिक बैंक खाते में सीधे अंतरण">श्रमिक बैंक खाते में सीधे अंतरण</option>
+	<option value="UPI">UPI</option>
+	<option value="अन्य (Other)">अन्य (Other)</option>
+	</select>
+	</div>
+		<div class="form-group">
+	    <label for="pdate">भुगतान की तिथि</label>
+	    <input type="date" name = 'pdate' class="form-control" id="date" required></input>
+	</div>
+	<div class="form-group">
+	    <label for="description">भुगतान के बारे में विवरण (अपना मोबाइल नंबर या खाता संख्या दर्ज करें)</label>
+	    <input type="text" name = 'description' class="form-control" ></input>
+	</div>
+	<input type="text" name ="target" value={{target}} hidden></input>
+
+	<input type="number" name ="page" value={{page}} hidden></input>
+   <h3>कृपया कर्मचारी को रेटिंग दें और अपनी प्रतिक्रिया (Feedback) दें</h3>
+	<div class="form-group">
+	<label for="rating">रेटिंग (Rating): </label>
+	<select name="rating" class="form-control" id="rating" required>
+	<option value="5">5</option>
+	<option value="4">4</option>
+	<option value="3">3</option>
+	<option value="2">2</option>
+	<option value="1">1</option>
+	</select>
+	</div>
+
+	
+	
+	
+	<div class="form-group">
+	<label for="feedback1">कर्मचारी द्वारा किए गए कार्य की गुणवत्ता के बारे में हमें बताएं:</label>
+	<select name="feedback1"   class="form-control" id="feedback1" required>
+	<option value="बहुत अच्छा">बहुत अच्छा</option>
+	<option value="अच्छा">अच्छा</option>
+	<option value="औसत दर्जे का">औसत दर्जे का</option>
+	<option value="घटिया">घटिया</option>
+	</select>
+	</div>
+
+	<div class="form-group">
+	<label for="feedback2">काम के स्थान पर सही समय पर कार्यकर्ता उपलब्ध था?
+</label>
+	<select name="feedback2"   class="form-control" id="feedback2" required>
+	<option value="हाँ">हाँ</option>
+	<option value="नहीं">नहीं</option>
+    <option value="नहीं आया">नहीं आया</option>
+	</select>
+	</div>
+    
+    <div class="form-group">
+	<label for="feedback3">क्या काम का स्तर कार्यकर्ता द्वारा मांगे वेतन से मेल खाता है?</label>
+	<select name="feedback3"   class="form-control" id="feedback2" required>
+	<option value="हाँ">हाँ</option>
+	<option value="मांग की गई वेतन बहुत अधिक था">मांग की गई वेतन बहुत अधिक था</option>
+
+	</select>
+	</div>
+
+	<button type="submit" name = 'done1' >फीडबैक और भुगतान विवरण सबमिट करें</button>
+</form>
+{% else %}
+   <h4><b><li><a href='/login'>लॉग इन करें</a></li></b></h4>
+   {%endif%}
+
+</div>
+{% endblock %}
+

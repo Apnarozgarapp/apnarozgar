@@ -1,0 +1,139 @@
+{% extends "login/header.html" %}
+
+{% block content %}
+<div class ='col-sm-6 col-sm-offset-2'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.title {
+  color: blue;
+  font-size: 18px;
+}
+
+.but {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+
+button:hover, a:hover {
+  opacity: 0.7;
+}
+
+.btn-group button {
+    background-color: #C7CADA; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: black; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+}
+
+.btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+    background-color: #3e8e41;
+}
+</style>
+<h4 align='center'>
+          <a href = '/view'><u>&#9664;-- अपना विवरण देखें </u></a>
+          </h4>
+<h4><b><a href='/confirm_work'><u>&#9664;-- सभी चयनित कार्य देखें  :</u></a></b></h4> 
+
+   
+    <h4><u><b>भुगतान :--&#9654;</b></u></h4>
+  <h4><font color="red"> {{ warn }}</font></h4>
+     {% for data1 in selected %}
+
+      <h3><li>{{data1.userhirer}} और आपके बीच <a href="/detailpost/?data={{data1.post_id}}">यहां वर्णित </a>पोस्ट के लिए काम का भुगतान  किया गया है।</li></h3>
+      {% if data1.pdate %}
+    <b>
+     <h4> भुगतान तारीख:- {{data1.pdate|date:"d/m/20y"}}</h4>
+   </b>
+   {%endif%}
+   {% if data1.pdate %}
+    <b>
+     <h4> भुगतान तरीका:- {{data1.pmode}}</h4>
+   {%endif%}
+   
+   {% if data1.description %}
+    <b>
+     <h4> भुगतान विवरण:- {{data1.description}}</h4>
+   </b>
+   {%endif%}
+      
+      
+      
+      
+      
+      
+     
+      
+
+      <form method="POST" action="/hpay">
+     {% csrf_token %}
+     <input name ="post_id" type="number" value={{data1.post_id}} hidden></input>
+     <input name ="page" type="number" value={{selected.number}} hidden></input>
+     <font size = 3.5>
+     
+      {% if "a" in data1.done %}
+    <b><button type="submit" name = 'confirm' >भुगतान की पुष्टि करें--&#9654;</button>
+      
+      </b>
+   {%endif%}
+    {% if "b" in data1.done %}
+    <b>
+     <h4> भुगतान की पुष्टि है</h4>
+   </b>
+   {%endif%}
+   </font>
+  </form>
+     {% endfor %}
+     <b>
+  <div class="pagination">
+    <span class="step-links">
+        {% if selected.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ selected.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ selected.number }} of {{ selected.paginator.num_pages }}.
+        </span>
+
+        {% if selected.has_next %}
+            <a href="?page={{ selected.next_page_number }}">next</a>
+            <a href="?page={{ selected.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+  <b>
+</div>
+{% endblock %}
+

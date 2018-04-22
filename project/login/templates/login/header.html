@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <title>अपना रोज़गार</title>
+ 
+   <meta charset="utf-8" />
+   {% load staticfiles %}
+   <link rel="stylesheet" href="/login/static/login/css/bootstrap.min.css" type = "text/css"/>
+   <link rel="stylesheet" href="/login/static/login/css/new.css" type = "text/css"/>
+   <script type="text/javascript" src="/login/static/login/js/jq.js"></script>
+   <script type="text/javascript" src="/login/static/login/js/new.js"></script>
+   <script type="text/javascript" src="/login/static/login/js/bootstrap.min.js"></script>
+   <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	
+   <style type="text/css">
+    html,
+    body {
+	 height:100%
+    }
+    .body {
+      background-image: url("/login/static/login/img/i6.jpg");
+    	position: absolute;
+    	width: 100%;
+    	z-index: 0;
+      background-repeat: repeat-y;
+    }
+   </style>
+  </head>
+  
+
+<body class="body" >
+	<div class="container-fluid" style="min-height:94% ">
+	  
+		<div class="row">
+      <div class = "layer" style = "background-color:#DDFAF9;position: absolute; top: 0; left: 0; width: 100%; height: 15%;">
+			  <div class="col-sm-2">
+				<br>
+        <br>
+        <br>
+				  <center>
+					{% if request.user.username %}
+
+				  
+          	<p><b> {{request.user.first_name}}</b> ने
+
+            {% if request.user.profile.loginas == "worker" %} <b>कर्मचारी</b>
+            {% elif request.user.profile.loginas == "contractor" %}<b>ठेकेदार</b> 
+            {% else %}<b>नियोक्ता</b>
+            {% endif %}
+
+          के रूप में लॉगिन किया है</p>
+					
+          {% endif %}
+          
+                     
+				  </center>
+
+			  </div>
+      </div>
+			    <div class="col-sm-8 col-sm-offset-2">
+				 
+				  <center>
+				  <h2><b><u><a href="/about">अपना रोज़गार</a></b></u></h2>
+                  
+                  
+				  </center>
+			    </div>
+        
+		</div>
+                     <hr>
+
+		<div class="row">
+		  <div class="col-sm-2">
+		  
+		   <!-- Great, til you resize. -->
+			<!--<div class="well bs-sidebar affix" id="sidebar" style="background-color:#fff">-->
+        
+        <div id="sidebar" >
+          <center>
+          {% if request.user.username %}
+                  <h4>
+                <form method="post" action="/change_role">
+                {% csrf_token %}
+                <select name='loginas' onchange='if(this.value != 0) { this.form.submit(); }'>
+                <option value='0'>अपनी भूमिका बदलें</option>
+                <option value='worker'>कर्मचारी (Worker)</option>
+                <option value='contractor'>ठेकेदार (Contractor)</option>
+                <option value='hirer'>नियोक्ता (Hirer)</option>
+                </select>
+                </form>
+            </h4>
+          
+            {%endif%}
+          </center>
+        </div>
+			<div class="well bs-sidebar" id="sidebar" style="background-color:#DDFAF9">
+
+			  <ul class="nav nav-pills nav-stacked">
+			  	{% if request.user.username %}
+			  	<h4><b><li><a href = '/view'>अपना विवरण देखें</a></li></b></h4><br>
+			  	
+                <h4><b><li><a href = '/workrequest'>कार्य अनुरोध देखें</a></li></b></h4><br>
+			  	<h4><b><li><a href='/logout'>लॉगआउट</a></li></b></h4><br>
+			  	
+                <h4><b> <li><a href = '/change_password'>पासवर्ड बदलें</a></li></b></h4>
+    			
+			  	{%else%}
+				<h4><b><li><a href='/login'>लॉग इन करें</a></li></b></h4><br>
+				<h4><b><li><a href='/register'>रजिस्टर करे</a></li></b></h4><br>
+                                <h4><b><li><a href='/forgot_password'>पासवर्ड भूल गए?</a></li></b></h4>
+				{%endif%}
+				
+			  </ul>
+			</div> <!--well bs-sidebar affix-->
+		  </div> <!--col-sm-2-->
+		  <div class="col-sm-10">
+		  
+			<div class='container-fluid'>
+			 
+       
+
+
+			   {% block content %}
+			   {% endblock %}	
+			</div>
+		  </div>
+		</div> 
+	</div>
+  <br>
+  <br>
+	  <footer>
+         <br>
+         <br>
+		<div class="container-fluid" style='margin-left:15px'>
+			<p><a href="/about" target="blank">अपना रोज़गार</a> | <a href="/query" target="blank">अपनी समस्या दर्ज करे</a> | 
+      <font id="currenttime"></font>
+    </p>
+		</div>
+	  </footer>
+  
+
+   <script>
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError,{timeout:60000});
+    } else { 
+        document.getElementById("sms11").value = "इस ब्राउज़र द्वारा जियोलोकेशन समर्थित नहीं है.";
+        document.getElementById("cur_location").submit();
+    }
+}
+
+function showPosition(position) {
+   document.getElementById("lat11").value = position.coords.latitude ; 
+    document.getElementById("lng11").value=position.coords.longitude;
+    document.getElementById("time11").value=new Date(position.timestamp);
+    initMap(position.coords.latitude,position.coords.longitude);
+}
+
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            document.getElementById("sms11").value = "उपयोगकर्ता ने जियोलोकेशन के लिए अनुरोध को अस्वीकार किया."
+            document.getElementById("cur_location").submit();
+            break;
+        case error.POSITION_UNAVAILABLE:
+            document.getElementById("sms11").value = "स्थान जानकारी अनुपलब्ध है."
+            document.getElementById("cur_location").submit();
+            break;
+        case error.TIMEOUT:
+            document.getElementById("sms11").value = "उपयोगकर्ता स्थान प्राप्त करने का अनुरोध समाप्त हो गया है"
+            document.getElementById("cur_location").submit();
+            break;
+        case error.UNKNOWN_ERROR:
+            document.getElementById("sms11").value = "एक अज्ञात ग़लती हुई।."
+            document.getElementById("cur_location").submit();
+            break;
+    }
+}
+
+
+ function initMap(aa,bb) {
+      
+        var latlng = new google.maps.LatLng( aa,  bb);
+
+        var geocoder=new google.maps.Geocoder();
+        geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === 'OK') {
+            if (results[0]) {
+             document.getElementById("address11").value=results[0].formatted_address;
+             document.getElementById("cur_location").submit();
+            } else {
+              document.getElementById("sms11").value= 'कोई पता परिणाम नहीं मिला';
+               document.getElementById("cur_location").submit();
+            }
+          } else {
+            document.getElementById("sms11").value= 'Geocoder failed due to: ' + status;
+             document.getElementById("cur_location").submit();
+          }
+        });
+      }
+
+
+
+ </script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-23FmUgOL2z0hWKMTdvV_qv7TZxVIBWs">
+    </script>
+
+<script >
+     var currenttime = new Date();
+     document.getElementById("currenttime").innerHTML = "वर्तमान समय: " +currenttime;
+
+
+   var placeSearch, autocomplete;
+    function initAutocomplete() {
+         autocomplete = new google.maps.places.Autocomplete(
+            (document.getElementById('autocomplete')),{types: ['geocode']});
+      }
+
+     
+
+     function latlngcal()
+     {
+      	    var place=autocomplete.getPlace();
+      	    document.getElementById("latdata").value=place.geometry.location.lat();
+      	    document.getElementById("lngdata").value=place.geometry.location.lng();
+      } 
+   </script>
+   
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKR0DcCevS0bMUmCfjLCSi6DzKsTZfcbc&libraries=places&callback=initAutocomplete"
+        async defer></script>
+
+
+
+        <script>
+            function dynamicdropdown(listindex)
+            {
+                document.getElementById("multiselection").length = 0;
+                switch (listindex)
+                {
+                    case "निर्माण मजदूर(Construction worker)" :
+                        document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("छोटे घरों, दुकानें बनाने में विशेष","छोटे घरों, दुकानें बनाने में विशेष");
+                        document.getElementById("multiselection").options[2]=new Option("बड़ी इमारतों को बनाने में कुशल","बड़ी इमारतों को बनाने में कुशल");
+                        document.getElementById("multiselection").options[3]=new Option("बांध और नदी की सीमाओं को बनाने में कुशल","बांध और नदी की सीमाओं को बनाने में कुशल");
+                        break;
+                    
+                    case "बिजली कारीगर(Electrician)" :
+                        document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("घर के तारों में कुशल","घर के तारों में कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("औद्योगिक वायरिंग स्थापित करने में कुशल","औद्योगिक वायरिंग स्थापित करने में कुशल");
+                        break;
+                    case "बढ़ई(Carpenter)" :
+                        document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("दरवाजे और खिड़कियां बनाने में कुशल","दरवाजे और खिड़कियां बनाने में कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("लकड़ी के फर्श और छत बनाने में कुशल","लकड़ी के फर्श और छत बनाने में कुशल");
+                        break;
+                    case "पेंटर(Painter)" :
+                        document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("घर की दीवारों को रंगते हुए कुशल","घर की दीवारों को रंगते हुए कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("पेंटिंग नंबर प्लेटों में कुशल","पेंटिंग नंबर प्लेटों में कुशल");
+                        break;
+                    case "वेल्डर(Welder)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("रसोई के बर्तन वेल्डिंग में कुशल","रसोई के बर्तन वेल्डिंग में कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("वाहन भागों की वेल्डिंग में कुशल","वाहन भागों की वेल्डिंग में कुशल");
+                        document.getElementById("multiselection").options[3]=new Option("स्टील उद्योगों पर वेल्डिंग में कुशल","स्टील उद्योगों पर वेल्डिंग में कुशल");
+                        break;
+
+                    case "पलंबर(Plumber)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("घरेलू पाइपलाइन पर कुशल","घरेलू पाइपलाइन पर कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("औद्योगिक पाइपलाइन पर कुशल","औद्योगिक पाइपलाइन पर कुशल");
+                        break;
+                    case "सफाई कर्मचारी(Cleanliness worker)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("घरों और कार्यालयों की सफाई में कुशल","घरों और कार्यालयों की सफाई में कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("रासायनिक और अन्य संबंधित उद्योगों की सफाई में कुशल","रासायनिक और अन्य संबंधित उद्योगों की सफाई में कुशल");
+                        break;
+                    case "दूध वितरक(Milk Supplier)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("केवल दूध की आपूर्ति में कुशल","केवल दूध की आपूर्ति में कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("दूध और दूध के बने पदार्थों की आपूर्ति में भी कुशल","दूध और दूध के बने पदार्थों की आपूर्ति में भी कुशल");
+                        break;
+                    case "राजमिस्री(Mason)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("छोटे घरों, दुकानें बनाने में विशेष","छोटे घरों, दुकानें बनाने में विशेष");
+                        document.getElementById("multiselection").options[2]=new Option("बड़ी इमारतों को बनाने में कुशल","बड़ी इमारतों को बनाने में कुशल");
+                        document.getElementById("multiselection").options[3]=new Option("बांध और नदी की सीमाओं को बनाने में कुशल","बांध और नदी की सीमाओं को बनाने में कुशल");
+                        break;
+                    case "हलवाई(Confectioner)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("छोटे अवसरों के लिए भोजन की सेवा में कुशल","छोटे अवसरों के लिए भोजन की सेवा में कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("बड़े सम्मेलन के लिए भोजन की सेवा में कुशल","बड़े सम्मेलन के लिए भोजन की सेवा में कुशल");
+                        break;
+                    case "रसोइया(Cook)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("घर के लिए भोजन की सेवा में कुशल","घर के लिए भोजन की सेवा में कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("बड़े सम्मेलन के लिए भोजन की सेवा में कुशल","बड़े सम्मेलन के लिए भोजन की सेवा में कुशल");
+                        break;
+                    case "काँचकर्मी(Glazier)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("ग्लास फर्नीचर बनाने में कुशल","ग्लास फर्नीचर बनाने में कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("ग्लास दरवाजे और खिड़कियां बनाने में कुशल","ग्लास दरवाजे और खिड़कियां बनाने में कुशल");
+                        break;
+                    case "बेकर(baker)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("छोटे अवसरों के लिए भोजन की सेवा में कुशल","छोटे अवसरों के लिए भोजन की सेवा में कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("बड़े सम्मेलन के लिए भोजन की सेवा में कुशल","बड़े सम्मेलन के लिए भोजन की सेवा में कुशल");
+                        break;
+                    case "सुरक्षा कर्मी(Security guard)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("एक एकल घर या कार्यालय की रक्षा करने में सक्षम","एक एकल घर या कार्यालय की रक्षा करने में सक्षम");
+                        document.getElementById("multiselection").options[2]=new Option("एक पूर्ण कॉलोनी की रक्षा करने में सक्षम","एक पूर्ण कॉलोनी की रक्षा करने में सक्षम");
+                        break;
+                    case "वाहन मिस्त्री(Vehicle Mechanic)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("केवल 2 पहिया की मरम्मत के लिए कुशल","केवल 2 पहिया की मरम्मत के लिए कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("सभी वाहनों की मरम्मत के लिए कुशल","सभी वाहनों की मरम्मत के लिए कुशल");
+                        break;
+                    case "फोटोग्राफर(Photographer)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("सेवा फोटो स्टूडियो पर उपलब्ध कराई जा रही है","सेवा फोटो स्टूडियो पर उपलब्ध कराई जा रही है");
+                        document.getElementById("multiselection").options[2]=new Option("सेवा कॉल पर हर जगह उपलब्ध है","सेवा कॉल पर हर जगह उपलब्ध है");
+                        break;
+                    case "माली(Gardener)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("पेड़ों और फूलों के रोपण के लिए कुशल","पेड़ों और फूलों के रोपण के लिए कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("घास को काटने और बगीचे को सुरक्षित बनाने के लिए कुशल","घास को काटने और बगीचे को सुरक्षित बनाने के लिए कुशल");
+                        break;
+                    case "नौकरानी(Maid)":
+                    	document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselection").options[1]=new Option("केवल खाना पकाने के लिए कुशल","केवल खाना पकाने के लिए कुशल");
+                        document.getElementById("multiselection").options[2]=new Option("घर की पूरी देखभाल करने के लिए कुशल","घर की पूरी देखभाल करने के लिए कुशल");
+                        break;
+
+                }
+                return true;
+                
+            }
+         $(document).ready(function() {
+        $('#multiselectio').multiselect();
+        });
+
+
+        function dynamicdropdow(listindex)
+            {
+                document.getElementById("multiselecti").length = 0;
+                switch (listindex)
+                {
+                    case "निर्माण मजदूर(Construction worker)" :
+                        document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("छोटे घरों, दुकानें बनाने में विशेष","छोटे घरों, दुकानें बनाने में विशेष");
+                        document.getElementById("multiselecti").options[2]=new Option("बड़ी इमारतों को बनाने में कुशल","बड़ी इमारतों को बनाने में कुशल");
+                        document.getElementById("multiselecti").options[3]=new Option("बांध और नदी की सीमाओं को बनाने में कुशल","बांध और नदी की सीमाओं को बनाने में कुशल");
+                        break;
+                    
+                    case "बिजली कारीगर(Electrician)" :
+                        document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("घर के तारों में कुशल","घर के तारों में कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("औद्योगिक वायरिंग स्थापित करने में कुशल","औद्योगिक वायरिंग स्थापित करने में कुशल");
+                        break;
+                    case "बढ़ई(Carpenter)" :
+                        document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("दरवाजे और खिड़कियां बनाने में कुशल","दरवाजे और खिड़कियां बनाने में कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("लकड़ी के फर्श और छत बनाने में कुशल","लकड़ी के फर्श और छत बनाने में कुशल");
+                        break;
+                    case "पेंटर(Painter)" :
+                        document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("घर की दीवारों को रंगते हुए कुशल","घर की दीवारों को रंगते हुए कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("पेंटिंग नंबर प्लेटों में कुशल","पेंटिंग नंबर प्लेटों में कुशल");
+                        break;
+                    case "वेल्डर(Welder)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("रसोई के बर्तन वेल्डिंग में कुशल","रसोई के बर्तन वेल्डिंग में कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("वाहन भागों की वेल्डिंग में कुशल","वाहन भागों की वेल्डिंग में कुशल");
+                        document.getElementById("multiselecti").options[3]=new Option("स्टील उद्योगों पर वेल्डिंग में कुशल","स्टील उद्योगों पर वेल्डिंग में कुशल");
+                        break;
+
+                    case "पलंबर(Plumber)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("घरेलू पाइपलाइन पर कुशल","घरेलू पाइपलाइन पर कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("औद्योगिक पाइपलाइन पर कुशल","औद्योगिक पाइपलाइन पर कुशल");
+                        break;
+                    case "सफाई कर्मचारी(Cleanliness worker)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("घरों और कार्यालयों की सफाई में कुशल","घरों और कार्यालयों की सफाई में कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("रासायनिक और अन्य संबंधित उद्योगों की सफाई में कुशल","रासायनिक और अन्य संबंधित उद्योगों की सफाई में कुशल");
+                        break;
+                    case "दूध वितरक(Milk Supplier)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("केवल दूध की आपूर्ति में कुशल","केवल दूध की आपूर्ति में कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("दूध और दूध के बने पदार्थों की आपूर्ति में भी कुशल","दूध और दूध के बने पदार्थों की आपूर्ति में भी कुशल");
+                        break;
+                    case "राजमिस्री(Mason)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("छोटे घरों, दुकानें बनाने में विशेष","छोटे घरों, दुकानें बनाने में विशेष");
+                        document.getElementById("multiselecti").options[2]=new Option("बड़ी इमारतों को बनाने में कुशल","बड़ी इमारतों को बनाने में कुशल");
+                        document.getElementById("multiselecti").options[3]=new Option("बांध और नदी की सीमाओं को बनाने में कुशल","बांध और नदी की सीमाओं को बनाने में कुशल");
+                        break;
+                    case "हलवाई(Confectioner)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("छोटे अवसरों के लिए भोजन की सेवा में कुशल","छोटे अवसरों के लिए भोजन की सेवा में कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("बड़े सम्मेलन के लिए भोजन की सेवा में कुशल","बड़े सम्मेलन के लिए भोजन की सेवा में कुशल");
+                        break;
+                    case "रसोइया(Cook)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("घर के लिए भोजन की सेवा में कुशल","घर के लिए भोजन की सेवा में कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("बड़े सम्मेलन के लिए भोजन की सेवा में कुशल","बड़े सम्मेलन के लिए भोजन की सेवा में कुशल");
+                        break;
+                    case "काँचकर्मी(Glazier)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("ग्लास फर्नीचर बनाने में कुशल","ग्लास फर्नीचर बनाने में कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("ग्लास दरवाजे और खिड़कियां बनाने में कुशल","ग्लास दरवाजे और खिड़कियां बनाने में कुशल");
+                        break;
+                    case "बेकर(baker)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("छोटे अवसरों के लिए भोजन की सेवा में कुशल","छोटे अवसरों के लिए भोजन की सेवा में कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("बड़े सम्मेलन के लिए भोजन की सेवा में कुशल","बड़े सम्मेलन के लिए भोजन की सेवा में कुशल");
+                        break;
+                    case "सुरक्षा कर्मी(Security guard)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("एक एकल घर या कार्यालय की रक्षा करने में सक्षम","एक एकल घर या कार्यालय की रक्षा करने में सक्षम");
+                        document.getElementById("multiselecti").options[2]=new Option("एक पूर्ण कॉलोनी की रक्षा करने में सक्षम","एक पूर्ण कॉलोनी की रक्षा करने में सक्षम");
+                        break;
+                    case "वाहन मिस्त्री(Vehicle Mechanic)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("केवल 2 पहिया की मरम्मत के लिए कुशल","केवल 2 पहिया की मरम्मत के लिए कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("सभी वाहनों की मरम्मत के लिए कुशल","सभी वाहनों की मरम्मत के लिए कुशल");
+                        break;
+                    case "फोटोग्राफर(Photographer)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("सेवा फोटो स्टूडियो पर उपलब्ध कराई जा रही है","सेवा फोटो स्टूडियो पर उपलब्ध कराई जा रही है");
+                        document.getElementById("multiselecti").options[2]=new Option("सेवा कॉल पर हर जगह उपलब्ध है","सेवा कॉल पर हर जगह उपलब्ध है");
+                        break;
+                    case "माली(Gardener)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("पेड़ों और फूलों के रोपण के लिए कुशल","पेड़ों और फूलों के रोपण के लिए कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("घास को काटने और बगीचे को सुरक्षित बनाने के लिए कुशल","घास को काटने और बगीचे को सुरक्षित बनाने के लिए कुशल");
+                        break;
+                    case "नौकरानी(Maid)":
+                    	document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
+                        document.getElementById("multiselecti").options[1]=new Option("केवल खाना पकाने के लिए कुशल","केवल खाना पकाने के लिए कुशल");
+                        document.getElementById("multiselecti").options[2]=new Option("घर की पूरी देखभाल करने के लिए कुशल","घर की पूरी देखभाल करने के लिए कुशल");
+                        break;
+
+                }
+                return true;
+                
+            }
+    
+       </script>
+</body>
+</html>

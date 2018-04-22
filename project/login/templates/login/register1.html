@@ -1,0 +1,40 @@
+{% extends "login/header.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class ='col-sm-6 col-sm-offset-2'>
+<h3><u>पंजीकरण (Registration) :</u></h3>
+<br>
+<a href = "static/login/registration.pdf" target = "_blank" ><h4>पंजीकरण के लिए निर्देश देखें</h4></a>
+<br>
+   <h4> <font color = 'red'>{{warn}}</font> </h4>
+ <form method="POST" action="">
+ {% csrf_token %}
+ <div class="form-group">
+    <label for="username"> उपयोगकर्ता नाम (User Name):</label>
+    <input type="text" name = 'username' class="form-control" id="username" value="{{mobile}}" readonly>
+ </div>
+ <input type="text" name ='aadhar' id="aadhar" value="{{aadhar}}" hidden readonly></input>
+ <div class="form-group">
+    <label for="otp">ओटीपी(OTP) क्रमांक-{{otp}} दर्ज करें</label>
+
+    <input type="text" name = 'otp' class="form-control" id="contact"  placeholder="ओटीपी(otp)" autocomplete="off" >
+    <br>
+    <font color="blue">
+<button type="submit" name = 'btn'><b>ओटीपी पुनः भेजें</b></button></font>
+</div>
+ <div class="form-group">
+    <label for="first_name">पूरा नाम (Full Name) दर्ज करें :</label>
+    <input type="text"  name = 'first_name' class="form-control" id="first_name" placeholder="पूरा नाम(Full_name)" autocomplete="off" >
+</div>
+
+<div class="form-group">
+    <label for="password">अपना पासवर्ड (Password) चुनें :</label>
+    <input type="password"  name = 'password' class="form-control" id="password" placeholder="पासवर्ड(password)" autocomplete="off"  >
+</div>
+<button type="submit" name = 'btn1'><b>पंजीकरण(Regitration) करे</b></button>
+</form>
+</div>
+{% endblock %}
+
+

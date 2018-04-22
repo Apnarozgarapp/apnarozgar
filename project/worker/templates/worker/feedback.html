@@ -1,0 +1,91 @@
+{% extends "login/header.html" %}
+
+{% block content %}
+<div class ='col-sm-6 col-sm-offset-2'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.title {
+  color: blue;
+  font-size: 18px;
+}
+
+.but {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+
+button:hover, a:hover {
+  opacity: 0.7;
+}
+
+.btn-group button {
+    background-color: #C7CADA; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: black; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+}
+
+.btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+    background-color: #3e8e41;
+}
+</style> 
+
+  
+  <div class="card" style="background-color:#F7EAEB">
+  
+  
+</div>
+ <b><input type="button" value="&#9664;-- पीछे जाएँ" onclick="history.back(-1)" /></b>
+  
+     <h3><u> नियोक्ता प्रतिक्रिया :-</u></h3>
+      <h4><font color="red"> {{ warn }}</font></h4>
+
+    <ol>
+     {% for data1 in dataa %}
+     <h3><li>{{data1.userhirer}} और आपके बीच <a href="/detailpost/?data={{data1.post_id}}">यहां वर्णित </a>पोस्ट के लिए काम का प्रतिक्रिया है।</li></h3>
+     <h4> प्रतिक्रिया :- </h4>
+     
+     1.कर्मचारी द्वारा किए गए कार्य की गुणवत्ता के बारे में हमें बताएं:-   <b>{{data1.feedback1}}</b>
+     <br>
+      2.काम के स्थान पर सही समय पर कार्यकर्ता उपलब्ध था?:-   <b>{{data1.feedback2}}</b>
+     <br>
+      3.क्या काम का स्तर कार्यकर्ता द्वारा मांगे वेतन से मेल खाता है?    <b>{{data1.feedback3}}</b>
+     <br>
+     <br>
+     {% endfor %}
+   </ol>
+    
+</div>
+{% endblock %}
+

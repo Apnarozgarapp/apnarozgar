@@ -1,0 +1,132 @@
+{% extends "login/header.html" %}
+
+{% block content %}
+<div class ='col-sm-6 col-sm-offset-2'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.title {
+  color: blue;
+  font-size: 14px;
+}
+
+.but {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 6px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 14px;
+}
+
+
+button:hover, a:hover {
+  opacity: 0.7;
+}
+</style>
+<h4 align='left'>
+          <a href = '/view'><u>&#9664;-- अपना विवरण देखें </u></a>
+          </h4>
+<h4 align='right'>
+          <a href = '/confirm_work'><u>सभी चयनित कार्य देखें :--&#9654;</u></a>
+          </h4>
+          
+          <h4><u><b>कौशल और क्षमता के अनुसार कार्य पद :--&#9654;</b></u></h4>
+   {% csrf_token %}
+   <h4><font color="red">{{ warn }}</font></h4>
+{% for data in pos %}
+ 
+  <div class="card" style="background-color:#F7EAEB">
+{% if 'a' in data.target %}
+ <h3><u><font color="black">कर्मचारी के लिए कार्य पोस्ट</font></u></h3>
+  {%else%}
+ <h3><u><font color="black">ठेकेदार के लिए कार्य पोस्ट </font></u></h3>
+  {%endif%}
+
+  <p><button class = "but">&#9679; {{data.rskill}} के लिए प्रकाशित पोस्ट आईडी:- {{data.post_id}} </button></p>
+  <p class="title">काम की जगह का पता: <br> {{data.street}}, {{data.location}} </p>
+  <p><b>आप से दूरी: {{data.distance}} km</b></p>
+  <p class="title">कार्य की अवधि: <br>{{data.start_date}} - {{data.end_date}}</p>
+  <p>आवश्यक श्रमिकों की संख्या: {{data.Nworker}}</p>
+  <p><b>वेतन भुगतान का तरीका:</b> {{data.Twork}}</p>
+  <p><b>नियोक्ता का नाम: {{data.name}}</p></b>
+    {%if data.description%}
+   <p><b>अन्य विवरण:</b> {{data.description}}</p>
+    {%endif%}
+  <p><button class = "but">नियोक्ता का मोबाइल नंबर: {{data.s_contact}}</button></p>
+  
+  
+  <form method="POST" action="/pview">
+     {% csrf_token %}
+     <input name ="post_id" type="number" value={{data.post_id}} hidden></input>
+     <input name ="user_id" type="number" value={{user1.user_id}} hidden></input>
+     <input name ="worker" type="text" value="{{user1.user.first_name}}" hidden></input>
+     <input name ="hirer" type="text" value="{{data.name}}" hidden></input>
+     <input name ="userworker" type="text" value={{user1.user.username}} hidden></input>
+     <input name ="userhirer" type="text" value={{data.username}} hidden></input>
+     <input type="date" name ='end_date' value={{data.end_date|date:"20y-m-d"}} hidden></input>
+     <input type="date" name ='start_date' value={{data.start_date|date:"20y-m-d"}} hidden></input>
+     <input name ="page" type="number" value={{pos.number}} hidden></input>
+     <font size = 3.5>
+      {%if 'e' in data.temp %}
+     <font color = "red"><p><b>--&#9654; आप इस पोस्ट के लिए आवेदन नहीं कर सकते क्योंकि आप इस तिथि पर उपलब्ध नहीं हैं।
+     </b></p></font>
+     {%endif%}
+     {%if 'a' in data.temp %}
+     <font color = "green"><p><b>--&#9654; आपने इस पोस्ट के लिए काम करने की पुष्टि दी है (Confirmed)</b></p></font>
+     
+     {%endif%}
+     {%if 'b' in data.temp %}
+     <font color = "blue">"अनुरोध भेजा गया है"</font>
+     <font color = "red"><p><b> --&#9654; पुष्टि के लिए प्रतीक्षा करें</b></p></font>
+     <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें--&#9654;</button>
+    {%endif%}
+    {%if 'c' in data.temp %} 
+    <p><b>--&#9654; नियोक्ता ने आपको इस पोस्ट के लिए काम करने का अनुरोध भेजा है</b></p>
+    <b><button type="submit" name = 'whire' >इस पोस्ट के लिए काम करने की पुष्टि दें (Send Confirmation)--&#9654;</button> 
+    <b><button type="submit" name = 'wchire' >कार्य अनुरोध (request) रद्द करें--&#9654;</button>
+    {%endif%}
+    {%if 'd' in data.temp %} 
+    <b><button type="submit" name = 'whire' >इस पोस्ट के लिए नियोक्ता को कार्य अनुरोध (request) भेजें--&#9654;</button> 
+     {%endif%}   
+   </b>
+ </font>
+  </form>
+  </div>
+    <br>
+    <br>
+{% endfor %}
+<b>
+  <div class="pagination">
+    <span class="step-links">
+        {% if pos.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ pos.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ pos.number }} of {{ pos.paginator.num_pages }}.
+        </span>
+
+        {% if pos.has_next %}
+            <a href="?page={{ pos.next_page_number }}">next</a>
+            <a href="?page={{ pos.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+  <b>
+</div>
+{% endblock %}
+

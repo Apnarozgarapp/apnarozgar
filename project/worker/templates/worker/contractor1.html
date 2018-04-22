@@ -1,0 +1,113 @@
+{% extends "login/header.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class ='col-sm-6 col-sm-offset-2'>
+<h3>अपनी योग्यता और विशेषज्ञता के बारे में बताएं</h3><br>
+<p><font color = "red">{{warn}}</font></p>
+
+        <!--<meta http-equiv="Content-Type" content="text/html;" /> -->
+        
+
+
+<form method="POST" action="">
+{% csrf_token %}
+
+<div class="form-group">
+<label for="skill">आप किस कौशल के लिए ठेकेदार हैं? (अनिवार्य)</label>
+<select name="skill" class="form-control" id="skill" onchange="dynamicdropdown(this.options[this.selectedIndex].value);"  required>
+<option value="" selected>इन विकल्पों से कौशल चुनें</option>
+<option value="निर्माण मजदूर(Construction worker)">निर्माण ठेकेदार(Construction contractor)</option>
+  <option value="बिजली कारीगर(Electrician)">बिजली काम ठेकेदार(Electrician Contractor)</option>
+  <option value="बढ़ई(Carpenter)">बढ़ई(Carpenter)</option>
+  <option value="पेंटर(Painter)">पेंटर(Painter)</option>
+  <option value="वेल्डर(Welder)">वेल्डर(Welder)</option>
+  <option value="पलंबर(Plumber)">पलंबर(Plumber)</option>
+  <option value="सफाई कर्मचारी(Cleanliness worker)">सफाई कर्मचारी(Cleanliness worker)</option>
+  <option value="दूध वितरक(Milk Supplier)">दूध वितरक(Milk Supplier)</option>
+  <option value="राजमिस्री(Mason)">राजमिस्री(Mason)</option>
+  <option value="हलवाई(Confectioner)">हलवाई(Confectioner)</option>
+  <option value="रसोइया(Cook)">रसोइया(Cook)</option>
+  <option value="काँचकर्मी(Glazier)">काँचकर्मी(Glazier)</option>
+  <option value="बेकर(baker)">बेकर(baker)</option>
+  <option value="सुरक्षा कर्मी(Security guard)">सुरक्षा कर्मी(Security guard)</option>
+  <option value="वाहन मिस्त्री(Vehicle Mechanic)">वाहन मिस्त्री(Vehicle Mechanic)</option>
+  <option value="फोटोग्राफर(Photographer)">फोटोग्राफर(Photographer)</option>
+  <option value="माली(Gardener)">माली(Gardener)</option>
+  <option value="नौकरानी(Maid)">नौकरानी(Maid)</option>
+</select>
+</div>
+
+<div class="form-group">
+  <label for="description1">कौशल का विवरण</label>
+      <script type="text/javascript" language="JavaScript">
+                document.write('<select name ="description1" class="form-control" id="multiselection" size="3" multiple ><option value="">इन विकल्पों से चुनें</option></select>')
+        </script>
+        <noscript>
+          
+      <select name ="description1" class="form-control" id="multiselection" size="3" multiple>
+        <option value="">इन विकल्पों से चुनें</option>
+      </select>
+      </noscript>
+</div> 
+
+<div class="form-group">
+<label for="experience">उपरोक्त क्षेत्र में आपके काम करने के अनुभव के बारे में बताएं</label>
+
+<select name="experience" class="form-control" id="experience">
+<option value="" selected>इन विकल्पों से चुनें</option>
+<option value="6 महीने से कम">6 महीने से कम</option>
+  <option value="6 महीने और 1 वर्ष के बीच">6 महीने और 1 वर्ष के बीच</option>
+  <option value="1 से 2 साल के बीच">1 से 2 साल के बीच</option>
+  <option value="2 साल से अधिक">2 साल से अधिक</option>
+</select>
+
+</div>
+
+
+
+
+<div class="form-group">
+<label for="nofworker">आपके पास उपलब्ध श्रमिकों की संख्या</label>
+<input type="number" name="nofworker"   class="form-control" id="nofworker"  value=0> </input>
+</div>
+
+
+<div class="form-group">
+  <label for="nameof_worker">आपके पास उपलब्ध श्रमिकों के नाम (कृपया प्रत्येक नाम के बाद एक अल्पविराम दर्ज करें)</label>
+      <textarea type="text" name ="nameof_worker" id="nameof_worker" placeholder="ऐच्छिक(optional)" class="form-control" Optional></textarea>
+    </div>
+
+
+
+
+<div class="form-group">
+<label for="equipment">सभी भारी मशीनरी और उपकरणों के बारे में विवरण दें</label>
+<br>
+
+<select name="equipment" class="form-control" id="multiselectio" multiple required>
+<option value="" selected>इन विकल्पों से चुनें</option>
+<option value="ट्रैक्टर">ट्रैक्टर</option>
+  <option value="रोलर">रोलर</option>
+  <option value="JCB मशीन या खुदाई करने वाला यंत्र">JCB मशीन या खुदाई करने वाला यंत्र</option>
+  <option value="कंक्रीट मिश्रक">कंक्रीट मिश्रक</option>
+  <option value="पत्थर क्रशर">पत्थर क्रशर</option>
+  <option value="बार बेन्डिग मशीन">बार बेन्डिग मशीन</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+  <label for="description2">उपर्युक्त कौशल में अपनी विशेषज्ञता के बारे में बताएं</label>
+      <input type="text" name ="description2" id="descrition2" placeholder="ऐच्छिक(optional)" class="form-control" Optional></input>
+    </div>
+    <br>
+
+
+<button type="submit" name = 'save_changes2'>परिवर्तनों को सुरक्षित करें</button>
+<button type="submit" name = 'addskill'>इसे सबमिट करें और एक अन्य कौशल विवरण जोड़ें</button>
+</form>
+</div>
+{% endblock %}

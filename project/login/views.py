@@ -31,7 +31,7 @@ def query(request):
 			username=request.POST.get('username')
 			name=request.POST.get('name')
 			problem=request.POST.get('problem')
-			email=EmailMessage('Problem from user:-  '+name +'('+username+')', problem, to=['apnarozgarapp@gmail.com'])
+			email=EmailMessage('Problem from user:-  '+name +'('+username+')', problem, to=['iec2014080@iiita.ac.in'])
 			email.send()
 			warn="आपकी तकनीकी समस्या सफलतापूर्वक हमारे डेवलपर टीम को भेजी गई"
 			return render(request,'login/aboutus.html',{'warn':warn})
@@ -169,19 +169,22 @@ def register_view(request):
 		aadhar=request.POST.get('aadhar',None)
 		otp2=request.POST.get('otp')
 		otp1=Registration_otp.objects.get(username=mobile)
+		password=request.POST.get('password',None)
+		if not password:
+			warn = "कृपया अपना पासवर्ड दर्ज करें।"
+			return render(request,'login/register1.html',{"mobile":mobile,"aadhar":aadhar,"warn":warn})		
 		if otp2==otp1.otp:
 			otp1.delete()
 			warn=" "
 			form = UserRegisterForm(request.POST)
 			user = form.save(commit = False)
-			password=request.POST.get('password',None)
 			user.set_password(password)
 			user.last_name=aadhar
 			user.save()
 			return render(request,'login/register2.html')
 		else:
 			warn="ओटीपी का मिलान नहीं हुआ|(OTP does not match.)"
-			return render(request,'login/register1.html',{"mobile":mobile,"warn":warn})
+			return render(request,'login/register1.html',{"mobile":mobile,"aadhar":aadhar,"warn":warn})
 	else:
 		warn=""
 		return render(request,'login/register.html',{"warn":warn})
@@ -271,6 +274,10 @@ def forgot_password_view(request):
 		mobile=request.POST.get('username')
 		otp2=request.POST.get('otp')
 		otp1=Registration_otp.objects.get(username=mobile)
+		password=request.POST.get('password',None)
+		if not password:
+			warn = "कृपया अपना पासवर्ड दर्ज करें।"
+			return render(request,'login/forgot1.html',{"mobile":mobile,"warn":warn})	
 		if otp2==otp1.otp:
 			otp1.delete()
 			warn=" "
@@ -336,6 +343,10 @@ def change_password_view(request):
 		mobile=request.POST.get('username')
 		otp2=request.POST.get('otp')
 		otp1=Registration_otp.objects.get(username=mobile)
+		password=request.POST.get('password',None)
+		if not password:
+			warn = "कृपया अपना पासवर्ड दर्ज करें।"
+			return render(request,'login/forgot1.html',{"mobile":mobile,"warn":warn})	
 		if otp2==otp1.otp:
 			otp1.delete()
 			warn=" "

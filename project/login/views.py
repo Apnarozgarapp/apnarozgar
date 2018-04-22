@@ -22,7 +22,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import urllib.request
 import urllib.parse
 import os
-
+from .way2sms import sms,futuresms
 
 #print(datetime.datetime.utcnow().strftime("%A, %d. %B %Y %I:%M%p"))
 def query(request):
@@ -137,12 +137,16 @@ def register_view(request):
 					resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS','91'+username,'TXTLCL','From Apna Rozgar OTP('+str(serial)+'): '+str(otp))
 					res=resp.decode('utf-8')
 					abcd=re.search('success',res)
+
+					#aaa=sms(phno='8601867011',passwd='Ram2003',message='From Apna Rozgar OTP('+str(serial)+'): '+str(otp),receivernum=username)
+					#if aaa=="yes":
+
 					if abcd:
 						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है| कृपया प्रतीक्षा करें, अगर आपको 2 मिनट के अंदर नहीं मिला तो ओटीपी को फिर से भेजें"
 					else:
 						warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 						return render(request,'login/register.html',{"warn":warn})
-					#print(str(otp))
+					
 				except:
 					warn="आपका मोबाइल नंबर गलत है या एसएमएस भेजना विफल हो गया है|"
 					return render(request,'login/register.html',{"warn":warn})
@@ -239,6 +243,10 @@ def forgot_password_view(request):
 					resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS','91'+username,'TXTLCL','From Apna Rozgar OTP('+str(serial)+'):- '+str(otp))
 					res=resp.decode('utf-8')
 					abcd=re.search('success',res)
+
+					#aaa=sms(phno='8601867011',passwd='Ram2003',message='From Apna Rozgar OTP('+str(serial)+'): '+str(otp),receivernum=username)
+					#if aaa=="yes":
+
 					if abcd:
 						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है| कृपया प्रतीक्षा करें अगर आपको 2 मिनट के अंदर नहीं मिला तो ओटीपी को फिर से भेजें"
 					else:
@@ -305,6 +313,10 @@ def change_password_view(request):
 					resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS','91'+username,'TXTLCL','From Apna Rozgar OTP('+str(serial)+'):- '+str(otp))
 					res=resp.decode('utf-8')
 					abcd=re.search('success',res)
+
+					#aaa=sms(phno='8601867011',passwd='Ram2003',message='From Apna Rozgar OTP('+str(serial)+'): '+str(otp),receivernum=username)
+					#if aaa=="yes":
+
 					if abcd:
 						warn="ओटीपी आपके मोबाइल नंबर पर भेज दिया गया है| कृपया प्रतीक्षा करें, अगर आपको 2 मिनट के अंदर नहीं मिला तो ओटीपी को फिर से भेजें"
 					else:
@@ -377,7 +389,7 @@ def workrequest(request):
 							#user=Profile.objects.get(user_id=user_id)
 							
 							#	resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Hirer '+pqr.hirer+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
-							
+							#aaa=sms(phno='8840284384',passwd='K9532D',message='Hirer '+pqr.hirer+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.',receivernum=user.s_contact)
 
 
 						elif pqr.confirm=='a':
@@ -447,7 +459,7 @@ def workrequest(request):
 							#user=Posts.objects.get(post_id=post_id)
 							
 							#	resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Worker/contractor '+pqr.worker+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
-						
+							#aaa=sms(phno='8840284384',passwd='K9532D',message='Worker/contractor '+pqr.worker+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.',receivernum=user.s_contact)
 
 						elif pqr.confirm=='a':
 							pqr.worker_status=post_id

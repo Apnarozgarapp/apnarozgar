@@ -16,7 +16,7 @@ import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import urllib.request
 import urllib.parse
-
+from login.way2sms import sms,futuresms
 @login_required
 @transaction.atomic
 
@@ -504,7 +504,7 @@ def see_work_post(request):
           #user=Profile.objects.get(user_id=user_id)
         
           #  resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Hirer '+pqr.hirer+' is send you a work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
-         
+          #aaa=sms(phno='8840284384',passwd='K9532D',message='Hirer '+pqr.hirer+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.',receivernum=user.s_contact)
         else:
           for pqr in abc:
             if 'hire' in request.POST:
@@ -515,7 +515,8 @@ def see_work_post(request):
               #user=Profile.objects.get(user_id=user_id)
              
                #resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Hirer '+pqr.hirer+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
-             
+              #aaa=sms(phno='8840284384',passwd='K9532D',message='Hirer '+pqr.hirer+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.',receivernum=user.s_contact)
+
 
           if 'chire' in request.POST:
             if pqr.confirm !='a':

@@ -15,6 +15,7 @@ import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import urllib.request
 import urllib.parse
+from login.way2sms import sms,futuresms
 @login_required
 @transaction.atomic
 
@@ -80,6 +81,7 @@ def payments(request):
           warn=" कोई भुगतान नहीं"
           return render(request,'worker/payments.html',{'warn':warn})
         else:
+          dataa=dataa.order_by('-feedback_id')
           warn=""
           pag = Paginator(dataa,5)
           p = pag.page(int(page))
@@ -91,6 +93,7 @@ def payments(request):
           warn=" कोई भुगतान नहीं"
           return render(request,'worker/payments.html',{'warn':warn})
         else:
+          dataa=dataa.order_by('-feedback_id')
           warn=""
           pag = Paginator(dataa,5)
           page = request.GET.get('page',None)
@@ -117,6 +120,8 @@ def feedback(request):
       warn=" कोई प्रतिक्रिया नहीं"
       return render(request,'worker/feedback.html',{'warn':warn})
     else:
+
+      dataa=dataa.order_by('-feedback_id')
       warn=""
       return render(request,'worker/feedback.html',{'warn':warn,'dataa':dataa})
   else:
@@ -154,6 +159,8 @@ def confirm_work(request):
         warn=""
         if len(selected)==0:
           warn="आप किसी भी पोस्ट के लिए अभी तक चयनित नहीं हैं।"
+        else:
+          selected=selected.order_by('-status_id')
         pag = Paginator(selected,3)
         try:
           p = pag.page(int(page))
@@ -165,6 +172,8 @@ def confirm_work(request):
         warn=""
         if len(selected)==0:
           warn="आप किसी भी पोस्ट के लिए अभी तक चयनित नहीं हैं।"
+        else:
+          selected=selected.order_by('-status_id')
         pag = Paginator(selected,3)
         page = request.GET.get('page',None)
         if not page:
@@ -303,6 +312,8 @@ def contractor_profile(request):
   else:
     warn="कृपया पहले  लॉगिन करें"
     return render(request,'login/form.html',{'warn':warn})
+
+
 def cprofile(request):
   if request.user.username:
     if request.user.profile.loginas=="contractor":
@@ -332,6 +343,8 @@ def cprofile(request):
   else:
     warn="कृपया लॉगिन करें"
     return render(request,'worker/form.html',{'warn':warn})
+
+
 def profile(request):
   if request.user.username:
     if request.user.profile.loginas=="worker":
@@ -365,6 +378,7 @@ def discal(a,b,c,d):
 
   distance = R * c
   return round(distance,2)
+
 
 def all_post(request):
   if request.user.username:
@@ -401,6 +415,7 @@ def all_post(request):
     warn="कृपया लॉगिन करें"
     return render(request,'worker/view.html',{'warn':warn})
 
+
 def viewpost(request):
   if request.user.username:
     if request.user.profile.loginas=="worker" or request.user.profile.loginas=="contractor":
@@ -429,7 +444,7 @@ def viewpost(request):
             #user=Posts.objects.get(post_id=post_id)
             
              #  resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Worker/Contractor '+pqr.worker+' is send a work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
-           
+            #aaa=sms(phno='8840284384',passwd='K9532D',message='Worker/contractor '+pqr.worker+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.',receivernum=user.s_contact)
 
           else:
             for pqr in abc:
@@ -441,7 +456,7 @@ def viewpost(request):
                 #user=Posts.objects.get(post_id=post_id)
                 
                  #resp, code = sendSMS('zYEK/M9i6YU-vALs7nvcB0g7B0wb1YNkSOXaBEY4GS',user.s_contact,'TXTLCL','Worker/Contractor '+pqr.worker+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.' )
-                
+                #aaa=sms(phno='8840284384',passwd='K9532D',message='Worker/contractor '+pqr.worker+' is accept your work request for work post id:- '+str(pqr.post_id)+' from '+ pqr.start_date +' to ' +pqr.end_date+'.',receivernum=user.s_contact)
 
 
               elif 'wchire' in request.POST and (pqr.hirer_status!=pqr.post_id or pqr.confirm!='a'):
@@ -547,3 +562,4 @@ def viewpost(request):
   else:
     warn="कृपया लॉगिन करें"
     return render(request,'worker/view.html',{'warn':warn})
+    

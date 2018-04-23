@@ -331,7 +331,7 @@ def see_work_post(request):
       selected=Status.objects.filter(post_id=post_id,confirm='a')
       warn=""
       if len(selected)==0:
-        warn="कोई भी श्रमिक चयनित नहीं है"
+        warn="कोई भी चयनित नहीं है"
       for dataa in data:
        return render(request,'search/selected.html',{'page':page,'data':dataa,'warn':warn,'selected':selected})
     else:

@@ -302,7 +302,7 @@ def contractor_profile(request):
           if 'save_changes2' in request.POST:
              return render(request,'worker/success.html')
           elif 'addskill' in request.POST:
-              warn ="add another skill"
+              warn ="एक और कौशल जोड़ें"
               return render(request,'worker/contractor1.html',{"warn":warn})
         else:
            return render(request,'worker/worker1.html')

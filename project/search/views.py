@@ -43,6 +43,7 @@ def done(request):
 				feedback3=request.POST.get('feedback3')
 				page=request.POST.get('page')
 				target=request.POST.get('target')
+				name=request.POST.get('name')
 				wuser=Profile.objects.get(user_id=user_id)
 				if not wuser.rating:
 						wuser.rating=5
@@ -52,9 +53,8 @@ def done(request):
 				wuser.nhirer=wuser.nhirer+1
 				if feedback2!="नहीं आया":
 					wuser.rating=wuser.rating*.80
-				
-					data1=Feedback(userhirer=request.user.first_name,target=target,userworker=wuser,post_id=post_id,feedback1=feedback1,feedback2=feedback2,feedback3=feedback3,pmode=pmode,pdate=pdate,description=description,done='a')
-					data1.save()
+				data1=Feedback(userhirer=name,target=target,userworker=wuser,post_id=post_id,feedback1=feedback1,feedback2=feedback2,feedback3=feedback3,pmode=pmode,pdate=pdate,description=description,done='a')
+				data1.save()
 				wuser.save()
 				data=Posts.objects.get(post_id=post_id)
 				data2=Status.objects.get(post_id=post_id,user_id=user_id)
@@ -68,12 +68,13 @@ def done(request):
 			elif request.method == 'GET' and 'done' in request.GET:
 				post_id=request.GET.get('post_id')
 				user_id=request.GET.get('user_id')
+				name=request.GET.get('name')
 				page=request.GET.get('page')
 				data22=Status.objects.filter(post_id=post_id,user_id=user_id)
 				if len(data22)==1:
 					for data2 in data22:
 						if data2.start_date<=datetime.datetime.today().date():
-							return render(request,"search/done.html",{'post_id':post_id,'target':data2.target,'page':page,'user_id':user_id}) 
+							return render(request,"search/done.html",{'post_id':post_id,'name':name,'target':data2.target,'page':page,'user_id':user_id}) 
 						else:
 							data=Posts.objects.get(post_id=post_id)
 							selected=Status.objects.filter(post_id=post_id,confirm='a')
@@ -87,7 +88,7 @@ def done(request):
 						warn="कोई पोस्ट नहीं मिला।"
 					if len(pos)!=0:
 						pos=pos.order_by('-post_id')
-					pag = Paginator(pos,4)
+					pag = Paginator(pos,2)
 					if not page:
 						page=1
 					try:
@@ -102,7 +103,7 @@ def done(request):
 				warn=""
 				if len(pos)==0:
 					warn="कोई पोस्ट नहीं मिला।"
-				pag = Paginator(pos,4)
+				pag = Paginator(pos,2)
 				page=request.POST.get('page')
 				if not page:
 					page=1
@@ -145,7 +146,7 @@ def search_result(request):
 					warn = ""
 					if len(user1) == 0:
 						warn = "आपकी आवश्यकता से मेल खाने वाला कोई परिणाम नहीं है|"
-					pag=Paginator(user1,10)
+					pag=Paginator(user1,4)
 					try:
 					 p = pag.page(int(page))
 					except:
@@ -282,7 +283,7 @@ def see_work_post(request):
       pos=pos.order_by('-post_id')
     if len(pos)==0:
       warn="कोई पोस्ट नहीं मिला।"
-    pag = Paginator(pos,4)
+    pag = Paginator(pos,2)
     if pag.num_pages < int(page):
            page=int(page)-1
     if not page:
@@ -311,7 +312,7 @@ def see_work_post(request):
     pos=Posts.objects.filter(username=request.user.username)
     if len(pos)!=0:
       pos=pos.order_by('-post_id')
-    pag = Paginator(pos,4)
+    pag = Paginator(pos,2)
 
     if not page:
               page='1'
@@ -338,7 +339,7 @@ def see_work_post(request):
       pos=Posts.objects.filter(username=request.user.username)
       if len(pos)!=0:
         pos=pos.order_by('-post_id')
-      pag = Paginator(pos,4)
+      pag = Paginator(pos,2)
       if not page:
               page='1'
       try:
@@ -366,7 +367,7 @@ def see_work_post(request):
               pos=Posts.objects.filter(username=request.user.username)
               if len(pos)!=0:
                  pos=pos.order_by('-post_id')
-              pag = Paginator(pos,4)
+              pag = Paginator(pos,2)
               p = ""
               if not page:
                 page='1'
@@ -401,7 +402,7 @@ def see_work_post(request):
               dat.save()
             user1=user1.order_by('dis')
             warn = " "
-            pag = Paginator(user1,6)
+            pag = Paginator(user1,3)
             rpage = request.GET.get('rpage',None)
             if not rpage:
               rpage='1'
@@ -412,7 +413,7 @@ def see_work_post(request):
             pos=Posts.objects.filter(username=request.user.username)
             if len(pos)!=0:
                pos=pos.order_by('-post_id')
-            pag = Paginator(pos,4)
+            pag = Paginator(pos,2)
             if not page:
               page='1'
             try:
@@ -425,7 +426,7 @@ def see_work_post(request):
       pos=Posts.objects.filter(username=request.user.username)
       if len(pos)!=0:
         pos=pos.order_by('-post_id')
-      pag = Paginator(pos,4)
+      pag = Paginator(pos,2)
       if not page:
               page='1'
       try:
@@ -451,7 +452,7 @@ def see_work_post(request):
     pos=Posts.objects.filter(username=request.user.username)
     if len(pos)!=0:
       pos=pos.order_by('-post_id')
-    pag = Paginator(pos,4)
+    pag = Paginator(pos,2)
     if not page:
             page='1'
     try:
@@ -473,7 +474,7 @@ def see_work_post(request):
       pos=Posts.objects.filter(username=request.user.username)
       if len(pos)!=0:
         pos=pos.order_by('-post_id')
-      pag = Paginator(pos,4)
+      pag = Paginator(pos,2)
       if not page:
               page='1'
       p = pag.page(int(page))
@@ -564,7 +565,7 @@ def see_work_post(request):
           dat.save()
         user1=user1.order_by('dis')
         warn = " "
-        pag = Paginator(user1,6)
+        pag = Paginator(user1,3)
         if not rpage:
           rpage='1'
         p = pag.page(int(rpage))
@@ -577,7 +578,7 @@ def see_work_post(request):
       pos=Posts.objects.filter(username=request.user.username)
       if len(pos)!=0:
         pos=pos.order_by('-post_id')
-      pag = Paginator(pos,4)
+      pag = Paginator(pos,2)
       if not page:
               page='1'
       try:
@@ -615,7 +616,7 @@ def see_work_post(request):
       pos=Posts.objects.filter(username=request.user.username)
       if len(pos)!=0:
         pos=pos.order_by('-post_id')
-      pag = Paginator(pos,4)
+      pag = Paginator(pos,2)
       if not page:
               page='1'
       p = pag.page(int(page))
@@ -628,7 +629,7 @@ def see_work_post(request):
     warn=""
     if len(pos)==0:
       warn="कोई पोस्ट नहीं मिला।"
-    pag = Paginator(pos,4)
+    pag = Paginator(pos,2)
     page = request.GET.get('page',None)
     if not page:
       page='1'
@@ -677,7 +678,7 @@ def update(request):
       pos=Posts.objects.filter(username=request.user.username)
       if len(pos)!=0:
         pos=pos.order_by('-post_id')
-      pag = Paginator(pos,4)
+      pag = Paginator(pos,2)
       if not page:
               page='1'
       try:
@@ -693,7 +694,7 @@ def update(request):
     warn=""
     if len(pos)==0:
       warn="कोई पोस्ट नहीं मिला।"
-    pag = Paginator(pos,4)
+    pag = Paginator(pos,2)
     if not page:
               page='1'
     try:

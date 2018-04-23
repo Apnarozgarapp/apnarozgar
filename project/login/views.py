@@ -31,7 +31,7 @@ def query(request):
 			username=request.POST.get('username')
 			name=request.POST.get('name')
 			problem=request.POST.get('problem')
-			email=EmailMessage('Problem from user:-  '+name +'('+username+')', problem, to=['iec2014080@iiita.ac.in'])
+			email=EmailMessage('Problem from Apna Rozgar user:-  '+name +'('+username+')', problem, to=['ramnarayanjamon@gmail.com'])
 			email.send()
 			warn="आपकी तकनीकी समस्या सफलतापूर्वक हमारे डेवलपर टीम को भेजी गई"
 			return render(request,'login/aboutus.html',{'warn':warn})
@@ -54,6 +54,9 @@ def smss(request):
 
 def aboutus(request):
 	return render(request,'login/aboutus.html')
+
+def Developer(request):
+	return render(request,'login/developer.html')
 
 def change_role(request):
 	if request.user.username:

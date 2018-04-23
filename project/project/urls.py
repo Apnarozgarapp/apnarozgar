@@ -1,11 +1,12 @@
 from django.conf.urls import include, url
 from django.contrib import admin
-from login.views import (query,change_role,login_view, register_view, logout_view,profile_view,forgot_password_view,change_password_view,smss, aboutus,workrequest)
+from login.views import (Developer, query,change_role,login_view, register_view, logout_view,profile_view,forgot_password_view,change_password_view,smss, aboutus,workrequest)
 from search.views import (work_post,see_work_post,update,view_worker,done,search_result)
 from worker.views import (viewpost,update_profile,detail_post,all_post,confirm_work,profile,feedback,payment_detail,payments,contractor_profile,cprofile)
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login',login_view,name = 'login'),
+     url(r'^developer',Developer,name = 'developer'),
     url(r'^query',query,name = 'query'),
     url(r'^change_role',change_role,name = 'change_role'),
     url(r'^$',aboutus,name = 'about'),

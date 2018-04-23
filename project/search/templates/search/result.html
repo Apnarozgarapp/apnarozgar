@@ -45,7 +45,7 @@ button:hover, a:hover {
    <h4><font color="red">{{ warn }}</font></h4>
 
 {% for data in users %}
-  <div class="card">
+  <div class="card" style="background-color:#F7EAEB">
   
   <h2><a href="/seeworker/?data={{data.user_id}}&target={{target}}">&#9679;  {{data.user.first_name}}</a></h2>
   <p class="title">पता:-&nbsp;{{data.user.profile.address}}</p>

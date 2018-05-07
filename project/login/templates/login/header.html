@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
    <title>अपना रोज़गार</title>
- 
+
    <meta charset="utf-8" />
    {% load staticfiles %}
    <link rel="stylesheet" href="/login/static/login/css/bootstrap.min.css" type = "text/css"/>
@@ -11,7 +11,7 @@
    <script type="text/javascript" src="/login/static/login/js/new.js"></script>
    <script type="text/javascript" src="/login/static/login/js/bootstrap.min.js"></script>
    <meta name="viewport" content = "width=device-width, initial-scale=1.0">
-	
+
    <style type="text/css">
     html,
     body {
@@ -26,57 +26,58 @@
     }
    </style>
   </head>
-  
+
 
 <body class="body" >
 	<div class="container-fluid" style = "min-height: 83%">
-	  
+
 		<div class="row">
       <div class = "layer" style = "background-color:#DDFAF9;position: absolute; top: 0; left: 0; width: 100%; height: 13%;">
 			  <div class="col-sm-2">
 				<br>
         <br>
         <br>
+        <br>
 				  <center>
 					{% if request.user.username %}
 
-				  
+
           	<p><b> {{request.user.first_name}}</b> ने
 
             {% if request.user.profile.loginas == "worker" %} <b>कर्मचारी</b>
-            {% elif request.user.profile.loginas == "contractor" %}<b>ठेकेदार</b> 
+            {% elif request.user.profile.loginas == "contractor" %}<b>ठेकेदार</b>
             {% else %}<b>नियोक्ता</b>
             {% endif %}
 
           के रूप में लॉगिन किया है</p>
-					
+
           {% endif %}
-          
-                     
+
 				  </center>
 
 			  </div>
       </div>
 			    <div class="col-sm-8 col-sm-offset-2">
-				 
+
 				  <center>
-				  <h2><b><u><a href="/about">अपना रोज़गार</a></b></u></h2>
-                  
-                  
+				  <h2><b><a href="https://apnarozgar.pythonanywhere.com/about">ROJAPP-अपना रोज़गार</a></b></h2>
+
+
 				  </center>
 			    </div>
-        
+
 		</div>
                      <hr>
 
 		<div class="row">
 		  <div class="col-sm-2">
-		  
+
 		   <!-- Great, til you resize. -->
 			<!--<div class="well bs-sidebar affix" id="sidebar" style="background-color:#fff">-->
-        
+
         <div id="sidebar" >
           <center>
+              <br>
           {% if request.user.username %}
                   <h4>
                 <form method="post" action="/change_role">
@@ -89,7 +90,7 @@
                 </select>
                 </form>
             </h4>
-          
+
             {%endif%}
           </center>
         </div>
@@ -97,34 +98,34 @@
 
 			  <ul class="nav nav-pills nav-stacked">
 			  	{% if request.user.username %}
-			  	<h4><b><li><a href = '/view'>अपना विवरण देखें</a></li></b></h4><br>
-			  	
-                <h4><b><li><a href = '/workrequest'>कार्य अनुरोध देखें</a></li></b></h4><br>
-			  	<h4><b><li><a href='/logout'>लॉगआउट</a></li></b></h4><br>
-			  	
-                <h4><b> <li><a href = '/change_password'>पासवर्ड बदलें</a></li></b></h4>
-    			
+			  	<h4><b><li><a href = 'https://apnarozgar.pythonanywhere.com/view'>अपना विवरण देखें</a></li></b></h4><br>
+
+                <h4><b><li><a href = 'https://apnarozgar.pythonanywhere.com/workrequest'>कार्य अनुरोध देखें</a></li></b></h4><br>
+			  	<h4><b><li><a href='https://apnarozgar.pythonanywhere.com/logout'>लॉगआउट</a></li></b></h4><br>
+
+                <h4><b> <li><a href = 'https://apnarozgar.pythonanywhere.com/change_password'>पासवर्ड बदलें</a></li></b></h4>
+
 			  	{%else%}
-				<h4><b><li><a href='/login'>लॉग इन करें</a></li></b></h4><br>
-				<h4><b><li><a href='/register'>पंजीकरण करें</a></li></b></h4><br>
-                                <h4><b><li><a href='/forgot_password'>पासवर्ड भूल गए?</a></li></b></h4>
+				<h4><b><li><a href='https://apnarozgar.pythonanywhere.com/login'>लॉग इन करें</a></li></b></h4><br>
+				<h4><b><li><a href='https://apnarozgar.pythonanywhere.com/register'>पंजीकरण करें</a></li></b></h4><br>
+                                <h4><b><li><a href='https://apnarozgar.pythonanywhere.com/forgot_password'>पासवर्ड भूल गए?</a></li></b></h4>
 				{%endif%}
-				
+
 			  </ul>
 			</div> <!--well bs-sidebar affix-->
 		  </div> <!--col-sm-2-->
 		  <div class="col-sm-10">
-		  
+
 			<div class='container-fluid'>
-			 
-       
+
+
 
 
 			   {% block content %}
-			   {% endblock %}	
+			   {% endblock %}
 			</div>
 		  </div>
-		</div> 
+		</div>
 	</div>
   <br>
   <br>
@@ -132,25 +133,25 @@
          <br>
          <br>
 		<div class="container-fluid" style='margin-left:3%'>
-			<p><a href="/developer" target="blank">हमसे संपर्क करें</a> | <a href="/query" target="blank">वेबसाइट से संबंधित समस्या बताएँ</a> | 
-      <font id="currenttime"></font>
+		    <p><a href="/developer" >हमसे संपर्क करें</a> | <a href="/query">वेबसाइट से संबंधित समस्या या सुझाव बताएँ</a> |
+		     <font id="currenttime"></font>
     </p>
 		</div>
 	  </footer>
-  
+
 
    <script>
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError,{timeout:60000});
-    } else { 
+    } else {
         document.getElementById("sms11").value = "इस ब्राउज़र द्वारा जियोलोकेशन समर्थित नहीं है.";
         document.getElementById("cur_location").submit();
     }
 }
 
 function showPosition(position) {
-   document.getElementById("lat11").value = position.coords.latitude ; 
+   document.getElementById("lat11").value = position.coords.latitude ;
     document.getElementById("lng11").value=position.coords.longitude;
     document.getElementById("time11").value=new Date(position.timestamp);
     initMap(position.coords.latitude,position.coords.longitude);
@@ -179,7 +180,7 @@ function showError(error) {
 
 
  function initMap(aa,bb) {
-      
+
         var latlng = new google.maps.LatLng( aa,  bb);
 
         var geocoder=new google.maps.Geocoder();
@@ -218,16 +219,16 @@ function showError(error) {
             (document.getElementById('autocomplete')),{types: ['geocode']});
       }
 
-     
+
 
      function latlngcal()
      {
       	    var place=autocomplete.getPlace();
       	    document.getElementById("latdata").value=place.geometry.location.lat();
       	    document.getElementById("lngdata").value=place.geometry.location.lng();
-      } 
+      }
    </script>
-   
+
    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKR0DcCevS0bMUmCfjLCSi6DzKsTZfcbc&libraries=places&callback=initAutocomplete"
         async defer></script>
 
@@ -245,7 +246,7 @@ function showError(error) {
                         document.getElementById("multiselection").options[2]=new Option("बड़ी इमारतों को बनाने में कुशल","बड़ी इमारतों को बनाने में कुशल");
                         document.getElementById("multiselection").options[3]=new Option("बांध और नदी की सीमाओं को बनाने में कुशल","बांध और नदी की सीमाओं को बनाने में कुशल");
                         break;
-                    
+
                     case "बिजली कारीगर(Electrician)" :
                         document.getElementById("multiselection").options[0]=new Option("इन विकल्पों से चुनें","");
                         document.getElementById("multiselection").options[1]=new Option("घर के तारों में कुशल","घर के तारों में कुशल");
@@ -337,7 +338,7 @@ function showError(error) {
 
                 }
                 return true;
-                
+
             }
          $(document).ready(function() {
         $('#multiselectio').multiselect();
@@ -355,7 +356,7 @@ function showError(error) {
                         document.getElementById("multiselecti").options[2]=new Option("बड़ी इमारतों को बनाने में कुशल","बड़ी इमारतों को बनाने में कुशल");
                         document.getElementById("multiselecti").options[3]=new Option("बांध और नदी की सीमाओं को बनाने में कुशल","बांध और नदी की सीमाओं को बनाने में कुशल");
                         break;
-                    
+
                     case "बिजली कारीगर(Electrician)" :
                         document.getElementById("multiselecti").options[0]=new Option("इन विकल्पों से चुनें","");
                         document.getElementById("multiselecti").options[1]=new Option("घर के तारों में कुशल","घर के तारों में कुशल");
@@ -447,9 +448,9 @@ function showError(error) {
 
                 }
                 return true;
-                
+
             }
-    
+
        </script>
 </body>
 </html>
